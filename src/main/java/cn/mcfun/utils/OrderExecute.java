@@ -141,7 +141,7 @@ public class OrderExecute implements Runnable{
             uc.mailReceive(userInfo);
         }
         Connection conn3 = getConnection();
-        String sql3 = "update `order` set uid=?,transcode=?,AccountId=? where `order`=? and status=1";
+        String sql3 = "update `order` set uid=?,transcode=?,AccountId=?,`status`=2 where `order`=? and status=1";
         PreparedStatement ps3 = null;
         try {
             ps3 = conn3.prepareStatement(sql3);
