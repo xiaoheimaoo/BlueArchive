@@ -44,7 +44,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 7890);
+        proxy = new HttpHost("127.0.0.1", 8888);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
@@ -68,7 +68,7 @@ public class HttpClientPool {
                 Connection conn2 = getConnection();
                 String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
                 PreparedStatement ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1,Thread.currentThread().getName());
+                ps2.setString(1,userInfo.getOrder());
                 ps2.executeUpdate();
                 conn2.close();
                 ps2.close();
@@ -87,7 +87,7 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
         HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 7890);
+        proxy = new HttpHost("127.0.0.1", 8888);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
@@ -112,7 +112,7 @@ public class HttpClientPool {
                 Connection conn2 = getConnection();
                 String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
                 PreparedStatement ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1,Thread.currentThread().getName());
+                ps2.setString(1,userInfo.getOrder());
                 ps2.executeUpdate();
                 conn2.close();
                 ps2.close();

@@ -672,6 +672,16 @@ public class UserCreate {
         if (result.contains("packet")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             userInfo.setSessionKey(js.getString("SessionKey"));
+            if(!js.getJSONArray("AttendanceBookRewards").isEmpty()){
+                for(int i=0;i<js.getJSONArray("AttendanceBookRewards").size();i++){
+                    userInfo.getAttendanceBookRewards().add(js.getJSONArray("AttendanceBookRewards").getJSONObject(i).getString("UniqueId"));
+                }
+            }
+            if(js.containsKey("AttendanceHistoryDBs")){
+                for(int i=0;i<js.getJSONArray("AttendanceHistoryDBs").size();i++){
+                    userInfo.getAttendanceHistoryDBs().add(js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendanceBookUniqueId")+"-"+js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getJSONObject("AttendedDay").size());
+                }
+            }
             Connection conn2 = getConnection();
             String sql2 = "update `order` set `deviceId`=?,`SessionKey`=?,message='设置SessionKey' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -4221,12 +4231,12 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void usercreate57(UserInfo userInfo) {
+    public void attendanceReward(int id,int id2,UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addTextBody("protocol", "AZELQARARQP5L57ZML5KM3BRJ4", ContentType.TEXT_PLAIN);
         builder.addTextBody("encode", "True", ContentType.TEXT_PLAIN);
-        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\"1\":1},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":256,\"Resendable\":true,\"Hash\":38663295598633,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\""+id+"\":"+id2+"},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":"+id+",\"Resendable\":true,\"Hash\":38663"+id+"95598633,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         builder.addTextBody("packet", Gzip.enCrypt(packet), ContentType.TEXT_PLAIN);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/attendance/reward", builder);
         JSONObject jsonObject = null;
@@ -4254,83 +4264,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-    public void usercreate58(UserInfo userInfo) {
-        String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.addTextBody("protocol", "AZELQARARQP5L57ZML5KM3BRJ4", ContentType.TEXT_PLAIN);
-        builder.addTextBody("encode", "True", ContentType.TEXT_PLAIN);
-        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\"9\":1},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":9,\"Resendable\":true,\"Hash\":38663295598634,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
-        builder.addTextBody("packet", Gzip.enCrypt(packet), ContentType.TEXT_PLAIN);
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/attendance/reward", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message='未知错误，请尝试重启' where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='领取签到奖励到邮件' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4632,7 +4566,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过任务页面动画' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4675,7 +4609,7 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void usercreate63(UserInfo userInfo) {
+    public void missionMultiplereward(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addTextBody("protocol", "FF3K76PH2LLL6OPCYVKKENNHGE", ContentType.TEXT_PLAIN);
@@ -4708,7 +4642,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='领取任务奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4751,7 +4685,7 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void usercreate64(UserInfo userInfo) {
+    public void mailList(UserInfo userInfo) {
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("protocol", "URZSRU73NZ7TFCFVHVORFXNFSE"));
@@ -4785,10 +4719,12 @@ public class UserCreate {
         if (result.contains("packet")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             for(int i=0;i<js.getJSONArray("MailDBs").size();i++){
-                userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
+                if(js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("3") || js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("6999") || js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("1")){
+                    userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
+                }
             }
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取邮件列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4831,7 +4767,7 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void usercreate65(UserInfo userInfo) {
+    public void mailReceive(UserInfo userInfo) {
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("protocol", "X3CP3SJNLNSPJAUT24VJ6UZAJA"));
@@ -4864,7 +4800,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='领取邮件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);

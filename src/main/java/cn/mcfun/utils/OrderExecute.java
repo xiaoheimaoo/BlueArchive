@@ -73,6 +73,7 @@ public class OrderExecute implements Runnable{
         uc.usercreate6(userInfo);
         uc.usercreate7(userInfo);
         uc.usercreate8(userInfo);
+        //登录
         uc.usercreate9(userInfo);
         uc.usercreate10(userInfo);
         uc.usercreate11(userInfo);
@@ -120,16 +121,24 @@ public class OrderExecute implements Runnable{
         uc.usercreate54(userInfo);
         uc.usercreate55(userInfo);
         uc.usercreate56(userInfo);
-        uc.usercreate57(userInfo);
-        uc.usercreate58(userInfo);
+        if(userInfo.getAttendanceBookRewards().size() >= 1){
+            for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
+                uc.attendanceReward(Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
+            }
+        }
+        if(userInfo.getAttendanceHistoryDBs().size() >= 1){
+            for(int i=0;i<userInfo.getAttendanceHistoryDBs().size();i++){
+                uc.attendanceReward(Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1]),userInfo);
+            }
+        }
         uc.usercreate59(userInfo);
         uc.usercreate60(userInfo);
         uc.usercreate61(userInfo);
         uc.usercreate62(userInfo);
-        uc.usercreate63(userInfo);
-        uc.usercreate64(userInfo);
+        uc.missionMultiplereward(userInfo);
+        uc.mailList(userInfo);
         if(!userInfo.getMail().toJSONString().equals("[]")){
-            uc.usercreate65(userInfo);
+            uc.mailReceive(userInfo);
         }
         Connection conn3 = getConnection();
         String sql3 = "update `order` set uid=?,transcode=?,AccountId=? where `order`=? and status=1";

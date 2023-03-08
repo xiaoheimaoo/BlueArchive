@@ -22,7 +22,25 @@ public class UserInfo {
     Long ServerId4;
     JSONObject EchelonDBs = new JSONObject();
     JSONArray CharacterDBs = new JSONArray();
+    JSONArray AttendanceBookRewards = new JSONArray();
+    JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
+
+    public JSONArray getAttendanceHistoryDBs() {
+        return AttendanceHistoryDBs;
+    }
+
+    public void setAttendanceHistoryDBs(JSONArray attendanceHistoryDBs) {
+        AttendanceHistoryDBs = attendanceHistoryDBs;
+    }
+
+    public JSONArray getAttendanceBookRewards() {
+        return AttendanceBookRewards;
+    }
+
+    public void setAttendanceBookRewards(JSONArray attendanceBookRewards) {
+        AttendanceBookRewards = attendanceBookRewards;
+    }
 
     public JSONArray getMail() {
         return mail;
