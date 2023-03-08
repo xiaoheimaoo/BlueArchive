@@ -4,6 +4,7 @@ import cn.mcfun.Main;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
 import cn.mcfun.utils.HttpClientPool;
+import cn.mcfun.utils.Md5;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.entity.ContentType;
@@ -75,7 +76,6 @@ public class UserCreate {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            usercreate2(userInfo);
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -258,7 +258,7 @@ public class UserCreate {
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addTextBody("protocol", "PFJRUKK5IXXQR2XFFCMNXEIKXM", ContentType.TEXT_PLAIN);
         builder.addTextBody("encode", "True", ContentType.TEXT_PLAIN);
-        String packet = "{\"Protocol\":1009,\"UID\":0,\"YostarToken\":null,\"EnterTicket\":\""+userInfo.getEnterTicket()+"\",\"PassCookieResult\":false,\"Cookie\":\"2164046E9B_0332dfc72437a17f5f84e1cbf041226d_a462cb35993a5fb915db749f98e52bdb\",\"ClientUpTime\":0,\"Resendable\":false,\"Hash\":4333622001665,\"SessionKey\":null,\"AccountId\":0}";
+        String packet = "{\"Protocol\":1009,\"UID\":0,\"YostarToken\":null,\"EnterTicket\":\""+userInfo.getEnterTicket()+"\",\"PassCookieResult\":false,\"Cookie\":\"2164046E9B_"+ Md5.getMd5(userInfo.getUid()) +"_"+Md5.getMd5(userInfo.getEnterTicket())+"\",\"ClientUpTime\":0,\"Resendable\":false,\"Hash\":4333622001665,\"SessionKey\":null,\"AccountId\":0}";
         builder.addTextBody("packet", Gzip.enCrypt(packet), ContentType.TEXT_PLAIN);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/account/checkyostar", builder);
         JSONObject jsonObject = null;
