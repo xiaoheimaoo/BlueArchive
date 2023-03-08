@@ -43,15 +43,15 @@ import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        HttpHost proxy;
+        /*HttpHost proxy;
         proxy = new HttpHost("127.0.0.1", 8888);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
+        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));*/
         CloseableHttpClient httpClient;
         httpClient = HttpClients.custom()
-                .setDefaultCredentialsProvider(provider)
-                .setRoutePlanner(routePlanner)
+                /*.setDefaultCredentialsProvider(provider)
+                .setRoutePlanner(routePlanner)*/
                 .setDefaultCookieStore(userInfo.getCookie()).build();
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
@@ -86,15 +86,15 @@ public class HttpClientPool {
         return result;
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        HttpHost proxy;
+        /*HttpHost proxy;
         proxy = new HttpHost("127.0.0.1", 8888);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
+        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));*/
         CloseableHttpClient httpClient;
         httpClient = HttpClients.custom()
-                .setDefaultCredentialsProvider(provider)
-                .setRoutePlanner(routePlanner)
+                /*.setDefaultCredentialsProvider(provider)
+                .setRoutePlanner(routePlanner)*/
                 .setDefaultCookieStore(userInfo.getCookie()).build();
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
