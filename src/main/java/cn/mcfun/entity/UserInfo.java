@@ -2,7 +2,17 @@ package cn.mcfun.entity;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
 
 public class UserInfo {
     String order;
@@ -25,6 +35,38 @@ public class UserInfo {
     JSONArray AttendanceBookRewards = new JSONArray();
     JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
+    HttpClientBuilder httpClientBuilder = HttpClients.custom();
+    public UserInfo() {
+        SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(SSLContexts.createSystemDefault(),
+                new String[]{"TLSv1.2"},
+                null,
+                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https",sslFactory)
+                .build();
+        PoolingHttpClientConnectionManager pool = new PoolingHttpClientConnectionManager(registry);
+        pool.setMaxTotal(2000);
+        pool.setDefaultMaxPerRoute(2000);
+        httpClientBuilder.setConnectionManager(pool);
+        httpClientBuilder.setConnectionManagerShared(true);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(1000 * 90) // 创建链接 （TCP协议的三次握手）超时时间
+                .setSocketTimeout(1000 * 90) // 响应 获取响应内容 超时时间
+                .setConnectionRequestTimeout(1000 * 30) // 从链接池 获取链接的超时时间
+                .build();
+
+        httpClientBuilder.setDefaultRequestConfig(requestConfig);
+    }
+
+    public HttpClientBuilder getHttpClientBuilder() {
+        return httpClientBuilder;
+    }
+
+    public void setHttpClientBuilder(HttpClientBuilder httpClientBuilder) {
+        this.httpClientBuilder = httpClientBuilder;
+    }
 
     public JSONArray getAttendanceHistoryDBs() {
         return AttendanceHistoryDBs;
