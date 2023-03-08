@@ -62,6 +62,7 @@ public class Main{
         }
         CORE_POOL_SIZE = Integer.parseInt(props.getProperty("threads"));
         ClientVersion = props.getProperty("ClientVersion");
+        BundleVersion = props.getProperty("BundleVersion");
         main = new Main();
         //查询并缓存需要执行的订单
         main.loadOrders();
