@@ -44,7 +44,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 8888);
+        proxy = new HttpHost("127.0.0.1", 7890);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
@@ -87,7 +87,7 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
         HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 8888);
+        proxy = new HttpHost("127.0.0.1", 7890);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
