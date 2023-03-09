@@ -42,60 +42,22 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    public static String sendPost0(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 8888);
-        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-        CredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
-        CloseableHttpClient httpClient;
-        httpClient = userInfo.getHttpClientBuilder()
-                /*.setDefaultCredentialsProvider(provider)
-                .setRoutePlanner(routePlanner)*/
-                .setDefaultCookieStore(userInfo.getCookie()).build();
-        RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setConfig(defaultConfig);
-        httpPost.setHeader("Bundle-Version", Main.BundleVersion);
-        CloseableHttpResponse response;
-        String result = null;
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
-            response = httpClient.execute(httpPost);
-            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (IOException e) {
-            try {
-                Connection conn2 = getConnection();
-                String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
-                PreparedStatement ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1,userInfo.getOrder());
-                ps2.executeUpdate();
-                conn2.close();
-                ps2.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            Thread.currentThread().stop();
-        }finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        /*HttpHost proxy;
-        proxy = new HttpHost("zproxy.lum-superproxy.io", 22225);
-        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-        CredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));*/
         CloseableHttpClient httpClient;
-        httpClient = userInfo.getHttpClientBuilder()
-                /*.setDefaultCredentialsProvider(provider)
-                .setRoutePlanner(routePlanner)*/
-                .setDefaultCookieStore(userInfo.getCookie()).build();
+        if(Main.proxyip != null && !Main.proxyip.equals("")){
+           HttpHost proxy;
+           proxy = new HttpHost(Main.proxyip, Main.proxyport);
+           DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+           CredentialsProvider provider = new BasicCredentialsProvider();
+           provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
+           httpClient = userInfo.getHttpClientBuilder()
+                   .setDefaultCredentialsProvider(provider)
+                   .setRoutePlanner(routePlanner)
+                   .setDefaultCookieStore(userInfo.getCookie()).build();
+        }else{
+           httpClient = userInfo.getHttpClientBuilder()
+                   .setDefaultCookieStore(userInfo.getCookie()).build();
+        }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
@@ -129,16 +91,21 @@ public class HttpClientPool {
         return result;
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        HttpHost proxy;
-        proxy = new HttpHost("127.0.0.1", 8888);
-        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-        CredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("brd-customer-hl_9c2c7022-zone-data_center", "gd1j0yrsnz63"));
         CloseableHttpClient httpClient;
-        httpClient = userInfo.getHttpClientBuilder()
-                /*.setDefaultCredentialsProvider(provider)
-                .setRoutePlanner(routePlanner)*/
-                .setDefaultCookieStore(userInfo.getCookie()).build();
+        if(Main.proxyip != null && !Main.proxyip.equals("")){
+            HttpHost proxy;
+            proxy = new HttpHost(Main.proxyip, Main.proxyport);
+            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
+            httpClient = userInfo.getHttpClientBuilder()
+                    .setDefaultCredentialsProvider(provider)
+                    .setRoutePlanner(routePlanner)
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
+        }else{
+            httpClient = userInfo.getHttpClientBuilder()
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
+        }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);

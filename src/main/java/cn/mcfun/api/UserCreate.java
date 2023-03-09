@@ -29,7 +29,7 @@ public class UserCreate {
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("channelId", "appstore"));
         params.add(new BasicNameValuePair("deviceId", userInfo.getDeviceId()));
-        result = HttpClientPool.sendPost0(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/create", params);
+        result = HttpClientPool.sendPost(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/create", params);
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);
@@ -108,7 +108,7 @@ public class UserCreate {
         params.add(new BasicNameValuePair("uid", userInfo.getUid()));
         params.add(new BasicNameValuePair("token", userInfo.getToken()));
         params.add(new BasicNameValuePair("platform", "ios"));
-        result = HttpClientPool.sendPost0(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/login", params);
+        result = HttpClientPool.sendPost(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/login", params);
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);
