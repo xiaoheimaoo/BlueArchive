@@ -528,7 +528,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='设置昵称' where `order`=? and status=1";
+            String sql2 = "update `order` set message='设置昵称1' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -605,7 +605,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='设置昵称' where `order`=? and status=1";
+            String sql2 = "update `order` set message='设置昵称2' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -773,7 +773,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='requestquestion' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取requestquestion' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -850,7 +850,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='getinfo' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取getinfo' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -930,7 +930,7 @@ public class UserCreate {
             userInfo.setEchelonDBs(js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0));
             userInfo.setCharacterDBs(js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs"));
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='loginsync' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取loginsync' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1007,7 +1007,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='networktime' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取networktime' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1084,7 +1084,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='contentsave' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取contentsave' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1240,7 +1240,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导教程' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1317,7 +1317,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取mission' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取任务列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1394,7 +1394,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取mission' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取任务列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1472,7 +1472,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情1' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1549,7 +1549,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='settutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1626,7 +1626,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情2' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1703,7 +1703,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情3' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1780,7 +1780,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情4' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1857,7 +1857,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情5' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -1934,7 +1934,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情6' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2011,7 +2011,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='settutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导2' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2088,7 +2088,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情7' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2165,7 +2165,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='scenario' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过剧情8' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2243,7 +2243,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取eventlist' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2320,7 +2320,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取eventcontentreddotcheck' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2397,7 +2397,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='检查邮件' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2474,7 +2474,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='事件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2551,7 +2551,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='检查clan' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2628,7 +2628,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='好友检查' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2705,7 +2705,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取purchaselistbyyostar' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2782,7 +2782,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='新手抽卡' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2859,7 +2859,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导3' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -2936,7 +2936,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导4' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3013,7 +3013,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取campaign列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3090,7 +3090,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取事件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3167,7 +3167,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='邮箱检查' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3244,7 +3244,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取entermainstage' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3321,7 +3321,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取echelon列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3398,7 +3398,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='gettutorial' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取礼物盒列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3475,7 +3475,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取deployechelon' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3552,7 +3552,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取confirmtutorialstage' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3629,7 +3629,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='移动位置' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3706,7 +3706,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='移动位置' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3783,7 +3783,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取战斗结果' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3860,7 +3860,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳转下一关卡' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -3937,7 +3937,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳转下一关卡' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4014,7 +4014,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='移动角色' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4091,7 +4091,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取战斗结果' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4168,7 +4168,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='获取战斗结果' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
@@ -4245,7 +4245,7 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='eventlist' where `order`=? and status=1";
+            String sql2 = "update `order` set message='跳过引导' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
