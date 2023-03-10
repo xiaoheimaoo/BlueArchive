@@ -11,8 +11,8 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/com/alibaba/fastjson/1.2.9/fastjson-1.2.9.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/org/apache/httpcomponents/httpmime/4.5.14/httpmime-4.5.14.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/com/zaxxer/HikariCP/3.4.5/HikariCP-3.4.5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Users/75129/.m2/repository/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
