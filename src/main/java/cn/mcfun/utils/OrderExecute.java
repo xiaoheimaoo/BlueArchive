@@ -173,8 +173,8 @@ public class OrderExecute implements Runnable{
             throwables.printStackTrace();
         } finally {
             try {
-                conn2.close();
-                ps2.close();
+                conn3.close();
+                ps3.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
