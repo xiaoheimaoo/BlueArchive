@@ -15,6 +15,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 
 public class UserInfo {
+    String ip;
     String order;
     BasicCookieStore cookie;
     String deviceId;
@@ -58,6 +59,14 @@ public class UserInfo {
                 .build();
 
         httpClientBuilder.setDefaultRequestConfig(requestConfig);
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public HttpClientBuilder getHttpClientBuilder() {

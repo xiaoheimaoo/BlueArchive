@@ -44,9 +44,9 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         CloseableHttpClient httpClient;
-        if(Main.proxyip != null && !Main.proxyip.equals("")){
+        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
            HttpHost proxy;
-           proxy = new HttpHost(Main.proxyip, Main.proxyport);
+           proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
            CredentialsProvider provider = new BasicCredentialsProvider();
            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
@@ -92,9 +92,9 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
         CloseableHttpClient httpClient;
-        if(Main.proxyip != null && !Main.proxyip.equals("")){
+        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
-            proxy = new HttpHost(Main.proxyip, Main.proxyport);
+            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));

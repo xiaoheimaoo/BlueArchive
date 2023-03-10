@@ -22,8 +22,6 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class Main{
     public static String ClientVersion = "1.28.196922";
     public static String BundleVersion = "8qOm7FS6jd";
-    public static String proxyip = "";
-    public static int proxyport = 8888;
     private static Main main;
     private boolean running;
     private final ThreadPoolExecutor executor;
@@ -48,7 +46,7 @@ public class Main{
             try {
                 file.createNewFile();
                 writer = new FileWriter(file, false);
-                writer.append("#同时执行线程数\nthreads=300\n#数据库连接地址\nurl=localhost\n#数据库端口\nport=3306\n#库名\ndatabase=\n#数据库用户名\nuser=root\n#数据库密码\npassword=\n#游戏版本号\nClientVersion=1.28.196922\nBundleVersion=8qOm7FS6jd\n#代理ip\nproxyip=\n#代理端口\nproxyport=\n");
+                writer.append("#同时执行线程数\nthreads=300\n#数据库连接地址\nurl=localhost\n#数据库端口\nport=3306\n#库名\ndatabase=\n#数据库用户名\nuser=root\n#数据库密码\npassword=\n#游戏版本号\nClientVersion=1.28.196922\nBundleVersion=8qOm7FS6jd\n");
                 writer.flush();
                 writer.close();
             } catch (IOException e) {
@@ -65,8 +63,6 @@ public class Main{
         CORE_POOL_SIZE = Integer.parseInt(props.getProperty("threads"));
         ClientVersion = props.getProperty("ClientVersion");
         BundleVersion = props.getProperty("BundleVersion");
-        proxyip = props.getProperty("proxyip");
-        proxyport = Integer.parseInt(props.getProperty("proxyport"));
         main = new Main();
         //查询并缓存需要执行的订单
         main.loadOrders();
