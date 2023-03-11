@@ -42,6 +42,30 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
+    static HttpClientBuilder httpClientBuilder = HttpClients.custom();
+    public HttpClientPool() {
+        SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(SSLContexts.createSystemDefault(),
+                new String[]{"TLSv1.2"},
+                null,
+                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https",sslFactory)
+                .build();
+        PoolingHttpClientConnectionManager pool = new PoolingHttpClientConnectionManager(registry);
+        pool.setMaxTotal(1000);
+        pool.setDefaultMaxPerRoute(1000);
+        httpClientBuilder.setConnectionManager(pool);
+        httpClientBuilder.setConnectionManagerShared(true);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(1000 * 90) // 创建链接 （TCP协议的三次握手）超时时间
+                .setSocketTimeout(1000 * 90) // 响应 获取响应内容 超时时间
+                .setConnectionRequestTimeout(1000 * 30) // 从链接池 获取链接的超时时间
+                .build();
+
+        httpClientBuilder.setDefaultRequestConfig(requestConfig);
+    }
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
@@ -50,12 +74,12 @@ public class HttpClientPool {
            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
            CredentialsProvider provider = new BasicCredentialsProvider();
            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-           httpClient = userInfo.getHttpClientBuilder()
+           httpClient = httpClientBuilder
                    .setDefaultCredentialsProvider(provider)
                    .setRoutePlanner(routePlanner)
                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-           httpClient = userInfo.getHttpClientBuilder()
+           httpClient = httpClientBuilder
                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
@@ -98,12 +122,12 @@ public class HttpClientPool {
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-            httpClient = userInfo.getHttpClientBuilder()
+            httpClient = httpClientBuilder
                     .setDefaultCredentialsProvider(provider)
                     .setRoutePlanner(routePlanner)
                     .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-            httpClient = userInfo.getHttpClientBuilder()
+            httpClient = httpClientBuilder
                     .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
