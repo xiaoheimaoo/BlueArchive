@@ -48,8 +48,8 @@ public class UserInfo {
                 .register("https",sslFactory)
                 .build();
         PoolingHttpClientConnectionManager pool = new PoolingHttpClientConnectionManager(registry);
-        pool.setMaxTotal(2000);
-        pool.setDefaultMaxPerRoute(2000);
+        pool.setMaxTotal(10);
+        pool.setDefaultMaxPerRoute(10);
         httpClientBuilder.setConnectionManager(pool);
         httpClientBuilder.setConnectionManagerShared(true);
         RequestConfig requestConfig = RequestConfig.custom()
