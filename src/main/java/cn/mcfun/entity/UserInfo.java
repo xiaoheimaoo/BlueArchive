@@ -36,29 +36,7 @@ public class UserInfo {
     JSONArray AttendanceBookRewards = new JSONArray();
     JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
-    HttpClientBuilder httpClientBuilder = HttpClients.custom();
     public UserInfo() {
-        SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(SSLContexts.createSystemDefault(),
-                new String[]{"TLSv1.2"},
-                null,
-                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https",sslFactory)
-                .build();
-        PoolingHttpClientConnectionManager pool = new PoolingHttpClientConnectionManager(registry);
-        pool.setMaxTotal(2000);
-        pool.setDefaultMaxPerRoute(2000);
-        httpClientBuilder.setConnectionManager(pool);
-        httpClientBuilder.setConnectionManagerShared(true);
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(1000 * 90) // 创建链接 （TCP协议的三次握手）超时时间
-                .setSocketTimeout(1000 * 90) // 响应 获取响应内容 超时时间
-                .setConnectionRequestTimeout(1000 * 30) // 从链接池 获取链接的超时时间
-                .build();
-
-        httpClientBuilder.setDefaultRequestConfig(requestConfig);
     }
 
     public String getIp() {
@@ -67,14 +45,6 @@ public class UserInfo {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public HttpClientBuilder getHttpClientBuilder() {
-        return httpClientBuilder;
-    }
-
-    public void setHttpClientBuilder(HttpClientBuilder httpClientBuilder) {
-        this.httpClientBuilder = httpClientBuilder;
     }
 
     public JSONArray getAttendanceHistoryDBs() {
