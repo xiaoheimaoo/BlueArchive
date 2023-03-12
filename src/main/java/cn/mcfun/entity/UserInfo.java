@@ -36,7 +36,16 @@ public class UserInfo {
     JSONArray AttendanceBookRewards = new JSONArray();
     JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
+    int StarNum = 0;
     public UserInfo() {
+    }
+
+    public int getStarNum() {
+        return StarNum;
+    }
+
+    public void setStarNum(int starNum) {
+        StarNum = starNum;
     }
 
     public String getIp() {
