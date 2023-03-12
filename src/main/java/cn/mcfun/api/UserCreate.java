@@ -2789,7 +2789,7 @@ public class UserCreate {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             JSONArray GachaResults = js.getJSONArray("GachaResults");
             for(int i=0;i<GachaResults.size();i++){
-                if(GachaResults.getJSONObject(i).getJSONObject("Character").containsKey("StarGrade") && GachaResults.getJSONObject(i).getJSONObject("Character").getString("StarGrade").equals("3")){
+                if(GachaResults.getJSONObject(i).containsKey("Character") && GachaResults.getJSONObject(i).getJSONObject("Character").getString("StarGrade").equals("3")){
                     userInfo.setStarNum(userInfo.getStarNum()+1);
                 }
             }
