@@ -304,6 +304,11 @@ public class UserCreate {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             userInfo.setEchelonDBs(js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0));
             userInfo.setCharacterDBs(js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs"));
+            for(int i=0;i<userInfo.getCharacterDBs().size();i++){
+                if(userInfo.getCharacterDBs().getJSONObject(i).getString("StarGrade").equals("3")){
+                    userInfo.setStarNum(userInfo.getStarNum()+1);
+                }
+            }
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='获取loginsync' where `order`=? and status=1";
             PreparedStatement ps2 = null;

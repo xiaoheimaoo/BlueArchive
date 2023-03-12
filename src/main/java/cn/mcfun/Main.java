@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -40,6 +41,7 @@ public class Main{
     }
 
     public static void main(String[] args) {
+        timer();
         File file = new File("config.properties");
         FileWriter writer;
         if (!file.exists()) {
@@ -71,7 +73,7 @@ public class Main{
                 main.executor.execute(new OrderExecute(orders.poll()));
             }
         }
-        timer();
+        timer2();
         while (main.isRunning()){
 
             try {
@@ -96,15 +98,25 @@ public class Main{
 
         }
     }
-    //订单检查
+    //定时关闭
     public static void timer() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                System.exit(0);
+            }
+
+        }, 1000 * 60 * 60 * 8);
+    }
+    //订单检查
+    public static void timer2() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 loadOrdersRecover();
             }
 
-        }, 1000 * 60 * 10,1000 * 60 * 10);
+        }, 1000 * 60,1000 * 60);
     }
 
     public boolean isRunning(){
@@ -119,7 +131,7 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "select * from `order` where status=3";
+            String sql = "select * from `order` where `status` != 1 and status != 2";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
@@ -156,9 +168,12 @@ public class Main{
         ResultSet rs = null;
 
         try {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set status=-1 where status=0 or status=1";
+            String sql = "update `order` set status=-1 where `complete` < ?";
             ps = conn.prepareStatement(sql);
+            ps.setString(1,time);
             ps.executeUpdate();
             sql = "select * from `order` where status=-1";
             ps = conn.prepareStatement(sql);
