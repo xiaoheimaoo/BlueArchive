@@ -2786,6 +2786,13 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
         if (result.contains("packet")) {
+            JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
+            JSONArray GachaResults = js.getJSONArray("GachaResults");
+            for(int i=0;i<GachaResults.size();i++){
+                if(GachaResults.getJSONObject(i).getJSONObject("Character").getString("StarGrade").equals("3")){
+                    userInfo.setStarNum(userInfo.getStarNum()+1);
+                }
+            }
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='新手抽卡' where `order`=? and status=1";
             PreparedStatement ps2 = null;
