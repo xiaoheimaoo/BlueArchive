@@ -86,6 +86,7 @@ public class HttpClientPool {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
         httpPost.setHeader("Bundle-Version", Main.BundleVersion);
+        httpPost.addHeader("Connection", "keep-alive");
         CloseableHttpResponse response;
         String result = null;
         try {
@@ -134,6 +135,7 @@ public class HttpClientPool {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
+        httpPost.addHeader("Connection", "keep-alive");
         CloseableHttpResponse response;
         String result = null;
         HttpEntity multipart = builder.build();
