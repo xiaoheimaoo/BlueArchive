@@ -1,6 +1,7 @@
 package cn.mcfun.api;
 
 import cn.mcfun.Main;
+import cn.mcfun.entity.StudentName;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
 import cn.mcfun.utils.HttpClientPool;
@@ -307,7 +308,7 @@ public class UserCreate {
             for(int i=0;i<userInfo.getCharacterDBs().size();i++){
                 if(userInfo.getCharacterDBs().getJSONObject(i).getString("StarGrade").equals("3")){
                     userInfo.setStarNum(userInfo.getStarNum()+1);
-                    userInfo.getSvts().add(userInfo.getCharacterDBs().getJSONObject(i).getInteger("UniqueId"));
+                    userInfo.getSvts().add(StudentName.getStudentName(userInfo.getCharacterDBs().getJSONObject(i).getInteger("UniqueId")));
                 }
             }
             userInfo.setGem(js.getJSONObject("AccountCurrencySyncResponse").getJSONObject("AccountCurrencyDB").getJSONObject("CurrencyDict").getInteger("Gem"));
