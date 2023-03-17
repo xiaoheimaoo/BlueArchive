@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 08/03/2023 00:35:20
+ Date: 17/03/2023 16:46:56
 */
 
 SET NAMES utf8mb4;
@@ -31,14 +31,15 @@ CREATE TABLE `order`  (
   `current` int(20) NULL DEFAULT NULL,
   `message` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `timerecovery` datetime(0) NULL DEFAULT NULL,
-  `timecontrol` int(5) NULL DEFAULT NULL,
-  `ip` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `StarNum` int(5) NULL DEFAULT NULL,
+  `Gem` int(10) NULL DEFAULT NULL,
+  `svts` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `complete` datetime(0) NULL DEFAULT NULL,
   `SessionKey` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `deviceId` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`order`) USING BTREE,
   UNIQUE INDEX `order`(`order`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1000098507 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1000098754 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for proxy
@@ -46,6 +47,6 @@ CREATE TABLE `order`  (
 DROP TABLE IF EXISTS `proxy`;
 CREATE TABLE `proxy`  (
   `ip` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
