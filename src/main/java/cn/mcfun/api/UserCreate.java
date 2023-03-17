@@ -547,10 +547,13 @@ public class UserCreate {
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("4030") ||
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("4050") ||
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("6999") ||
+                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("101001") ||
+                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("102001") ||
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("1") ||
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("3") ||
                             js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("5") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("10")){
+                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("10") ||
+                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("11")){
                         userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
                     }
                 }
