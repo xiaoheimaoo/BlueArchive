@@ -33,11 +33,29 @@ public class UserInfo {
     Long ServerId4;
     JSONObject EchelonDBs = new JSONObject();
     JSONArray CharacterDBs = new JSONArray();
+    JSONArray svts = new JSONArray();
     JSONArray AttendanceBookRewards = new JSONArray();
     JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
     int StarNum = 0;
+    int Gem = 0;
     public UserInfo() {
+    }
+
+    public JSONArray getSvts() {
+        return svts;
+    }
+
+    public void setSvts(JSONArray svts) {
+        this.svts = svts;
+    }
+
+    public int getGem() {
+        return Gem;
+    }
+
+    public void setGem(int gem) {
+        Gem = gem;
     }
 
     public int getStarNum() {

@@ -307,8 +307,10 @@ public class UserCreate {
             for(int i=0;i<userInfo.getCharacterDBs().size();i++){
                 if(userInfo.getCharacterDBs().getJSONObject(i).getString("StarGrade").equals("3")){
                     userInfo.setStarNum(userInfo.getStarNum()+1);
+                    userInfo.getSvts().add(userInfo.getCharacterDBs().getJSONObject(i).getInteger("UniqueId"));
                 }
             }
+            userInfo.setGem(js.getJSONObject("AccountCurrencySyncResponse").getJSONObject("AccountCurrencyDB").getJSONObject("CurrencyDict").getInteger("Gem"));
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='获取loginsync' where `order`=? and status=1";
             PreparedStatement ps2 = null;

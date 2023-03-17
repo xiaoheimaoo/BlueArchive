@@ -2,6 +2,7 @@ package cn.mcfun.utils;
 
 import cn.mcfun.api.UserCreate;
 import cn.mcfun.entity.UserInfo;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.http.impl.client.BasicCookieStore;
 
 import java.sql.Connection;
@@ -92,14 +93,16 @@ public class OrderExecute implements Runnable{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         Connection conn3 = getConnection();
-        String sql3 = "update `order` set `status`=2,`message`=?,`StarNum`=?,complete=? where `order`=? and status=1";
+        String sql3 = "update `order` set `status`=2,`message`=?,`StarNum`=?,`Gem`=?,`svts`=?,complete=? where `order`=? and status=1";
         PreparedStatement ps3 = null;
         try {
             ps3 = conn3.prepareStatement(sql3);
             ps3.setString(1, "订单已完成");
             ps3.setInt(2, userInfo.getStarNum());
-            ps3.setString(3, dateStr);
-            ps3.setString(4, userInfo.getOrder());
+            ps3.setInt(3, userInfo.getGem());
+            ps3.setString(4, userInfo.getSvts().toJSONString());
+            ps3.setString(5, dateStr);
+            ps3.setString(6, userInfo.getOrder());
             ps3.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
