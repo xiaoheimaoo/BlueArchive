@@ -114,8 +114,12 @@ public class HttpClientPool {
         }finally {
             try {
                 httpPost.releaseConnection();
-                response.close();
-                httpClient.close();
+                if(response != null){
+                    response.close();
+                }
+                if(httpClient != null){
+                    httpClient.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -171,8 +175,12 @@ public class HttpClientPool {
         }finally {
             try {
                 httpPost.releaseConnection();
-                response.close();
-                httpClient.close();
+                if(response != null){
+                    response.close();
+                }
+                if(httpClient != null){
+                    httpClient.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
