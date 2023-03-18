@@ -92,13 +92,13 @@ public class HttpClientPool {
         httpPost.addHeader("Keep-Alive", "timeout=21");
         httpPost.addHeader("TE", "identity");
         httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
-        CloseableHttpResponse response;
+        CloseableHttpResponse response = null;
         String result = null;
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
             response = httpClient.execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             try {
                 Connection conn2 = getConnection();
                 String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
@@ -113,6 +113,8 @@ public class HttpClientPool {
             Thread.currentThread().stop();
         }finally {
             try {
+                httpPost.releaseConnection();
+                response.close();
                 httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,14 +148,14 @@ public class HttpClientPool {
         httpPost.addHeader("Keep-Alive", "timeout=21");
         httpPost.addHeader("TE", "identity");
         httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
-        CloseableHttpResponse response;
+        CloseableHttpResponse response = null;
         String result = null;
         HttpEntity multipart = builder.build();
         try {
             httpPost.setEntity(multipart);
             response = httpClient.execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             try {
                 Connection conn2 = getConnection();
                 String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
@@ -168,6 +170,8 @@ public class HttpClientPool {
             Thread.currentThread().stop();
         }finally {
             try {
+                httpPost.releaseConnection();
+                response.close();
                 httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
