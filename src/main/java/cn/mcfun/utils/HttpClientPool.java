@@ -42,7 +42,7 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    static HttpClientBuilder httpClientBuilder = HttpClients.custom();
+/*    static HttpClientBuilder httpClientBuilder = HttpClients.custom();
     public HttpClientPool() {
         SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(SSLContexts.createSystemDefault(),
                 new String[]{"TLSv1.2"},
@@ -65,7 +65,7 @@ public class HttpClientPool {
                 .build();
 
         httpClientBuilder.setDefaultRequestConfig(requestConfig);
-    }
+    }*/
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
@@ -74,24 +74,18 @@ public class HttpClientPool {
            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
            CredentialsProvider provider = new BasicCredentialsProvider();
            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-           httpClient = httpClientBuilder
+           httpClient = HttpClients.custom()
                    .setDefaultCredentialsProvider(provider)
                    .setRoutePlanner(routePlanner)
                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-           httpClient = httpClientBuilder
+           httpClient = HttpClients.custom()
                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
-        httpPost.addHeader("Accept-Encoding", "gzip");
-        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
-        httpPost.addHeader("Connection", "Keep-Alive, TE");
-        httpPost.addHeader("Keep-Alive", "timeout=21");
-        httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response = null;
         String result = null;
         try {
@@ -134,24 +128,18 @@ public class HttpClientPool {
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-            httpClient = httpClientBuilder
+            httpClient = HttpClients.custom()
                     .setDefaultCredentialsProvider(provider)
                     .setRoutePlanner(routePlanner)
                     .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-            httpClient = httpClientBuilder
+            httpClient = HttpClients.custom()
                     .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
-        httpPost.addHeader("Accept-Encoding", "gzip");
-        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
-        httpPost.addHeader("Connection", "Keep-Alive, TE");
-        httpPost.addHeader("Keep-Alive", "timeout=21");
-        httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response = null;
         String result = null;
         HttpEntity multipart = builder.build();
