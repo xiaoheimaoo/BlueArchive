@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
@@ -87,11 +86,6 @@ public class UserCreate {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         } else {
             Connection conn2 = getConnection();
@@ -165,11 +159,6 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -241,11 +230,6 @@ public class UserCreate {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         } else {
             Connection conn2 = getConnection();
@@ -329,11 +313,6 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -406,11 +385,6 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -482,11 +456,6 @@ public class UserCreate {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         } else {
             Connection conn2 = getConnection();
@@ -578,11 +547,6 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -654,11 +618,6 @@ public class UserCreate {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         } else {
             Connection conn2 = getConnection();

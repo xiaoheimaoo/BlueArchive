@@ -71,10 +71,10 @@ public class OrderExecute implements Runnable{
         UserCreate uc = new UserCreate();
         //登录
         uc.accountAuth(userInfo);
-        uc.requestQuestion(userInfo);
-        uc.academyGetinfo(userInfo);
+        //uc.requestQuestion(userInfo);
+        //uc.academyGetinfo(userInfo);
         uc.accountLoginsync(userInfo);
-        uc.networktimeSync(userInfo);
+        //uc.networktimeSync(userInfo);
         if(userInfo.getAttendanceBookRewards().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
                 uc.attendanceReward(Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
