@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import java.io.*;
 
 public class StudentName {
-    static JSONArray a;
+    static JSONArray a = new JSONArray();
     public StudentName(){
         String jsonStr = "";
         try {
