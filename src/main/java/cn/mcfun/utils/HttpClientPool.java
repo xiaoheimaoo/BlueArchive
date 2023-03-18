@@ -85,8 +85,13 @@ public class HttpClientPool {
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
-        httpPost.setHeader("Bundle-Version", Main.BundleVersion);
-        httpPost.addHeader("Connection", "keep-alive");
+        httpPost.setHeader("Bundle-Version",Main.BundleVersion);
+        httpPost.addHeader("Accept-Encoding", "gzip");
+        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
+        httpPost.addHeader("Connection", "Keep-Alive, TE");
+        httpPost.addHeader("Keep-Alive", "timeout=21");
+        httpPost.addHeader("TE", "identity");
+        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response;
         String result = null;
         try {
@@ -135,7 +140,12 @@ public class HttpClientPool {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
-        httpPost.addHeader("Connection", "keep-alive");
+        httpPost.addHeader("Accept-Encoding", "gzip");
+        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
+        httpPost.addHeader("Connection", "Keep-Alive, TE");
+        httpPost.addHeader("Keep-Alive", "timeout=21");
+        httpPost.addHeader("TE", "identity");
+        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response;
         String result = null;
         HttpEntity multipart = builder.build();
