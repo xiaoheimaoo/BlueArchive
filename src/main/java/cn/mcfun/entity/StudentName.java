@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import java.io.*;
 
 public class StudentName {
-    public static String getStudentName(int id){
+    static JSONArray a;
+    public StudentName(){
         String jsonStr = "";
         try {
             File jsonFile = new File("students.json");
@@ -21,7 +22,10 @@ public class StudentName {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JSONArray a = JSONArray.parseArray(jsonStr);
+        a = JSONArray.parseArray(jsonStr);
+    }
+    public static String getStudentName(int id){
+
         String b = null;
         for(int i=0;i<a.size();i++){
             if(a.getJSONObject(i).getInteger("Id") == id){
