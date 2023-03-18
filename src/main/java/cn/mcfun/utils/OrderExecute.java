@@ -52,6 +52,22 @@ public class OrderExecute implements Runnable{
     }
 
     public void login() {
+        String ip = null;
+        try {
+            Connection conn = getConnection();
+            String sql = "select ip from `proxy` order by rand() LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ip = rs.getString("ip");
+            }
+            conn.close();
+            rs.close();
+            ps.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        userInfo.setIp(ip);
         Connection conn2 = getConnection();
         String sql2 = "update `order` set status=1 where `order`="+userInfo.getOrder()+" and status!=1";
         PreparedStatement ps2 = null;
