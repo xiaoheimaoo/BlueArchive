@@ -12,7 +12,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -95,27 +94,35 @@ public class HttpClientPool {
         httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response = null;
         String result = null;
-        int num = 0;
-        while(num == 0){
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
-                response = httpClient.execute(httpPost);
-                result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-                num = 1;
-            } catch (Exception e) {
-                num = 0;
-            }
-        }
         try {
-            httpPost.releaseConnection();
-            if(response != null){
-                response.close();
+            httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
+            response = httpClient.execute(httpPost);
+            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+        } catch (Exception e) {
+            try {
+                Connection conn2 = getConnection();
+                String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
+                PreparedStatement ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1,userInfo.getOrder());
+                ps2.executeUpdate();
+                conn2.close();
+                ps2.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            if(httpClient != null){
-                httpClient.close();
+            Thread.currentThread().stop();
+        }finally {
+            try {
+                httpPost.releaseConnection();
+                if(response != null){
+                    response.close();
+                }
+                if(httpClient != null){
+                    httpClient.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return result;
     }
@@ -148,27 +155,35 @@ public class HttpClientPool {
         CloseableHttpResponse response = null;
         String result = null;
         HttpEntity multipart = builder.build();
-        int num = 0;
-        while(num == 0){
-            try {
-                httpPost.setEntity(multipart);
-                response = httpClient.execute(httpPost);
-                result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-                num = 1;
-            } catch (Exception e) {
-                num = 0;
-            }
-        }
         try {
-            httpPost.releaseConnection();
-            if(response != null){
-                response.close();
+            httpPost.setEntity(multipart);
+            response = httpClient.execute(httpPost);
+            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+        } catch (Exception e) {
+            try {
+                Connection conn2 = getConnection();
+                String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
+                PreparedStatement ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1,userInfo.getOrder());
+                ps2.executeUpdate();
+                conn2.close();
+                ps2.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            if(httpClient != null){
-                httpClient.close();
+            Thread.currentThread().stop();
+        }finally {
+            try {
+                httpPost.releaseConnection();
+                if(response != null){
+                    response.close();
+                }
+                if(httpClient != null){
+                    httpClient.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return result;
     }
