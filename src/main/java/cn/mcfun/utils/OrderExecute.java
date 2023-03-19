@@ -69,10 +69,11 @@ public class OrderExecute implements Runnable{
         }
         userInfo.setIp(ip);
         Connection conn2 = getConnection();
-        String sql2 = "update `order` set status=1 where `order`="+userInfo.getOrder()+" and status!=1";
+        String sql2 = "update `order` set `status`=1 where `order`=?";
         PreparedStatement ps2 = null;
         try {
             ps2 = conn2.prepareStatement(sql2);
+            ps2.setString(1, userInfo.getOrder());
             ps2.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -109,7 +110,7 @@ public class OrderExecute implements Runnable{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         Connection conn3 = getConnection();
-        String sql3 = "update `order` set `status`=2,`message`=?,`StarNum`=?,`Gem`=?,`svts`=?,complete=? where `order`=? and status=1";
+        String sql3 = "update `order` set `status`=2,`message`=?,`StarNum`=?,`Gem`=?,`svts`=?,`complete`=? where `order`=?";
         PreparedStatement ps3 = null;
         try {
             ps3 = conn3.prepareStatement(sql3);

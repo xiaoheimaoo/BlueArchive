@@ -131,11 +131,11 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "select * from `order` where `status` != 1 and status != 2";
+            String sql = "select * from `order` where `status` != 1 and `status` != 2";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
-                sql = "update `order` set status=-1 where `order`="+rs.getString("order");
+                sql = "update `order` set `status`=-1 where `order`="+rs.getString("order");
                 ps = conn.prepareStatement(sql);
                 ps.executeUpdate();
 
@@ -171,11 +171,11 @@ public class Main{
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set status=-1 where `complete` < ?";
+            String sql = "update `order` set `status`= -1 where `complete` < ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1,time);
             ps.executeUpdate();
-            sql = "select * from `order` where status=-1";
+            sql = "select * from `order` where status= -1";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {

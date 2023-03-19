@@ -101,7 +101,7 @@ public class HttpClientPool {
         } catch (Exception e) {
             try {
                 Connection conn2 = getConnection();
-                String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
+                String sql2 = "update `order` set `message`='网络异常，正在重试!',`status`=0 where `order`=?";
                 PreparedStatement ps2 = conn2.prepareStatement(sql2);
                 ps2.setString(1,userInfo.getOrder());
                 ps2.executeUpdate();
