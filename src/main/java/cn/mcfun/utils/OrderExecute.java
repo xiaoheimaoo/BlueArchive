@@ -102,6 +102,8 @@ public class OrderExecute implements Runnable{
                 uc.attendanceReward(Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
             }
         }
+        uc.mailCheck1(userInfo);
+        uc.mailCheck2(userInfo);
         uc.mailList(userInfo);
         if(!userInfo.getMail().toJSONString().equals("[]")){
             uc.mailReceive(userInfo);

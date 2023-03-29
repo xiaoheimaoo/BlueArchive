@@ -2,11 +2,13 @@ package cn.mcfun.utils;
 
 public class Protocol_7002 {
 
-  public static int switch_1(int a2)
+  public static int switch_1(int arg1)
   {
     int result;
-    System.out.println(a2 % 99);
-    switch ( a2 % 99 )
+
+    long  a1 = Integer.toUnsignedLong(arg1);
+
+    switch ( (int)(a1 %99))
     {
       case 0:
         result = 1834725534;

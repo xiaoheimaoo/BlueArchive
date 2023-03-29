@@ -485,12 +485,156 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
+    public void mailCheck1(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addTextBody("protocol", "AZELQARARQP5L57ZML5KM3BRJ4", strContent);
+        builder.addTextBody("encode", "True", strContent);
+        String packet = "{\"Protocol\":7001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        builder.addTextBody("packet", Gzip.enCrypt(packet), strContent);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/attendance/reward", builder);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("packet")) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='检查邮件' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
+    public void mailCheck2(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addTextBody("protocol", "A6XU5ZVL4DWGSYCQFZKU5ILQVY", strContent);
+        builder.addTextBody("encode", "True", strContent);
+        String packet = "{\"Protocol\":7001,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        builder.addTextBody("packet", Gzip.enCrypt(packet), strContent);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/mail/check", builder);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("packet")) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='检查邮件' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
     public void mailList(UserInfo userInfo) {
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("protocol", "URZSRU73NZ7TFCFVHVORFXNFSE"));
         params.add(new BasicNameValuePair("encode", "True"));
-        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2023-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":16,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":16,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         params.add(new BasicNameValuePair("packet", Gzip.enCrypt(packet)));
         result = HttpClientPool.sendPost(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/mail/list", params);
         JSONObject jsonObject = null;
