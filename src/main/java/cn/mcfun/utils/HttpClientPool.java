@@ -19,10 +19,7 @@ import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
@@ -42,45 +39,25 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    static HttpClientBuilder httpClientBuilder = HttpClients.custom();
-    public HttpClientPool() {
-        SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(SSLContexts.createSystemDefault(),
-                new String[]{"TLSv1.2"},
-                null,
-                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
 
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https",sslFactory)
-                .build();
-        PoolingHttpClientConnectionManager pool = new PoolingHttpClientConnectionManager(registry);
-        pool.setMaxTotal(1000);
-        pool.setDefaultMaxPerRoute(1000);
-        httpClientBuilder.setConnectionManager(pool);
-        httpClientBuilder.setConnectionManagerShared(true);
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(1000 * 90) // 创建链接 （TCP协议的三次握手）超时时间
-                .setSocketTimeout(1000 * 90) // 响应 获取响应内容 超时时间
-                .setConnectionRequestTimeout(1000 * 30) // 从链接池 获取链接的超时时间
-                .build();
-
-        httpClientBuilder.setDefaultRequestConfig(requestConfig);
-    }
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
             proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-            httpClient = httpClientBuilder
-                    .setDefaultCredentialsProvider(provider)
-                    .setRoutePlanner(routePlanner)
-                    .setDefaultCookieStore(userInfo.getCookie()).build();
-        }else{
-            httpClient = httpClientBuilder
-                    .setDefaultCookieStore(userInfo.getCookie()).build();
+            if(userInfo.getHttpClientBuilder() == null){
+                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                        .setDefaultCredentialsProvider(provider)
+                        .setRoutePlanner(routePlanner)
+                        .build());
+            }
+        }else {
+            if(userInfo.getHttpClientBuilder() == null){
+                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                        .build());
+            }
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
@@ -96,7 +73,7 @@ public class HttpClientPool {
         String result = null;
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
-            response = httpClient.execute(httpPost);
+            response = userInfo.getHttpClientBuilder().execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
         } catch (Exception e) {
             try {
@@ -111,36 +88,27 @@ public class HttpClientPool {
                 throwables.printStackTrace();
             }
             Thread.currentThread().stop();
-        }finally {
-            try {
-                httpPost.releaseConnection();
-                if(response != null){
-                    response.close();
-                }
-                if(httpClient != null){
-                    httpClient.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
             proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-            httpClient = httpClientBuilder
-                    .setDefaultCredentialsProvider(provider)
-                    .setRoutePlanner(routePlanner)
-                    .setDefaultCookieStore(userInfo.getCookie()).build();
-        }else{
-            httpClient = httpClientBuilder
-                    .setDefaultCookieStore(userInfo.getCookie()).build();
+            if(userInfo.getHttpClientBuilder() == null){
+                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                        .setDefaultCredentialsProvider(provider)
+                        .setRoutePlanner(routePlanner)
+                        .build());
+            }
+        }else {
+            if(userInfo.getHttpClientBuilder() == null){
+                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                        .build());
+            }
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
@@ -160,7 +128,7 @@ public class HttpClientPool {
         HttpEntity multipart = builder.build();
         try {
             httpPost.setEntity(multipart);
-            response = httpClient.execute(httpPost);
+            response = userInfo.getHttpClientBuilder().execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
         } catch (Exception e) {
             try {
@@ -175,18 +143,6 @@ public class HttpClientPool {
                 throwables.printStackTrace();
             }
             Thread.currentThread().stop();
-        }finally {
-            try {
-                httpPost.releaseConnection();
-                if(response != null){
-                    response.close();
-                }
-                if(httpClient != null){
-                    httpClient.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
