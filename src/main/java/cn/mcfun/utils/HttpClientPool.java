@@ -128,6 +128,7 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
         CloseableHttpClient httpClient;
+        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
             proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
@@ -137,6 +138,10 @@ public class HttpClientPool {
                     .setDefaultCredentialsProvider(provider)
                     .setRoutePlanner(routePlanner)
                     .setDefaultCookieStore(userInfo.getCookie()).build();
+        }else{
+            httpClient = httpClientBuilder
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
+        }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
