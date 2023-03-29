@@ -67,7 +67,9 @@ public class OrderExecute implements Runnable{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        userInfo.setIp(ip);
+        if(!ip.equals("127.0.0.1")){
+            userInfo.setIp(ip);
+        }
         Connection conn2 = getConnection();
         String sql2 = "update `order` set `status`=1 where `order`=?";
         PreparedStatement ps2 = null;
