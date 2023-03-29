@@ -31,7 +31,7 @@ public class UserInfo {
     JSONArray mail = new JSONArray();
     int StarNum = 0;
     int Gem = 0;
-    CloseableHttpClient httpClientBuilder = HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore()).build();
+    CloseableHttpClient httpClientBuilder = null;
     public UserInfo() {
     }
 
