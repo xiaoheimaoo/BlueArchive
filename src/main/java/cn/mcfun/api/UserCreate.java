@@ -12,17 +12,23 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
     ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
+    ContentType strContent2 = ContentType.create("application/octet-stream");
     public void accountAuth(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -515,14 +521,12 @@ public class UserCreate {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             if(js.containsKey("MailDBs") && js.getJSONArray("MailDBs").size() > 0){
                 for(int i=0;i<js.getJSONArray("MailDBs").size();i++){
-                    if(js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("1") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("3") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("5") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("7") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("9") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("10") ||
-                            js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(0).getJSONObject("Key").getString("Id").equals("11")){
-                        userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
+                    for(int j=0;j<js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").size();j++){
+                        if((js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(j).getJSONObject("Key").getString("Id").equals("3") ||
+                                js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(j).getJSONObject("Key").getString("Id").equals("6999"))){
+                            userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
+                            break;
+                        }
                     }
                 }
             }
@@ -567,12 +571,12 @@ public class UserCreate {
     }
     public void mailReceive(UserInfo userInfo) {
         String result;
-        List<BasicNameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("protocol", "X3CP3SJNLNSPJAUT24VJ6UZAJA"));
-        params.add(new BasicNameValuePair("encode", "True"));
-        String packet = "{\"Protocol\":7002,\"MailServerIds\":"+userInfo.getMail().toJSONString()+",\"ClientUpTime\":253,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
-        params.add(new BasicNameValuePair("packet", Gzip.enCrypt(packet)));
-        result = HttpClientPool.sendPost(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/mail/receive", params);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        String packet = "{\"Protocol\":7002,\"MailServerIds\":"+userInfo.getMail().toJSONString()+",\"ClientUpTime\":53,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
+        builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        Thread.currentThread().stop();
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);
@@ -597,7 +601,7 @@ public class UserCreate {
             }
             Thread.currentThread().stop();
         }
-        if (result.contains("packet")) {
+        if (result.contains("packet") && !result.contains("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='领取邮件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;

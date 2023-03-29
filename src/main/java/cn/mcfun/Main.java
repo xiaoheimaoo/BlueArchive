@@ -143,6 +143,7 @@ public class Main{
                 userInfo.setOrder(rs.getString("order"));
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
 
                 addToOrderQueue(userInfo);
@@ -183,6 +184,7 @@ public class Main{
                 userInfo.setOrder(rs.getString("order"));
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
 
                 addToOrderQueue(userInfo);

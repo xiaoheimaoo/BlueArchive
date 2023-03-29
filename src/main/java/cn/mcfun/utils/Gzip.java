@@ -21,6 +21,15 @@ public class Gzip {
         System.arraycopy(raw3,0,bytes2,4,raw3.length);
         return Base64.getEncoder().encodeToString(bytes2);
     }
+    public static byte[] enCrypt2(String str){
+        byte[] raw2 = str.getBytes();
+        byte[] raw3 = GZip(raw2);
+        String raw4 = Tools.BytePrintAsString(raw3);
+        raw4 = raw4.substring(raw4.length()-8)+raw4;
+        String hex2 = Tools.BytePrintAsString(getXor(Tools.hexToByteArray(raw4)));
+        String hex4 = Crc32.getCrc32(hex2) + hex2;
+        return Tools.hexToByteArray(hex4);
+    }
     public static byte[] unGZip(byte[] data) {
         if (data == null || data.length == 0) {
             return null;
@@ -61,5 +70,13 @@ public class Gzip {
         src[2] =  (byte) ((value>>16) & 0xFF);
         src[3] =  (byte) ((value>>24) & 0xFF);
         return src;
+    }
+    public static byte[] getXor(byte[] datas){
+
+        for (int i = 0; i <datas.length; i++) {
+            datas[i] ^= 0xD9;
+        }
+
+        return datas;
     }
 }

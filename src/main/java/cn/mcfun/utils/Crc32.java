@@ -1,0 +1,31 @@
+package cn.mcfun.utils;
+
+public class Crc32 {
+
+    public static int genCrc32(byte[] data,int offset, int length){
+	    byte i;
+	    //int crc = 0xffffffff;  // Initial value
+		int crc = 0;  // Initial value
+	    length += offset;
+	    for(int j=offset;j<length;j++) {
+	    	crc ^= data[j] << 24;
+	    	for (i = 0; i < 8; ++i)
+	    	{
+	    		if ( (crc & 0x80000000) != 0)
+	    			crc = (crc << 1) ^ 0x04C11DB7;
+	    		else
+	    			crc <<= 1;
+	    	}
+	    }
+	    return crc;
+	}
+
+	public static String getCrc32(String hex) {
+		byte b1[] = Tools.hexToByteArray(hex);
+		int c1 = genCrc32(b1,0,b1.length);
+		String head = Tools.BytePrintAsString(Tools.intToByteArray(c1));
+		int p = Protocol_7002.switch_1(c1);
+		String head2 = Tools.BytePrintAsString(Tools.intToByteArray(p));
+		return  head+head2;
+	}
+}
