@@ -488,11 +488,11 @@ public class UserCreate {
     public void mailCheck1(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.addTextBody("protocol", "AZELQARARQP5L57ZML5KM3BRJ4", strContent);
+        builder.addTextBody("protocol", "A6XU5ZVL4DWGSYCQFZKU5ILQVY", strContent);
         builder.addTextBody("encode", "True", strContent);
         String packet = "{\"Protocol\":7001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         builder.addTextBody("packet", Gzip.enCrypt(packet), strContent);
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/attendance/reward", builder);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/mail/list", builder);
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);
