@@ -576,7 +576,6 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        Thread.currentThread().stop();
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);

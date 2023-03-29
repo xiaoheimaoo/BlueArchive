@@ -69,18 +69,18 @@ public class HttpClientPool {
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
-           HttpHost proxy;
-           proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-           DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-           CredentialsProvider provider = new BasicCredentialsProvider();
-           provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-           httpClient = httpClientBuilder
-                   .setDefaultCredentialsProvider(provider)
-                   .setRoutePlanner(routePlanner)
-                   .setDefaultCookieStore(userInfo.getCookie()).build();
+            HttpHost proxy;
+            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
+            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
+            httpClient = httpClientBuilder
+                    .setDefaultCredentialsProvider(provider)
+                    .setRoutePlanner(routePlanner)
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-           httpClient = httpClientBuilder
-                   .setDefaultCookieStore(userInfo.getCookie()).build();
+            httpClient = httpClientBuilder
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
@@ -128,8 +128,9 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
         CloseableHttpClient httpClient;
+        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
-            proxy = new HttpHost("127.0.0.1", 8888);
+            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
@@ -137,12 +138,13 @@ public class HttpClientPool {
                     .setDefaultCredentialsProvider(provider)
                     .setRoutePlanner(routePlanner)
                     .setDefaultCookieStore(userInfo.getCookie()).build();
+        }else{
+            httpClient = httpClientBuilder
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
+        }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
-        if(url.equals("https://prod-game.bluearchiveyostar.com:5000/api/gateway")){
-            httpPost.setHeader("mx","1");
-        }
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
         httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
