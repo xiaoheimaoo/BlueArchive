@@ -67,7 +67,7 @@ public class OrderExecute implements Runnable{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        if(!ip.equals("127.0.0.1")){
+        if(ip != null && !ip.equals("127.0.0.1")){
             userInfo.setIp(ip);
         }
         Connection conn2 = getConnection();
