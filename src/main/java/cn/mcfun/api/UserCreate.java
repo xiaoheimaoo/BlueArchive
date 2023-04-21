@@ -744,7 +744,7 @@ public class UserCreate {
             }
             Thread.currentThread().stop();
         }
-        if (result.contains("packet") && !result.contains("Error")) {
+        if (result.contains("packet")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='领取邮件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
