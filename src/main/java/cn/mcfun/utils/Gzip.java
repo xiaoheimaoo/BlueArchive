@@ -22,12 +22,28 @@ public class Gzip {
         return Base64.getEncoder().encodeToString(bytes2);
     }
     public static byte[] enCrypt2(String str){
+        int Protocol;
+        if(str.contains("{\"Protocol\":1002")){
+            Protocol = 1002;
+        }else if(str.contains("{\"Protocol\":1017")){
+            Protocol = 1017;
+        }else if(str.contains("{\"Protocol\":7000")){
+            Protocol = 7000;
+        }else if(str.contains("{\"Protocol\":7001")){
+            Protocol = 7001;
+        }else if(str.contains("{\"Protocol\":7002")){
+            Protocol = 7002;
+        }else if(str.contains("{\"Protocol\":9002")){
+            Protocol = 9002;
+        }else {
+            Protocol = 0;
+        }
         byte[] raw2 = str.getBytes();
         byte[] raw3 = GZip(raw2);
         String raw4 = Tools.BytePrintAsString(raw3);
         raw4 = raw4.substring(raw4.length()-8)+raw4;
         String hex2 = Tools.BytePrintAsString(getXor(Tools.hexToByteArray(raw4)));
-        String hex4 = Crc32.getCrc32(hex2) + hex2;
+        String hex4 = Crc32.getCrc32(Protocol,hex2) + hex2;
         return Tools.hexToByteArray(hex4);
     }
     public static byte[] unGZip(byte[] data) {

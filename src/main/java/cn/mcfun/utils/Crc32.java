@@ -20,11 +20,26 @@ public class Crc32 {
 	    return crc;
 	}
 
-	public static String getCrc32(String hex) {
+	public static String getCrc32(int Protocol,String hex) {
 		byte b1[] = Tools.hexToByteArray(hex);
 		int c1 = genCrc32(b1,0,b1.length);
 		String head = Tools.BytePrintAsString(Tools.intToByteArray(c1));
-		int p = Protocol_7002.switch_1(c1);
+		int p;
+		if(Protocol == 1002){
+			p = Protocol_1002.switch_1(c1);
+		}else if(Protocol == 1017){
+			p = Protocol_1017.switch_1(c1);
+		}else if(Protocol == 7000){
+			p = Protocol_7000.switch_1(c1);
+		}else if(Protocol == 7001){
+			p = Protocol_7001.switch_1(c1);
+		}else if(Protocol == 7002){
+			p = Protocol_7002.switch_1(c1);
+		}else if(Protocol == 9002){
+			p = Protocol_9002.switch_1(c1);
+		}else{
+			p = 0;
+		}
 		String head2 = Tools.BytePrintAsString(Tools.intToByteArray(p));
 		return  head+head2;
 	}
