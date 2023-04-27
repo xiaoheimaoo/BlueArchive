@@ -707,10 +707,10 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void mailReceive(long i,UserInfo userInfo) {
+    public void mailReceive(int i,long id,UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7002,\"MailServerIds\":["+i+"],\"ClientUpTime\":53,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7002,\"MailServerIds\":["+id+"],\"ClientUpTime\":5"+i+",\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);

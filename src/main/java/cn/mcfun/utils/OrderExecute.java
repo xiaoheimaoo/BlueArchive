@@ -108,7 +108,7 @@ public class OrderExecute implements Runnable{
         uc.mailCheck2(userInfo);
         uc.mailList(userInfo);
         for(int i=0;i<userInfo.getMail().size();i++){
-            uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
+            uc.mailReceive(i,userInfo.getMail().getInteger(i),userInfo);
         }
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
