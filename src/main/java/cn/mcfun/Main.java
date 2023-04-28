@@ -106,7 +106,7 @@ public class Main{
                 System.exit(0);
             }
 
-        }, 1000 * 60 * 30);
+        }, 1000 * 60 * 60);
     }
     //订单检查
     public static void timer2() {
