@@ -130,12 +130,9 @@ public class Main{
         ResultSet rs = null;
 
         try {
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "select * from `order` where `status` != 1 and `status` != 2 and `complete` < ?";
+            String sql = "select * from `order` where `status` != 1 and `status` != 2";
             ps = conn.prepareStatement(sql);
-            ps.setString(1,time);
             rs = ps.executeQuery();
             while(rs.next()) {
                 sql = "update `order` set `status`=-1 where `order`="+rs.getString("order");
