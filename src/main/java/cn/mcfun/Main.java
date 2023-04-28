@@ -172,7 +172,7 @@ public class Main{
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set `status`= -1 where `complete` < ?";
+            String sql = "update `order` set `status`= -1 where `complete` < ? or `status`!= 2";
             ps = conn.prepareStatement(sql);
             ps.setString(1,time);
             ps.executeUpdate();
