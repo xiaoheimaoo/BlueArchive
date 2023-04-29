@@ -62,7 +62,9 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
-            userInfo.setSessionKey(js.getString("SessionKey"));
+            if(js.containsKey("SessionKey")){
+                userInfo.setSessionKey(js.getString("SessionKey"));
+            }
             if(!js.getJSONArray("AttendanceBookRewards").isEmpty()){
                 for(int i=0;i<js.getJSONArray("AttendanceBookRewards").size();i++){
                     userInfo.getAttendanceBookRewards().add(js.getJSONArray("AttendanceBookRewards").getJSONObject(i).getString("UniqueId"));
