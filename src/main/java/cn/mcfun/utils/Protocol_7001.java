@@ -232,6 +232,8 @@ public class Protocol_7001 {
                 break;
             case 74:
                 result = 1798916924;
+            case 75:
+                result = 1895657476;
                 break;
             case 76:
                 result = 1854445243;
