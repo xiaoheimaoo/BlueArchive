@@ -245,7 +245,7 @@ public class Protocol_1002 {
                 result = 437923122;
                 break;
             case 79:
-                result = 437923122;
+                result = 2048369163;
                 break;
             case 80:
                 result = 678073736;
