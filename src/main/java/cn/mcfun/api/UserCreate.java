@@ -851,5 +851,77 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
+    public void buyGacha3(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35527,\"ShopUniqueId\":50385,\"ClientUpTime\":7,\"Resendable\":true,\"Hash\":42984032698438,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
+        builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("packet")) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='抽卡中' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
+
 
 }
