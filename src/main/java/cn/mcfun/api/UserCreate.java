@@ -413,10 +413,10 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void attendanceReward(int id,int id2,UserInfo userInfo) {
+    public void attendanceReward(int i,int id,int id2,UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\""+id+"\":"+id2+"},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":"+id+",\"Resendable\":true,\"Hash\":38663"+id+"95598633,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\""+id+"\":"+id2+"},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":"+i+",\"Resendable\":true,\"Hash\":38663"+id+"95598633,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -629,7 +629,7 @@ public class UserCreate {
     public void mailList(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":16,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -712,7 +712,7 @@ public class UserCreate {
     public void mailList2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":16,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":2,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -783,7 +783,7 @@ public class UserCreate {
     public void mailReceive(long id,UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7002,\"MailServerIds\":["+id+"],\"ClientUpTime\":53,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7002,\"MailServerIds\":["+id+"],\"ClientUpTime\":7,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);

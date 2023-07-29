@@ -96,12 +96,12 @@ public class OrderExecute implements Runnable{
         //uc.networktimeSync(userInfo);
         if(userInfo.getAttendanceBookRewards().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
-                uc.attendanceReward(Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
+                uc.attendanceReward(i+1,Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
             }
         }
         if(userInfo.getAttendanceHistoryDBs().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceHistoryDBs().size();i++){
-                uc.attendanceReward(Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
+                uc.attendanceReward(i+1,Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
             }
         }
         uc.mailCheck1(userInfo);
