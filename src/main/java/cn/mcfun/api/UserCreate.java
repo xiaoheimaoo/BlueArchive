@@ -851,10 +851,10 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void buyGacha3(UserInfo userInfo) {
+    public void buyGacha3(int id,UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35527,\"ShopUniqueId\":50385,\"ClientUpTime\":7,\"Resendable\":true,\"Hash\":42984032698438,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35527,\"ShopUniqueId\":50385,\"ClientUpTime\":"+id+",\"Resendable\":true,\"Hash\":42984032698438,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);

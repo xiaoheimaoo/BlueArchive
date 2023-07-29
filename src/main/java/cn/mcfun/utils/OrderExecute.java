@@ -111,7 +111,12 @@ public class OrderExecute implements Runnable{
             uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
             uc.mailList2(userInfo);
         }
-        uc.buyGacha3(userInfo);
+/*        uc.buyGacha3(1,userInfo);
+        uc.buyGacha3(2,userInfo);
+        uc.buyGacha3(3,userInfo);
+        uc.buyGacha3(4,userInfo);
+        uc.buyGacha3(5,userInfo);
+        uc.buyGacha3(6,userInfo);*/
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
