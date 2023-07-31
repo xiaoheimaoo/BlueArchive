@@ -3,10 +3,27 @@ package cn.mcfun.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
+import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class Gzip {
+    public static String genRandomNum(){
+        int  maxNum = 36;
+        int i;
+        int count = 0;
+        char[] str = { 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        StringBuffer pwd = new StringBuffer("");
+        Random r = new Random();
+        while(count < 8){
+            i = Math.abs(r.nextInt(maxNum));
+            if (i >= 0 && i < str.length) {
+                pwd.append(str[i]);
+                count ++;
+            }
+        }
+        return pwd.toString();
+    }
     public static String deCrypt(String str){
         byte[] a = Base64.getDecoder().decode(str);
         byte[] bytes = new byte[a.length-4];
