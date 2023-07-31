@@ -96,12 +96,12 @@ public class OrderExecute implements Runnable{
         //uc.networktimeSync(userInfo);
         if(userInfo.getAttendanceBookRewards().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
-                uc.attendanceReward(i+1,Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
+                uc.attendanceReward(i+10,Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
             }
         }
         if(userInfo.getAttendanceHistoryDBs().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceHistoryDBs().size();i++){
-                uc.attendanceReward(i+1,Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
+                uc.attendanceReward(i+10,Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
             }
         }
         uc.mailCheck1(userInfo);
@@ -111,12 +111,12 @@ public class OrderExecute implements Runnable{
             uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
             uc.mailList2(userInfo);
         }
-/*        uc.buyGacha3(1,userInfo);
-        uc.buyGacha3(2,userInfo);
-        uc.buyGacha3(3,userInfo);
-        uc.buyGacha3(4,userInfo);
-        uc.buyGacha3(5,userInfo);
-        uc.buyGacha3(6,userInfo);*/
+/*        uc.buyGacha3(10,userInfo);
+        uc.buyGacha3(20,userInfo);
+        uc.buyGacha3(30,userInfo);
+        uc.buyGacha3(40,userInfo);
+        uc.buyGacha3(50,userInfo);
+        uc.buyGacha3(60,userInfo);*/
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);

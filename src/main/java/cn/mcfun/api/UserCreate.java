@@ -263,7 +263,7 @@ public class UserCreate {
     public void accountLoginsync(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":1017,\"SyncProtocols\":[20000,1003,2000,3000,4000,5000,12000,6000,22001,17018,21000,28001,33000,19000,10006,39006,44000,29002,30041],\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":4367981740041,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":1017,\"SyncProtocols\":[20000,1003,2000,3000,4000,5000,12000,6000,22001,17018,21000,28001,33000,19000,10006,39006,44000,29002,30041],\"ClientUpTime\":20,\"Resendable\":true,\"Hash\":4367981740041,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -487,7 +487,7 @@ public class UserCreate {
     public void mailCheck1(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":30069066032433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -558,7 +558,7 @@ public class UserCreate {
     public void mailCheck2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        String packet = "{\"Protocol\":7001,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":7001,\"ClientUpTime\":12,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream,strContent2,"mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
