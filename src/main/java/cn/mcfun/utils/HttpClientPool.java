@@ -45,11 +45,8 @@ public class HttpClientPool {
             HttpHost proxy;
             proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
             if(userInfo.getHttpClientBuilder() == null){
                 userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setDefaultCredentialsProvider(provider)
                         .setRoutePlanner(routePlanner)
                         .build());
             }
