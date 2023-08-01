@@ -104,12 +104,14 @@ public class OrderExecute implements Runnable{
                 uc.attendanceReward(i+10,Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
             }
         }
-        uc.mailCheck1(userInfo);
-        uc.mailCheck2(userInfo);
-        uc.mailList(userInfo);
-        for(int i=0;i<userInfo.getMail().size();i++){
-            uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
-            uc.mailList2(userInfo);
+        if(userInfo.getAttendanceBookRewards().size() >= 1 || userInfo.getAttendanceHistoryDBs().size() >= 1){
+            uc.mailCheck1(userInfo);
+            uc.mailCheck2(userInfo);
+            uc.mailList(userInfo);
+            for(int i=0;i<userInfo.getMail().size();i++){
+                uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
+                uc.mailList2(userInfo);
+            }
         }
 /*        uc.buyGacha3(10,userInfo);
         uc.buyGacha3(20,userInfo);

@@ -20,8 +20,10 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import static cn.mcfun.utils.Hikari.getConnection;
@@ -71,8 +73,13 @@ public class UserCreate {
                 }
             }
             if (js.containsKey("AttendanceHistoryDBs")) {
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(date);
                 for (int i = 0; i < js.getJSONArray("AttendanceHistoryDBs").size(); i++) {
-                    userInfo.getAttendanceHistoryDBs().add(js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendanceBookUniqueId") + "-" + js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getJSONObject("AttendedDay").size());
+                    if(!js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendedDay").contains(formattedDate)){
+                        userInfo.getAttendanceHistoryDBs().add(js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendanceBookUniqueId") + "-" + js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getJSONObject("AttendedDay").size());
+                    }
                 }
             }
             Connection conn2 = getConnection();
