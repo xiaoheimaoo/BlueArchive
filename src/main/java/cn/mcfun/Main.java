@@ -131,7 +131,7 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "select * from `order` where `status` != 1 and `status` != 2";
+            String sql = "select * from `order` where `status` == 3 or `status` == 0";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
