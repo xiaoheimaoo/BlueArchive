@@ -27,6 +27,10 @@ public class Crc32 {
 		int p;
 		if(Protocol == 1002){
 			p = Protocol_1002.switch_1(c1);
+		}else if(Protocol == 1001){
+			p = Protocol_1001.switch_1(c1);
+		}else if(Protocol == 1010){
+			p = Protocol_1010.switch_1(c1);
 		}else if(Protocol == 10008){
 			p = Protocol_10008.switch_1(c1);
 		}else if(Protocol == 1017){

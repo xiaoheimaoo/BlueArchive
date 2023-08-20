@@ -42,6 +42,10 @@ public class Gzip {
         int Protocol;
         if(str.contains("{\"Protocol\":1002")){
             Protocol = 1002;
+        }else if(str.contains("{\"Protocol\":1001")){
+            Protocol = 1001;
+        }else if(str.contains("{\"Protocol\":1010")){
+            Protocol = 1010;
         }else if(str.contains("{\"Protocol\":10008")){
             Protocol = 10008;
         }else if(str.contains("{\"Protocol\":1017")){
