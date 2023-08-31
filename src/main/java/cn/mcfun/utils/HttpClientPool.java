@@ -41,20 +41,13 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
 
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
-            HttpHost proxy;
-            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setRoutePlanner(routePlanner)
-                        .build());
-            }
-        }else {
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .build());
-            }
+        HttpHost proxy;
+        proxy = new HttpHost("167.179.113.141", 8888);
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        if(userInfo.getHttpClientBuilder() == null){
+            userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                    .setRoutePlanner(routePlanner)
+                    .build());
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
@@ -89,20 +82,13 @@ public class HttpClientPool {
         return result;
     }
     public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
-            HttpHost proxy;
-            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setRoutePlanner(routePlanner)
-                        .build());
-            }
-        }else {
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .build());
-            }
+        HttpHost proxy;
+        proxy = new HttpHost("167.179.113.141", 8888);
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        if(userInfo.getHttpClientBuilder() == null){
+            userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                    .setRoutePlanner(routePlanner)
+                    .build());
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
