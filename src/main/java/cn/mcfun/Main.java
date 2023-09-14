@@ -68,6 +68,10 @@ public class Main{
         main = new Main();
         //查询并缓存需要执行的订单
         main.loadOrders();
+        if(orders.isEmpty()){
+            System.out.println("签到已完成！");
+            System.exit(0);
+        }
         while (!orders.isEmpty()){
             synchronized (orders) {
                 main.executor.execute(new OrderExecute(orders.poll()));
