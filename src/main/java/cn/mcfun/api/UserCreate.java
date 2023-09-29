@@ -13,16 +13,12 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
