@@ -66,21 +66,52 @@ public class HttpClientPool {
 
         httpClientBuilder.setDefaultRequestConfig(requestConfig);
     }
+    public static String sendGet(UserInfo userInfo) {
+        CloseableHttpClient httpClient;
+        httpClient = httpClientBuilder.build();
+        HttpPost httpGet = new HttpPost("http://124.221.75.221:81/index");
+        CloseableHttpResponse response;
+        String result = null;
+        try {
+            response = httpClient.execute(httpGet);
+            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+        } catch (IOException e) {
+            try {
+                Connection conn2 = getConnection();
+                String sql2 = "update `order` set message='网络异常，正在重试!',status=0 where `order`=? and status=1";
+                PreparedStatement ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1,userInfo.getOrder());
+                ps2.executeUpdate();
+                conn2.close();
+                ps2.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            Thread.currentThread().stop();
+        }finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
         CloseableHttpClient httpClient;
         if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
-           HttpHost proxy;
-           proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-           DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-           CredentialsProvider provider = new BasicCredentialsProvider();
-           provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
-           httpClient = httpClientBuilder
-                   .setDefaultCredentialsProvider(provider)
-                   .setRoutePlanner(routePlanner)
-                   .setDefaultCookieStore(userInfo.getCookie()).build();
+            HttpHost proxy;
+            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
+            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(new AuthScope(proxy), new UsernamePasswordCredentials("dsa", "dsa"));
+            httpClient = httpClientBuilder
+                    .setDefaultCredentialsProvider(provider)
+                    .setRoutePlanner(routePlanner)
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }else{
-           httpClient = httpClientBuilder
-                   .setDefaultCookieStore(userInfo.getCookie()).build();
+            httpClient = httpClientBuilder
+                    .setDefaultCookieStore(userInfo.getCookie()).build();
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);

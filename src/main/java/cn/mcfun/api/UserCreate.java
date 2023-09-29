@@ -23,7 +23,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
     ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
-    public void usercreate1(UserInfo userInfo) {
+    public void userCreate(UserInfo userInfo) {
         userInfo.setDeviceId(UUID.randomUUID().toString().toUpperCase());
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
@@ -74,11 +74,6 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -101,13 +96,20 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-    public void usercreate2(UserInfo userInfo) {
+    public void userLogin(UserInfo userInfo) {
+        String geetest = HttpClientPool.sendGet(userInfo);
+        JSONObject js = JSONObject.parseObject(geetest);
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("deviceId", userInfo.getDeviceId()));
         params.add(new BasicNameValuePair("uid", userInfo.getUid()));
         params.add(new BasicNameValuePair("token", userInfo.getToken()));
         params.add(new BasicNameValuePair("platform", "ios"));
+        params.add(new BasicNameValuePair("captcha_output", "ios"));
+        params.add(new BasicNameValuePair("gen_time", "ios"));
+        params.add(new BasicNameValuePair("captcha_id", "ios"));
+        params.add(new BasicNameValuePair("lot_number", "ios"));
+        params.add(new BasicNameValuePair("pass_token", "ios"));
         result = HttpClientPool.sendPost(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/login", params);
         JSONObject jsonObject = null;
         try {
@@ -151,11 +153,6 @@ public class UserCreate {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         } else {
             Connection conn2 = getConnection();

@@ -82,8 +82,8 @@ public class OrderExecute implements Runnable{
             }
         }
         UserCreate uc = new UserCreate();
-        uc.usercreate1(userInfo);
-        uc.usercreate2(userInfo);
+        uc.userCreate(userInfo);
+        uc.userLogin(userInfo);
         uc.usercreate3(userInfo);
         uc.usercreate4(userInfo);
         uc.usercreate5(userInfo);
