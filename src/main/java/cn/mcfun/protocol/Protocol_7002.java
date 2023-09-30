@@ -1,4 +1,4 @@
-package cn.mcfun.utils;
+package cn.mcfun.protocol;
 
 public class Protocol_7002 {
 

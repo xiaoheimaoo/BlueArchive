@@ -40,24 +40,26 @@ public class Gzip {
     }
     public static byte[] enCrypt2(String str){
         int Protocol;
-        if(str.contains("{\"Protocol\":1002")){
+        if(str.contains("{\"Protocol\":1002,")){
             Protocol = 1002;
-        }else if(str.contains("{\"Protocol\":1001")){
+        }else if(str.contains("{\"Protocol\":1001,")){
             Protocol = 1001;
-        }else if(str.contains("{\"Protocol\":1010")){
+        }else if(str.contains("{\"Protocol\":1010,")){
             Protocol = 1010;
-        }else if(str.contains("{\"Protocol\":10008")){
+        }else if(str.contains("{\"Protocol\":10008,")){
             Protocol = 10008;
-        }else if(str.contains("{\"Protocol\":1017")){
+        }else if(str.contains("{\"Protocol\":1017,")){
             Protocol = 1017;
-        }else if(str.contains("{\"Protocol\":7000")){
+        }else if(str.contains("{\"Protocol\":7000,")){
             Protocol = 7000;
-        }else if(str.contains("{\"Protocol\":7001")){
+        }else if(str.contains("{\"Protocol\":7001,")){
             Protocol = 7001;
-        }else if(str.contains("{\"Protocol\":7002")){
+        }else if(str.contains("{\"Protocol\":7002,")){
             Protocol = 7002;
-        }else if(str.contains("{\"Protocol\":9002")){
+        }else if(str.contains("{\"Protocol\":9002,")){
             Protocol = 9002;
+        }else if(str.contains("{\"Protocol\":50000,")){
+            Protocol = 50000;
         }else {
             Protocol = 0;
         }

@@ -1,5 +1,7 @@
 package cn.mcfun.utils;
 
+import cn.mcfun.protocol.*;
+
 public class Crc32 {
 
     public static int genCrc32(byte[] data,int offset, int length){
@@ -43,6 +45,8 @@ public class Crc32 {
 			p = Protocol_7002.switch_1(c1);
 		}else if(Protocol == 9002){
 			p = Protocol_9002.switch_1(c1);
+		}else if(Protocol == 50000){
+			p = Protocol_50000.switch_1(c1);
 		}else{
 			p = 0;
 		}
