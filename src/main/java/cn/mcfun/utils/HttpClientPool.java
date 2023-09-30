@@ -18,6 +18,7 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
@@ -247,6 +248,7 @@ public class HttpClientPool {
         httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response = null;
         String result = null;
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         HttpEntity multipart = builder.build();
         try {
             httpPost.setEntity(multipart);

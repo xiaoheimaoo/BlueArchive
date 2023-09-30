@@ -24,7 +24,7 @@ import java.util.UUID;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
-    ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
+    ContentType strContent = ContentType.APPLICATION_OCTET_STREAM;
 
     public void userCreate(UserInfo userInfo) {
         userInfo.setDeviceId(UUID.randomUUID().toString().toUpperCase());
@@ -619,7 +619,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate18(UserInfo userInfo) {
+    public void Mission_List(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":8000,\"EventContentId\":null,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":34359738368014,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -696,7 +696,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate19(UserInfo userInfo) {
+    public void Mission_List2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":8000,\"EventContentId\":822,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":34359738368015,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -773,7 +773,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate20(UserInfo userInfo) {
+    public void Scenario_Skip(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":19003,\"ScriptGroupId\":11000,\"SkipPointScriptCount\":36,\"ClientUpTime\":124,\"Resendable\":true,\"Hash\":81617263525905,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -850,7 +850,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate21(UserInfo userInfo) {
+    public void Account_SetTutorial2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":1006,\"TutorialIds\":[1],\"ClientUpTime\":67,\"Resendable\":true,\"Hash\":4320737099794,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -927,7 +927,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate22(UserInfo userInfo) {
+    public void Scenario_Skip2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1005,7 +1005,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate23(UserInfo userInfo) {
+    public void Scenario_Skip3(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1083,7 +1083,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate24(UserInfo userInfo) {
+    public void Scenario_Skip4(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1161,7 +1161,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate25(UserInfo userInfo) {
+    public void Scenario_Skip5(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1239,7 +1239,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate26(UserInfo userInfo) {
+    public void Scenario_Skip6(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1317,7 +1317,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate27(UserInfo userInfo) {
+    public void Account_SetTutorial3(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1395,7 +1395,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate28(UserInfo userInfo) {
+    public void Scenario_Skip7(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1473,7 +1473,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate29(UserInfo userInfo) {
+    public void Scenario_Skip8(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1552,7 +1552,7 @@ public class UserCreate {
     }
 
     //流程2
-    public void usercreate30(UserInfo userInfo) {
+    public void OpenCondition_EventList(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1634,7 +1634,7 @@ public class UserCreate {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
-        String packet = "{\"Protocol\":36001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":154623117623311,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":36001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":154623117623311,\"IsTest\":false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -1708,7 +1708,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate32(UserInfo userInfo) {
+    public void Mail_Check(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7001,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":30069066039312,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -1785,7 +1785,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate33(UserInfo userInfo) {
+    public void Event_RewardIncrease(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1863,7 +1863,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate34(UserInfo userInfo) {
+    public void Clan_Check(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -2019,7 +2019,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate36(UserInfo userInfo) {
+    public void Billing_PurchaseListByYostar(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":29002,\"ClientUpTime\":578,\"Resendable\":true,\"Hash\":124562641518612,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
