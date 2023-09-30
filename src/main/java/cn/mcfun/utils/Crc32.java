@@ -1,5 +1,7 @@
 package cn.mcfun.utils;
 
+import cn.mcfun.protocol.*;
+
 public class Crc32 {
 
     public static int genCrc32(byte[] data,int offset, int length){
