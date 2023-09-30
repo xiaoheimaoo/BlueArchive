@@ -89,6 +89,7 @@ public class OrderExecute implements Runnable{
         }
         UserCreate uc = new UserCreate();
         //登录
+        //uc.getTicket(userInfo);
         uc.accountAuth(userInfo);
         //uc.requestQuestion(userInfo);
         //uc.academyGetinfo(userInfo);
