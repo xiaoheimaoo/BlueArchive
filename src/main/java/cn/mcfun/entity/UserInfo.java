@@ -2,17 +2,8 @@ package cn.mcfun.entity;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 public class UserInfo {
     String ip;
@@ -33,11 +24,38 @@ public class UserInfo {
     Long ServerId4;
     JSONObject EchelonDBs = new JSONObject();
     JSONArray CharacterDBs = new JSONArray();
+    JSONArray svts = new JSONArray();
     JSONArray AttendanceBookRewards = new JSONArray();
     JSONArray AttendanceHistoryDBs = new JSONArray();
     JSONArray mail = new JSONArray();
     int StarNum = 0;
+    int Gem = 0;
+    CloseableHttpClient httpClientBuilder = null;
     public UserInfo() {
+    }
+
+    public CloseableHttpClient getHttpClientBuilder() {
+        return httpClientBuilder;
+    }
+
+    public void setHttpClientBuilder(CloseableHttpClient httpClientBuilder) {
+        this.httpClientBuilder = httpClientBuilder;
+    }
+
+    public JSONArray getSvts() {
+        return svts;
+    }
+
+    public void setSvts(JSONArray svts) {
+        this.svts = svts;
+    }
+
+    public int getGem() {
+        return Gem;
+    }
+
+    public void setGem(int gem) {
+        Gem = gem;
     }
 
     public int getStarNum() {

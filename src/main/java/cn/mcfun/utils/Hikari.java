@@ -27,7 +27,6 @@ public class Hikari {
             config.setUsername(props.getProperty("user"));
             config.setPassword(props.getProperty("password"));
             config.setMinimumIdle(20);
-            config.setConnectionTimeout(120000);
             config.setMaximumPoolSize(1000);
             datasource = new HikariDataSource(config);
         }
