@@ -261,11 +261,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -540,7 +536,86 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
-
+    public void accountLoginsync(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
+        String packet = "{\"Protocol\":1017,\"SyncProtocols\":[20000,1003,2000,3000,4000,5000,12000,6000,22001,17018,21000,28001,33000,19000,10006,39006,44000,29002,30041],\"ClientUpTime\":20,\"Resendable\":true,\"Hash\":4367981740041,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
+        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("packet")) {
+            JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
+            userInfo.setEchelonDBs(js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0));
+            userInfo.setCharacterDBs(js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs"));
+            for (int i = 0; i < userInfo.getCharacterDBs().size(); i++) {
+                if (userInfo.getCharacterDBs().getJSONObject(i).getString("StarGrade").equals("3")) {
+                    userInfo.setStarNum(userInfo.getStarNum() + 1);
+                }
+            }
+            userInfo.setGem(js.getJSONObject("AccountCurrencySyncResponse").getJSONObject("AccountCurrencyDB").getJSONObject("CurrencyDict").getInteger("Gem"));
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='获取loginsync' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
     //流程1
     public void Account_GetTutorial(UserInfo userInfo) {
         String result;
@@ -591,11 +666,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -668,11 +739,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -745,11 +812,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -822,11 +885,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -899,11 +958,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -977,11 +1032,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1055,11 +1106,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1133,11 +1180,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1211,11 +1254,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1289,11 +1328,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1367,11 +1402,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1445,11 +1476,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1523,11 +1550,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1602,11 +1625,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1630,7 +1649,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate31(UserInfo userInfo) {
+    public void Notification_EventContentReddotCheck(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -1680,11 +1699,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1757,11 +1772,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1835,11 +1846,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -1913,89 +1920,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
 
-    public void usercreate35(UserInfo userInfo) {
-        String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-
-        String packet = "{\"Protocol\":43010,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":184726543400979,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='好友检查' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2068,11 +1993,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2096,11 +2017,84 @@ public class UserCreate {
         }
     }
 
-    public void usercreate37(UserInfo userInfo) {
+    public void Shop_BeforehandGachaRun(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
-        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":0,\"Cost\":{\"ParcelInfos\":[{\"Key\":{\"Type\":2,\"Id\":4},\"Amount\":0,\"Multiplier\":{\"rawValue\":10000},\"Probability\":{\"rawValue\":10000}}],\"Currency\":{\"currencyValue\":{\"Values\":{},\"Tickets\":{},\"Property\":{},\"Gold\":0,\"Gem\":0,\"GemBonus\":0,\"GemPaid\":0,\"ActionPoint\":0,\"ArenaTicket\":0,\"RaidTicket\":0,\"WeekDungeonChaserATicket\":0,\"WeekDungeonChaserBTicket\":0,\"WeekDungeonChaserCTicket\":0,\"WeekDungeonFindGiftTicket\":0,\"WeekDungeonBloodTicket\":0,\"AcademyTicket\":0,\"SchoolDungeonATicket\":0,\"SchoolDungeonBTicket\":0,\"SchoolDungeonCTicket\":0,\"TimeAttackDungeonTicket\":0,\"MasterCoin\":0,\"WorldRaidTicketA\":0,\"WorldRaidTicketB\":0,\"WorldRaidTicketC\":0,\"IsEmpty\":true},\"Gold\":0,\"Gem\":0,\"GemBonus\":0,\"GemPaid\":0,\"ActionPoint\":0,\"ArenaTicket\":0,\"RaidTicket\":0,\"WeekDungeonChaserATicket\":0,\"WeekDungeonChaserBTicket\":0,\"WeekDungeonChaserCTicket\":0,\"WeekDungeonFindGiftTicket\":0,\"WeekDungeonBloodTicket\":0,\"AcademyTicket\":0,\"SchoolDungeonATicket\":0,\"SchoolDungeonBTicket\":0,\"SchoolDungeonCTicket\":0,\"TimeAttackDungeonTicket\":0,\"MasterCoin\":0,\"WorldRaidTicketA\":0,\"WorldRaidTicketB\":0,\"WorldRaidTicketC\":0},\"EquipmentDBs\":[],\"ItemDBs\":[],\"FurnitureDBs\":[],\"ConsumeCondition\":0},\"GoodsId\":1,\"ShopUniqueId\":2,\"ClientUpTime\":9,\"Resendable\":true,\"Hash\":42984032698389,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":10011,\"ShopUniqueId\":3,\"GoodsId\":1,\"ClientUpTime\":8,\"Resendable\":true,\"Hash\":42996917600280,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
+        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("packet")) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='新手抽卡' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
+    public void Shop_BeforehandGachaPick(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
+
+        String packet = "{\"Protocol\":10013,\"ShopUniqueId\":3,\"GoodsId\":1,\"TargetIndex\":0,\"ClientUpTime\":38,\"Resendable\":true,\"Hash\":43005507534876,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -2153,11 +2147,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2181,7 +2171,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate38(UserInfo userInfo) {
+    public void Account_SetTutorial(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -2231,11 +2221,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2259,85 +2245,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate39(UserInfo userInfo) {
-        String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-
-        String packet = "{\"Protocol\":1006,\"TutorialIds\":[1,2,3],\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":4320737099798,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='跳过引导4' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-
-    public void usercreate40(UserInfo userInfo) {
+    public void Campaign_List(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":6000,\"ClientUpTime\":385,\"Resendable\":true,\"Hash\":25769803776023,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -2386,11 +2294,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2414,7 +2318,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate41(UserInfo userInfo) {
+    public void Event_RewardIncrease2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":25003,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":107387067301912,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -2463,11 +2367,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2491,7 +2391,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate42(UserInfo userInfo) {
+    public void Mail_Check2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7001,\"ClientUpTime\":118,\"Resendable\":true,\"Hash\":30069066039321,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -2540,11 +2440,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2568,7 +2464,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate43(UserInfo userInfo) {
+    public void Campaign_EnterMainStage(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -2618,11 +2514,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2646,7 +2538,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate44(UserInfo userInfo) {
+    public void Echelon_List(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":5000,\"ClientUpTime\":146,\"Resendable\":true,\"Hash\":21474836480027,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -2695,11 +2587,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2723,7 +2611,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate45(UserInfo userInfo) {
+    public void Echelon_PresetList(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":5002,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":21483426414620,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
@@ -2772,11 +2660,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2800,7 +2684,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate46(UserInfo userInfo) {
+    public void Campaign_DeployEchelon(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -2850,11 +2734,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2878,7 +2758,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate47(UserInfo userInfo) {
+    public void Campaign_ConfirmTutorialStage(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -2928,11 +2808,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -2956,7 +2832,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate48(UserInfo userInfo) {
+    public void Campaign_MapMove(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3006,11 +2882,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3034,7 +2906,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate49(UserInfo userInfo) {
+    public void Campaign_EnterTactic(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3084,11 +2956,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3112,10 +2980,9 @@ public class UserCreate {
         }
     }
 
-    public void usercreate50(UserInfo userInfo) {
+    public void Campaign_TacticResult(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-
         String packet = "{\"Protocol\":6008,\"PassCheckCharacter\":false,\"Summary\":{\"HashKey\":0,\"IsBossBattle\":false,\"BattleType\":1,\"StageId\":1011101,\"GroundId\":101110101,\"Winner\":\"Group01\",\"EndType\":4,\"EndFrame\":1038,\"Group01Summary\":{\"TeamId\":1,\"LeaderEntityId\":{\"uniqueId\":16777217},\"Heroes\":[{\"ServerId\":" + userInfo.getEchelonDBs().getJSONArray("MainSlotServerIds").getString(0) + ",\"BattleEntityId\":{\"uniqueId\":16777217},\"HeroId\":13010,\"Grade\":2,\"Level\":1,\"ExSkillLevel\":1,\"PublicSkillLevel\":1,\"PassiveSkillLevel\":1,\"ExtraPassiveSkillLevel\":-1,\"StatSnapshotCollection\":[{\"Stat\":1,\"Start\":3398,\"End\":3398},{\"Stat\":2,\"Start\":131,\"End\":131},{\"Stat\":3,\"Start\":30,\"End\":34},{\"Stat\":4,\"Start\":1624,\"End\":1624},{\"Stat\":5,\"Start\":100,\"End\":100},{\"Stat\":7,\"Start\":1440,\"End\":1440},{\"Stat\":9,\"Start\":200,\"End\":200},{\"Stat\":12,\"Start\":20000,\"End\":20000},{\"Stat\":30,\"Start\":10000,\"End\":10000},{\"Stat\":34,\"Start\":10000,\"End\":10000},{\"Stat\":42,\"Start\":700,\"End\":700},{\"Stat\":44,\"Start\":0,\"End\":0}],\"HPRateBefore\":10000,\"HPRateAfter\":7683,\"CrowdControlCount\":0,\"CrowdControlDuration\":0,\"EvadeCount\":73,\"DamageImmuneCount\":0,\"CrowdControlImmuneCount\":0,\"DeadFrame\":-1,\"TacticEntityType\":1,\"GivenNumericLogs\":[{\"EntityType\":\"Character\",\"Category\":1,\"Source\":1,\"CalculatedSum\":2934,\"AppliedSum\":626,\"Count\":13,\"CriticalMultiplierMax\":15000,\"CriticalCount\":2,\"CalculatedMin\":206,\"CalculatedMax\":258,\"AppliedMin\":0,\"AppliedMax\":122},{\"EntityType\":\"Character\",\"Category\":1,\"Source\":3,\"CalculatedSum\":12832,\"AppliedSum\":314,\"Count\":18,\"CriticalMultiplierMax\":15000,\"CriticalCount\":3,\"CalculatedMin\":634,\"CalculatedMax\":774,\"AppliedMin\":0,\"AppliedMax\":80}],\"TakenNumericLogs\":[{\"EntityType\":\"Character\",\"Category\":1,\"Source\":1,\"CalculatedSum\":3651,\"AppliedSum\":788,\"Count\":39,\"CriticalMultiplierMax\":15000,\"CriticalCount\":5,\"CalculatedMin\":42,\"CalculatedMax\":103,\"AppliedMin\":13,\"AppliedMax\":30}],\"SkillCount\":{\"PublicSkill01\":2},\"KillLog\":{\"16777221\":526,\"16777225\":761,\"16777228\":959}},{\"ServerId\":" + userInfo.getEchelonDBs().getJSONArray("MainSlotServerIds").getString(1) + ",\"BattleEntityId\":{\"uniqueId\":16777218},\"HeroId\":16003,\"Grade\":1,\"Level\":1,\"ExSkillLevel\":1,\"PublicSkillLevel\":1,\"PassiveSkillLevel\":-1,\"ExtraPassiveSkillLevel\":-1,\"StatSnapshotCollection\":[{\"Stat\":1,\"Start\":2532,\"End\":2532},{\"Stat\":2,\"Start\":204,\"End\":204},{\"Stat\":3,\"Start\":21,\"End\":21},{\"Stat\":4,\"Start\":1499,\"End\":1499},{\"Stat\":5,\"Start\":690,\"End\":690},{\"Stat\":7,\"Start\":788,\"End\":788},{\"Stat\":9,\"Start\":197,\"End\":197},{\"Stat\":12,\"Start\":20000,\"End\":20000},{\"Stat\":30,\"Start\":10000,\"End\":10000},{\"Stat\":34,\"Start\":10000,\"End\":10000},{\"Stat\":42,\"Start\":700,\"End\":700},{\"Stat\":44,\"Start\":0,\"End\":0}],\"HPRateBefore\":10000,\"HPRateAfter\":10000,\"CrowdControlCount\":0,\"CrowdControlDuration\":0,\"EvadeCount\":0,\"DamageImmuneCount\":0,\"CrowdControlImmuneCount\":0,\"DeadFrame\":-1,\"TacticEntityType\":1,\"GivenNumericLogs\":[{\"EntityType\":\"Character\",\"Category\":1,\"Source\":1,\"CalculatedSum\":4088,\"AppliedSum\":1039,\"Count\":11,\"CriticalMultiplierMax\":15000,\"CriticalCount\":2,\"CalculatedMin\":332,\"CalculatedMax\":406,\"AppliedMin\":34,\"AppliedMax\":132},{\"EntityType\":\"Character\",\"Category\":1,\"Source\":3,\"CalculatedSum\":8296,\"AppliedSum\":84,\"Count\":10,\"CriticalMultiplierMax\":15000,\"CriticalCount\":1,\"CalculatedMin\":746,\"CalculatedMax\":918,\"AppliedMin\":0,\"AppliedMax\":76}],\"SkillCount\":{\"PublicSkill01\":1},\"KillLog\":{\"16777220\":221,\"16777223\":285,\"16777224\":761,\"16777229\":817,\"16777226\":1037}},{\"ServerId\":" + userInfo.getEchelonDBs().getJSONArray("MainSlotServerIds").getString(2) + ",\"BattleEntityId\":{\"uniqueId\":16777219},\"HeroId\":13003,\"Grade\":2,\"Level\":1,\"ExSkillLevel\":1,\"PublicSkillLevel\":1,\"PassiveSkillLevel\":1,\"ExtraPassiveSkillLevel\":-1,\"StatSnapshotCollection\":[{\"Stat\":1,\"Start\":2620,\"End\":2620},{\"Stat\":2,\"Start\":389,\"End\":389},{\"Stat\":3,\"Start\":21,\"End\":21},{\"Stat\":4,\"Start\":1619,\"End\":1619},{\"Stat\":5,\"Start\":897,\"End\":897},{\"Stat\":7,\"Start\":199,\"End\":199},{\"Stat\":9,\"Start\":199,\"End\":199},{\"Stat\":12,\"Start\":20000,\"End\":28806},{\"Stat\":30,\"Start\":10000,\"End\":10000},{\"Stat\":34,\"Start\":10000,\"End\":10000},{\"Stat\":42,\"Start\":700,\"End\":700},{\"Stat\":44,\"Start\":0,\"End\":0}],\"HPRateBefore\":10000,\"HPRateAfter\":10000,\"CrowdControlCount\":0,\"CrowdControlDuration\":0,\"EvadeCount\":0,\"DamageImmuneCount\":0,\"CrowdControlImmuneCount\":0,\"DeadFrame\":-1,\"TacticEntityType\":1,\"GivenNumericLogs\":[{\"EntityType\":\"Character\",\"Category\":1,\"Source\":1,\"CalculatedSum\":714,\"AppliedSum\":192,\"Count\":4,\"CriticalMultiplierMax\":23806,\"CriticalCount\":1,\"CalculatedMin\":170,\"CalculatedMax\":192,\"AppliedMin\":0,\"AppliedMax\":157}],\"SkillCount\":{\"PublicSkill01\":2},\"KillLog\":{\"16777222\":457,\"16777227\":861}}],\"Supporters\":[{\"ServerId\":" + userInfo.getEchelonDBs().getJSONArray("SupportSlotServerIds").getString(0) + ",\"BattleEntityId\":{\"uniqueId\":1073741825},\"HeroId\":26000,\"Grade\":1,\"Level\":1,\"ExSkillLevel\":1,\"PublicSkillLevel\":1,\"PassiveSkillLevel\":-1,\"ExtraPassiveSkillLevel\":-1,\"StatSnapshotCollection\":[{\"Stat\":1,\"Start\":2515,\"End\":2515},{\"Stat\":2,\"Start\":122,\"End\":122},{\"Stat\":3,\"Start\":25,\"End\":25},{\"Stat\":4,\"Start\":2399,\"End\":2399},{\"Stat\":5,\"Start\":99,\"End\":99},{\"Stat\":7,\"Start\":1093,\"End\":1093},{\"Stat\":9,\"Start\":198,\"End\":198},{\"Stat\":12,\"Start\":20000,\"End\":20000},{\"Stat\":30,\"Start\":10000,\"End\":10000},{\"Stat\":34,\"Start\":10000,\"End\":10000},{\"Stat\":42,\"Start\":700,\"End\":700},{\"Stat\":44,\"Start\":0,\"End\":0}],\"HPRateBefore\":0,\"HPRateAfter\":0,\"CrowdControlCount\":0,\"CrowdControlDuration\":0,\"EvadeCount\":0,\"DamageImmuneCount\":0,\"CrowdControlImmuneCount\":0,\"DeadFrame\":-1,\"TacticEntityType\":1}],\"UseAutoSkill\":false,\"TssUseCount\":0,\"SkillCostSummary\":{\"InitialCost\":0.0,\"CostPerFrameSnapshots\":[{\"Frame\":61,\"Regen\":0.009333333}],\"CostAddSnapshots\":[],\"CostUseSnapshots\":[]}},\"Group02Summary\":{\"TeamId\":10008,\"LeaderEntityId\":{\"uniqueId\":0},\"Heroes\":[{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777220},\"HeroId\":7000001,\"DeadFrame\":221,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777221},\"HeroId\":7000011,\"DeadFrame\":526,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777222},\"HeroId\":7000011,\"DeadFrame\":457,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777223},\"HeroId\":7000001,\"DeadFrame\":285,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777224},\"HeroId\":7000001,\"DeadFrame\":761,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777225},\"HeroId\":7000001,\"DeadFrame\":761,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777226},\"HeroId\":7000011,\"DeadFrame\":1037,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777227},\"HeroId\":7000011,\"DeadFrame\":861,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777228},\"HeroId\":7000011,\"DeadFrame\":959,\"TacticEntityType\":2},{\"ServerId\":0,\"BattleEntityId\":{\"uniqueId\":16777229},\"HeroId\":7000001,\"DeadFrame\":817,\"TacticEntityType\":2}],\"UseAutoSkill\":false,\"TssUseCount\":0,\"SkillCostSummary\":{\"InitialCost\":0.0,\"CostPerFrameSnapshots\":[],\"CostAddSnapshots\":[],\"CostUseSnapshots\":[]}},\"ElapsedRealtime\":26.5865326},\"Hand\":{\"Cost\":9.127959,\"SkillCardsInHand\":[{\"CharacterId\":16003,\"HandIndex\":0,\"SkillId\":-1520051293,\"RemainCoolTime\":0},{\"CharacterId\":13010,\"HandIndex\":1,\"SkillId\":945851505,\"RemainCoolTime\":0},{\"CharacterId\":13003,\"HandIndex\":2,\"SkillId\":-12458155,\"RemainCoolTime\":0},{\"CharacterId\":26000,\"HandIndex\":3,\"SkillId\":1922876793,\"RemainCoolTime\":0}]},\"SkipSummary\":null,\"ClientUpTime\":40,\"Resendable\":true,\"Hash\":25804163514401,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
@@ -3162,11 +3029,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3190,7 +3053,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate51(UserInfo userInfo) {
+    public void Campaign_EndTurn(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3240,11 +3103,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3268,7 +3127,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate52(UserInfo userInfo) {
+    public void Campaign_EndTurn2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3318,11 +3177,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3346,7 +3201,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate53(UserInfo userInfo) {
+    public void Campaign_MapMove2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3396,11 +3251,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3424,7 +3275,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate54(UserInfo userInfo) {
+    public void Campaign_EnterTactic2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3474,11 +3325,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3502,7 +3349,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate55(UserInfo userInfo) {
+    public void Campaign_TacticResult2(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3552,11 +3399,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3580,7 +3423,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate56(UserInfo userInfo) {
+    public void Account_SetTutorial4(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3630,11 +3473,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3658,85 +3497,7 @@ public class UserCreate {
         }
     }
 
-    public void attendanceReward(int id, int id2, UserInfo userInfo) {
-        String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-
-        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\"" + id + "\":" + id2 + "},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":38663" + id + "95598633,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='领取签到奖励到邮件' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-
-    public void usercreate59(UserInfo userInfo) {
+    public void Account_SetTutorial5(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3786,11 +3547,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3814,7 +3571,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate60(UserInfo userInfo) {
+    public void Account_SetTutorial6(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -3864,11 +3621,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3892,7 +3645,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate61(UserInfo userInfo) {
+    public void transcode_request(UserInfo userInfo) {
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("accessToken", userInfo.getAccessToken()));
@@ -3940,11 +3693,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -3968,7 +3717,7 @@ public class UserCreate {
         }
     }
 
-    public void usercreate62(UserInfo userInfo) {
+    public void Scenario_Skip9(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
 
@@ -4018,11 +3767,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -4096,11 +3841,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -4179,11 +3920,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
@@ -4256,11 +3993,7 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";

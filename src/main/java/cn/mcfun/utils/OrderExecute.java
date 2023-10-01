@@ -91,6 +91,7 @@ public class OrderExecute implements Runnable{
         uc.nickname(userInfo);
         uc.callname(userInfo);
         uc.accountAuth2(userInfo);
+        uc.accountLoginsync(userInfo);
         uc.Account_GetTutorial(userInfo);
         uc.Mission_List(userInfo);
         uc.Mission_List2(userInfo);
@@ -105,46 +106,35 @@ public class OrderExecute implements Runnable{
         uc.Scenario_Skip7(userInfo);
         uc.Scenario_Skip8(userInfo);
         uc.OpenCondition_EventList(userInfo);
-        uc.usercreate31(userInfo);
+        uc.Notification_EventContentReddotCheck(userInfo);
         uc.Mail_Check(userInfo);
         uc.Event_RewardIncrease(userInfo);
         uc.Clan_Check(userInfo);
-        uc.usercreate35(userInfo);
         uc.Billing_PurchaseListByYostar(userInfo);
-        uc.usercreate37(userInfo);
-        uc.usercreate38(userInfo);
-        uc.usercreate39(userInfo);
-        uc.usercreate40(userInfo);
-        uc.usercreate41(userInfo);
-        uc.usercreate42(userInfo);
-        uc.usercreate43(userInfo);
-        uc.usercreate44(userInfo);
-        uc.usercreate45(userInfo);
-        uc.usercreate46(userInfo);
-        uc.usercreate47(userInfo);
-        uc.usercreate48(userInfo);
-        uc.usercreate49(userInfo);
-        uc.usercreate50(userInfo);
-        uc.usercreate51(userInfo);
-        uc.usercreate52(userInfo);
-        uc.usercreate53(userInfo);
-        uc.usercreate54(userInfo);
-        uc.usercreate55(userInfo);
-        uc.usercreate56(userInfo);
-        if(userInfo.getAttendanceBookRewards().size() >= 1){
-            for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
-                uc.attendanceReward(Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
-            }
-        }
-        if(userInfo.getAttendanceHistoryDBs().size() >= 1){
-            for(int i=0;i<userInfo.getAttendanceHistoryDBs().size();i++){
-                uc.attendanceReward(Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1]),userInfo);
-            }
-        }
-        uc.usercreate59(userInfo);
-        uc.usercreate60(userInfo);
-        uc.usercreate61(userInfo);
-        uc.usercreate62(userInfo);
+        uc.Shop_BeforehandGachaRun(userInfo);
+        uc.Shop_BeforehandGachaPick(userInfo);
+        uc.Account_SetTutorial(userInfo);
+        uc.Campaign_List(userInfo);
+        uc.Event_RewardIncrease2(userInfo);
+        uc.Mail_Check2(userInfo);
+        uc.Campaign_EnterMainStage(userInfo);
+        uc.Echelon_List(userInfo);
+        uc.Echelon_PresetList(userInfo);
+        uc.Campaign_DeployEchelon(userInfo);
+        uc.Campaign_ConfirmTutorialStage(userInfo);
+        uc.Campaign_MapMove(userInfo);
+        uc.Campaign_EnterTactic(userInfo);
+        uc.Campaign_TacticResult(userInfo);
+        uc.Campaign_EndTurn(userInfo);
+        uc.Campaign_EndTurn2(userInfo);
+        uc.Campaign_MapMove2(userInfo);
+        uc.Campaign_EnterTactic2(userInfo);
+        uc.Campaign_TacticResult2(userInfo);
+        uc.Account_SetTutorial4(userInfo);
+        uc.Account_SetTutorial5(userInfo);
+        uc.Account_SetTutorial6(userInfo);
+        uc.transcode_request(userInfo);
+        uc.Scenario_Skip9(userInfo);
         uc.missionMultiplereward(userInfo);
         uc.mailList(userInfo);
         if(!userInfo.getMail().toJSONString().equals("[]")){

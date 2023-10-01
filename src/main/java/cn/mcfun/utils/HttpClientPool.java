@@ -42,7 +42,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
     static CloseableHttpClient httpClient = HttpClients.createDefault();
     public static String sendGet(UserInfo userInfo) {
-        HttpPost httpPost = new HttpPost("http://8.142.107.67:1555/captcha4");
+        HttpPost httpPost = new HttpPost("http://124.221.75.221:81/captcha4");
         CloseableHttpResponse response;
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
@@ -136,13 +136,10 @@ public class HttpClientPool {
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
-        httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
-        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
-        httpPost.addHeader("Connection", "Keep-Alive, TE");
-        httpPost.addHeader("Keep-Alive", "timeout=21");
-        httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
+        httpPost.addHeader("User-Agent", "BlueArchive/1.36.236685 CFNetwork/1410.0.3 Darwin/22.6.0");
+        httpPost.addHeader("Connection", "Keep-Alive");
+        httpPost.addHeader("Host", "ba-jp-sdk.bluearchive.jp");
         CloseableHttpResponse response = null;
         String result = null;
         try {
