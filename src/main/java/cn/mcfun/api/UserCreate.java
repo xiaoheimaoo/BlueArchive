@@ -354,7 +354,7 @@ public class UserCreate {
         String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":17179869184006,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
-        result = HttpClientPool.postFileMultiPart0(userInfo, "https://prod-gateway.bluearchiveyostar.com:5100/api/gateway", builder);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
         if (result.contains("packet")) {
             JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
