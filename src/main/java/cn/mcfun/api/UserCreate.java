@@ -26,56 +26,6 @@ import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
     ContentType strContent = ContentType.APPLICATION_OCTET_STREAM;
-    public void getTicket(UserInfo userInfo) {
-        String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-        String packet = "{\"Protocol\":50000,\"YostarUID\":" + userInfo.getUid() + ",\"YostarToken\":\"" + userInfo.getAccessToken() + "\",\"WaitingTicket\":\"\",\"ClientVersion\":\"" + Main.ClientVersion + "\",\"Resendable\":true}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
-        result = HttpClientPool.postFileMultiPart0(userInfo, "https://prod-gateway.bluearchiveyostar.com:5100/api/gateway", builder);
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        if (result.contains("EnterTicket")) {
-            JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
-            userInfo.setEnterTicket(js.getString("EnterTicket"));
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取十连券信息' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
 
     public void accountAuth(UserInfo userInfo) {
         String result;
@@ -360,6 +310,61 @@ public class UserCreate {
             userInfo.setGem(js.getJSONObject("AccountCurrencySyncResponse").getJSONObject("AccountCurrencyDB").getJSONObject("CurrencyDict").getInteger("Gem"));
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='获取loginsync' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
+
+    public void Item_List(UserInfo userInfo) {
+        String result;
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
+        String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":17179869184006,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
+        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        result = HttpClientPool.postFileMultiPart0(userInfo, "https://prod-gateway.bluearchiveyostar.com:5100/api/gateway", builder);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (result.contains("packet")) {
+            JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
+            for(int i=0;i<js.size();i++){
+                if(js.getJSONObject(i).getString("UniqueId").equals("6999")){
+                    userInfo.setTicket(js.getJSONObject(i).getIntValue("StackCount"));
+                }
+            }
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='获取十连券信息' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);

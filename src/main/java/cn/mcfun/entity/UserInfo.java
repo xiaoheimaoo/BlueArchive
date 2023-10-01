@@ -31,8 +31,17 @@ public class UserInfo {
     JSONArray mail = new JSONArray();
     int StarNum = 0;
     int Gem = 0;
+    int Ticket = 0;
     CloseableHttpClient httpClientBuilder = null;
     public UserInfo() {
+    }
+
+    public int getTicket() {
+        return Ticket;
+    }
+
+    public void setTicket(int ticket) {
+        Ticket = ticket;
     }
 
     public CloseableHttpClient getHttpClientBuilder() {
