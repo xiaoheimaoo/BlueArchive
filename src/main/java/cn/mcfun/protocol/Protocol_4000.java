@@ -59,7 +59,7 @@ public class Protocol_4000 {
                 result = 43153187;
                 break;
             case 17:
-                result = 00000;
+                result = 171404498;
                 break;
             case 18:
                 result = 1676367428;
@@ -95,7 +95,7 @@ public class Protocol_4000 {
                 result = 1168826782;
                 break;
             case 29:
-                result = 00000;
+                result = 84266839;
                 break;
             case 30:
                 result = 1170312041;
@@ -107,7 +107,7 @@ public class Protocol_4000 {
                 result = 1460110819;
                 break;
             case 33:
-                result = 00000;
+                result = 1093921530;
                 break;
             case 34:
                 result = 422222141;
@@ -143,7 +143,7 @@ public class Protocol_4000 {
                 result = 754874111;
                 break;
             case 45:
-                result = 00000;
+                result = 1672471304;
                 break;
             case 46:
                 result = 1521086;
@@ -164,7 +164,7 @@ public class Protocol_4000 {
                 result = 912088255;
                 break;
             case 52:
-                result = 00000;
+                result = 686857553;
                 break;
             case 53:
                 result = 1741602851;
@@ -203,10 +203,10 @@ public class Protocol_4000 {
                 result = 653537606;
                 break;
             case 65:
-                result = 00000;
+                result = 1313236495;
                 break;
             case 66:
-                result = 00000;
+                result = 1050219184;
                 break;
             case 67:
                 result = 773382919;
@@ -221,7 +221,7 @@ public class Protocol_4000 {
                 result = 1553322139;
                 break;
             case 71:
-                result = 00000;
+                result = 223246153;
                 break;
             case 72:
                 result = 138332523;
@@ -242,7 +242,7 @@ public class Protocol_4000 {
                 result = 1995821301;
                 break;
             case 78:
-                result = 00000;
+                result = 1330005042;
                 break;
             case 79:
                 result = 315869003;
@@ -260,7 +260,7 @@ public class Protocol_4000 {
                 result = 329177866;
                 break;
             case 84:
-                result = 00000;
+                result = 1487314167;
                 break;
             case 85:
                 result = 1135307602;
@@ -275,13 +275,13 @@ public class Protocol_4000 {
                 result = 1813402694;
                 break;
             case 89:
-                result = 00000;
+                result = 1227951194;
                 break;
             case 90:
                 result = 313254303;
                 break;
             case 91:
-                result = 00000;
+                result = 38492709;
                 break;
             case 92:
                 result = 00000;
@@ -302,7 +302,7 @@ public class Protocol_4000 {
                 result = 1408963178;
                 break;
             case 98:
-                result = 00000;
+                result = 1816154232;
                 break;
             default:
                 result = 0;

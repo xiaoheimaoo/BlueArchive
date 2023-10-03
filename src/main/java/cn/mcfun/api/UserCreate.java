@@ -1,26 +1,20 @@
 package cn.mcfun.api;
 
-import cn.mcfun.Main;
 import cn.mcfun.entity.StudentName;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
 import cn.mcfun.utils.HttpClientPool;
-import cn.mcfun.utils.Md5;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
@@ -34,31 +28,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             if (js.containsKey("SessionKey")) {
                 userInfo.setSessionKey(js.getString("SessionKey"));
@@ -127,31 +98,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             userInfo.setEchelonDBs(js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0));
             userInfo.setCharacterDBs(js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs"));
@@ -210,8 +158,7 @@ public class UserCreate {
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
-        System.out.println(jsonObject);
-        if (result.contains("packet")) {
+        if (!jsonObject.getString("protocol").equals("Error")) {
             JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
             for(int i=0;i<js.size();i++){
                 if(js.getJSONObject(i).getString("UniqueId").equals("6999")){
@@ -266,31 +213,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='领取签到奖励到邮件' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -338,31 +262,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='检查邮件' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -410,31 +311,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='检查邮件' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -482,31 +360,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             if (js.containsKey("MailDBs") && js.getJSONArray("MailDBs").size() > 0) {
                 for (int i = 0; i < js.getJSONArray("MailDBs").size(); i++) {
@@ -566,31 +421,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='获取邮件列表' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -638,31 +470,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='领取邮件奖励' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -710,31 +519,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='抽卡中' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -781,31 +567,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称1' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -852,31 +615,8 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (!jsonObject.getString("protocol").equals("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称2' where `order`=? and status=1";
             PreparedStatement ps2 = null;
