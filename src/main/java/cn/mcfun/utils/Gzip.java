@@ -30,13 +30,13 @@ public class Gzip {
         System.arraycopy(a,4,bytes,0,a.length-4);
         return new String(unGZip(bytes));
     }
-    public static String enCrypt(String str){
-        byte[] raw2 = str.getBytes();
-        byte[] raw3 = GZip(raw2);
-        byte[] bytes2 = new byte[raw3.length+4];
-        System.arraycopy(intToBytes(raw2.length),0,bytes2,0,4);
-        System.arraycopy(raw3,0,bytes2,4,raw3.length);
-        return Base64.getEncoder().encodeToString(bytes2);
+    public static String enCrypt(byte[] str){
+        String raw4 = Tools.BytePrintAsString(str);
+        String head = raw4.substring(8,16);
+        System.out.println(Tools.byteArrayToInt(getXor(Tools.hexToByteArray(head))));
+        String hex2 = Tools.BytePrintAsString(getXor(Tools.hexToByteArray(raw4.substring(16))));
+        String hex4 = Crc32.getCrc32(4000,hex2);
+        return hex4;
     }
     public static byte[] enCrypt2(String str){
         int Protocol;

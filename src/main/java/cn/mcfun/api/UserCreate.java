@@ -120,152 +120,6 @@ public class UserCreate {
         }
     }
 
-    public void requestQuestion(UserInfo userInfo) {
-        String result;
-        List<BasicNameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("protocol", "LVOYXX5UG6A2L77RVYWDHWUVPA"));
-        params.add(new BasicNameValuePair("encode", "True"));
-        String packet = "{\"Protocol\":37000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":158913789952007,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        params.add(new BasicNameValuePair("packet", Gzip.enCrypt(packet)));
-        result = HttpClientPool.sendPost(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/prooftoken/requestquestion", params);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取requestquestion' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-
-    public void academyGetinfo(UserInfo userInfo) {
-        String result;
-        List<BasicNameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("protocol", "KKVAEXLS5QIIB36RQW27XRTJGI"));
-        params.add(new BasicNameValuePair("encode", "True"));
-        String packet = "{\"Protocol\":24000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":103079215104008,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        params.add(new BasicNameValuePair("packet", Gzip.enCrypt(packet)));
-        result = HttpClientPool.sendPost(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/academy/getinfo", params);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取getinfo' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-
     public void accountLoginsync(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
@@ -356,88 +210,17 @@ public class UserCreate {
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
+        System.out.println(jsonObject);
         if (result.contains("packet")) {
             JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
             for(int i=0;i<js.size();i++){
                 if(js.getJSONObject(i).getString("UniqueId").equals("6999")){
                     userInfo.setTicket(js.getJSONObject(i).getIntValue("StackCount"));
+                    break;
                 }
             }
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='获取十连券信息' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        } else {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-    }
-
-    public void networktimeSync(UserInfo userInfo) {
-        String result;
-        List<BasicNameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("protocol", "QIRA2IPFGIJ5T56RHONAUNGUJA"));
-        params.add(new BasicNameValuePair("encode", "True"));
-        String packet = "{\"Protocol\":3,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":12884901898,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        params.add(new BasicNameValuePair("packet", Gzip.enCrypt(packet)));
-        result = HttpClientPool.sendPost(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/networktime/sync", params);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
-        if (result.contains("packet")) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取networktime' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);

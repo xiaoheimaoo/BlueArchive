@@ -2,6 +2,8 @@ package cn.mcfun.utils;
 
 import cn.mcfun.protocol.*;
 
+import static cn.mcfun.utils.Gzip.getXor;
+
 public class Crc32 {
 
     public static int genCrc32(byte[] data,int offset, int length){
