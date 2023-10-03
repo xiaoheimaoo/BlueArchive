@@ -73,7 +73,7 @@ public class UserCreate {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = sdf.format(date);
                 for (int i = 0; i < js.getJSONArray("AttendanceHistoryDBs").size(); i++) {
-                    if(!js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendedDay").contains(formattedDate)){
+                    if (!js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendedDay").contains(formattedDate)) {
                         userInfo.getAttendanceHistoryDBs().add(js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendanceBookUniqueId") + "-" + js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getJSONObject("AttendedDay").size());
                     }
                 }
@@ -205,34 +205,36 @@ public class UserCreate {
     public void Item_List(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-        String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":17179869184006,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":17179869184006,\"IsTest\":false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
-        if (!result.contains("Error")) {
-            JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
-            for(int i=0;i<js.size();i++){
-                if(js.getJSONObject(i).getString("UniqueId").equals("6999")){
-                    userInfo.setTicket(js.getJSONObject(i).getIntValue("StackCount"));
-                    break;
+        if (!result.contains("packet")) {
+            if (!result.contains("Error")) {
+                JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
+                for (int i = 0; i < js.size(); i++) {
+                    if (js.getJSONObject(i).getString("UniqueId").equals("6999")) {
+                        userInfo.setTicket(js.getJSONObject(i).getIntValue("StackCount"));
+                        break;
+                    }
                 }
-            }
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='获取十连券信息' where `order`=? and status=1";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
+                Connection conn2 = getConnection();
+                String sql2 = "update `order` set message='获取十连券信息' where `order`=? and status=1";
+                PreparedStatement ps2 = null;
                 try {
-                    conn2.close();
-                    ps2.close();
+                    ps2 = conn2.prepareStatement(sql2);
+                    ps2.setString(1, userInfo.getOrder());
+                    ps2.executeUpdate();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                } finally {
+                    try {
+                        conn2.close();
+                        ps2.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
             }
         } else {
@@ -705,7 +707,7 @@ public class UserCreate {
     public void buyGacha3(int id, UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35525,\"ShopUniqueId\":50384,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984"+id+",\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35525,\"ShopUniqueId\":50384,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
@@ -773,6 +775,7 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
+
     public void nickname(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
@@ -844,6 +847,7 @@ public class UserCreate {
             Thread.currentThread().stop();
         }
     }
+
     public void callname(UserInfo userInfo) {
         String result;
         MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
