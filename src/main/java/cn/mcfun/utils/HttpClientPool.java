@@ -65,12 +65,6 @@ public class HttpClientPool {
                 throwables.printStackTrace();
             }
             Thread.currentThread().stop();
-        }finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
