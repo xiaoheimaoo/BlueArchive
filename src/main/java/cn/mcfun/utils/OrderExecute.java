@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
@@ -140,17 +142,21 @@ public class OrderExecute implements Runnable{
         if(!userInfo.getMail().toJSONString().equals("[]")){
             uc.mailReceive(userInfo);
         }
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = format.format(date);
         Connection conn3 = getConnection();
-        String sql3 = "update `order` set uid=?,transcode=?,AccountId=?,`status`=2,`message`=?,`StarNum`=? where `order`=? and status=1";
+        String sql3 = "update `order` set `uid`=?,`complete`=?,`transcode`=?,`AccountId`=?,`status`=2,`message`=?,`StarNum`=? where `order`=? and status=1";
         PreparedStatement ps3 = null;
         try {
             ps3 = conn3.prepareStatement(sql3);
             ps3.setString(1, userInfo.getUid());
-            ps3.setString(2, userInfo.getTranscode());
-            ps3.setString(3, userInfo.getAccountId().toString());
-            ps3.setString(4, "订单已完成");
-            ps3.setInt(5, userInfo.getStarNum());
-            ps3.setString(6, userInfo.getOrder());
+            ps3.setString(2, dateStr);
+            ps3.setString(3, userInfo.getTranscode());
+            ps3.setString(4, userInfo.getAccountId().toString());
+            ps3.setString(5, "订单已完成");
+            ps3.setInt(6, userInfo.getStarNum());
+            ps3.setString(7, userInfo.getOrder());
             ps3.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
