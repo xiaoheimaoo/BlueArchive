@@ -46,6 +46,7 @@ public class HttpClientPool {
         CloseableHttpResponse response;
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
+        params.add(new BasicNameValuePair("proxy", userInfo.getIp()));
         String result = null;
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params));
