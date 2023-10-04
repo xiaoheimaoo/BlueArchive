@@ -42,11 +42,21 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class HttpClientPool {
     static CloseableHttpClient httpClient = HttpClients.createDefault();
     public static String sendGet(UserInfo userInfo) {
+        CloseableHttpResponse response = null;
+        HttpGet httpGet = new HttpGet("https://share.proxy.qg.net/get?key=GUERY13K&num=1&area=&isp=&format=txt&seq=%5Cr%5Cn&distinct=true&pool=1");
+        try {
+            response = httpClient.execute(httpGet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         HttpPost httpPost = new HttpPost("http://124.221.75.221:81/captcha4");
-        CloseableHttpResponse response;
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
-        params.add(new BasicNameValuePair("proxy", userInfo.getIp()));
+        try {
+            params.add(new BasicNameValuePair("proxy", EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String result = null;
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params));

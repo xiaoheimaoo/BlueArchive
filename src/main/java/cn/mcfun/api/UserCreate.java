@@ -80,6 +80,10 @@ public class UserCreate {
     public void userLogin(UserInfo userInfo) {
         String geetest = HttpClientPool.sendGet(userInfo);
         JSONObject js = JSONObject.parseObject(geetest);
+        while(!js.getJSONObject("data").getJSONObject("code").getString("result").equals("success")){
+            geetest = HttpClientPool.sendGet(userInfo);
+            js = JSONObject.parseObject(geetest);
+        }
         String result;
         List<BasicNameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("deviceId", userInfo.getDeviceId()));
@@ -92,30 +96,7 @@ public class UserCreate {
         params.add(new BasicNameValuePair("lot_number", js.getJSONObject("data").getJSONObject("code").getString("lot_number")));
         params.add(new BasicNameValuePair("pass_token", js.getJSONObject("data").getJSONObject("code").getString("pass_token")));
         result = HttpClientPool.sendPost0(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/login", params);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
+        JSONObject jsonObject = JSONObject.parseObject(result);
         if (result.contains("\"result\":0")) {
             userInfo.setAccessToken(jsonObject.getString("accessToken"));
             Connection conn2 = getConnection();
@@ -218,29 +199,6 @@ public class UserCreate {
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
-        try {
-            jsonObject = JSONObject.parseObject(result);
-        } catch (Exception e) {
-            Connection conn2 = getConnection();
-            String sql2 = "update `order` set status=3,message=? where `order`=?";
-            PreparedStatement ps2 = null;
-            try {
-                ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, result);
-                ps2.setString(2, userInfo.getOrder());
-                ps2.executeUpdate();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } finally {
-                try {
-                    conn2.close();
-                    ps2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            Thread.currentThread().stop();
-        }
         if (result.contains("SessionKey")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             userInfo.setSessionKey(js.getString("SessionKey"));
@@ -393,7 +351,7 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        if (result.contains("packet")) {
+        if (!result.contains("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称1' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -441,7 +399,7 @@ public class UserCreate {
         InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
         builder.addBinaryBody("mx", stream, strContent, "mx.dat");
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
-        if (result.contains("packet")) {
+        if (!result.contains("Error")) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称2' where `order`=? and status=1";
             PreparedStatement ps2 = null;

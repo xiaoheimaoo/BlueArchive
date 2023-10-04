@@ -90,8 +90,8 @@ public class OrderExecute implements Runnable{
         uc.checkYostar(userInfo);
         uc.accountAuth(userInfo);
         uc.accountCreate(userInfo);
-        uc.nickname(userInfo);
-        uc.callname(userInfo);
+/*        uc.nickname(userInfo);
+        uc.callname(userInfo);*/
         uc.accountAuth2(userInfo);
         uc.accountLoginsync(userInfo);
         uc.Account_GetTutorial(userInfo);
