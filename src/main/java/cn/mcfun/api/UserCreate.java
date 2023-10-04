@@ -1,38 +1,26 @@
 package cn.mcfun.api;
 
-import cn.mcfun.Main;
 import cn.mcfun.entity.StudentName;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
 import cn.mcfun.utils.HttpClientPool;
-import cn.mcfun.utils.Md5;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
-    ContentType strContent = ContentType.APPLICATION_OCTET_STREAM;
 
     public void accountAuth(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":1002,\"Version\":0,\"DevId\":null,\"IMEI\":0,\"AccessIP\":\"127.0.0.1\",\"MarketId\":\"aas\",\"UserType\":null,\"AdvertisementId\":null,\"OSType\":\"I\",\"OSVersion\":\"iPadOS 16.2\",\"DeviceUniqueId\":\"" + userInfo.getDeviceId() + "\",\"DeviceModel\":\"iPad11,1\",\"DeviceSystemMemorySize\":2923,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":4303557230598,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -122,10 +110,8 @@ public class UserCreate {
 
     public void accountLoginsync(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":1017,\"SyncProtocols\":[20000,1003,2000,3000,4000,5000,12000,6000,22001,17018,21000,28001,33000,19000,10006,39006,44000,29002,30041],\"ClientUpTime\":20,\"Resendable\":true,\"Hash\":4367981740041,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -202,15 +188,13 @@ public class UserCreate {
         }
     }
 
-    public void Item_List(UserInfo userInfo) {
+    public void Item_List(UserInfo userInfo,int r) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
-        String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":17179869184006,\"IsTest\":false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        String packet = "{\"Protocol\":4000,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":1717986918400"+r+",\"IsTest\":false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
-        if (!result.contains("packet")) {
+        if (result.contains("packet")) {
             if (!result.contains("Error")) {
                 JSONArray js = JSONObject.parseObject(jsonObject.getString("packet")).getJSONArray("ItemDBs");
                 for (int i = 0; i < js.size(); i++) {
@@ -236,6 +220,8 @@ public class UserCreate {
                         throwables.printStackTrace();
                     }
                 }
+            }else{
+                Item_List(userInfo, new Random().nextInt(10));
             }
         } else {
             Connection conn2 = getConnection();
@@ -262,10 +248,8 @@ public class UserCreate {
 
     public void attendanceReward(int i, int id, int id2, UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\"" + id + "\":" + id2 + "},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":" + i + ",\"Resendable\":true,\"Hash\":38663" + id + "95598633,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -334,10 +318,8 @@ public class UserCreate {
 
     public void mailCheck1(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":30069066032433,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -406,10 +388,8 @@ public class UserCreate {
 
     public void mailCheck2(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7001,\"ClientUpTime\":12,\"Resendable\":true,\"Hash\":30069066039433,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -478,10 +458,8 @@ public class UserCreate {
 
     public void mailList(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":1,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -562,10 +540,8 @@ public class UserCreate {
 
     public void mailList2(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7000,\"IsReadMail\":false,\"PivotTime\":\"2024-03-09T00:52:19.6397241\",\"PivotIndex\":-1,\"IsDescending\":true,\"ClientUpTime\":2,\"Resendable\":true,\"Hash\":30064771072076,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -634,10 +610,8 @@ public class UserCreate {
 
     public void mailReceive(long id, UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":7002,\"MailServerIds\":[" + id + "],\"ClientUpTime\":7,\"Resendable\":true,\"Hash\":30073361006672,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -706,10 +680,8 @@ public class UserCreate {
 
     public void buyGacha3(int id, UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35525,\"ShopUniqueId\":50384,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -778,10 +750,8 @@ public class UserCreate {
 
     public void nickname(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":1001,\"Nickname\":\"アカウ\",\"ClientUpTime\":27,\"Resendable\":true,\"Hash\":4299262263320,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
@@ -850,10 +820,8 @@ public class UserCreate {
 
     public void callname(UserInfo userInfo) {
         String result;
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create().setBoundary("BestHTTP_HTTPMultiPartForm_" + Gzip.genRandomNum());
         String packet = "{\"Protocol\":1010,\"CallName\":\"アカウ\",\"ClientUpTime\":14,\"Resendable\":true,\"Hash\":4337916968985,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
-        InputStream stream = new ByteArrayInputStream(Gzip.enCrypt2(packet));
-        builder.addBinaryBody("mx", stream, strContent, "mx.dat");
+        byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {

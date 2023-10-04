@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
@@ -94,7 +95,7 @@ public class OrderExecute implements Runnable{
         //uc.requestQuestion(userInfo);
         //uc.academyGetinfo(userInfo);
         uc.accountLoginsync(userInfo);
-        uc.Item_List(userInfo);
+        uc.Item_List(userInfo, new Random().nextInt(10));
         //uc.networktimeSync(userInfo);
         if(userInfo.getAttendanceBookRewards().size() >= 1){
             for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){

@@ -4,7 +4,6 @@ public class Protocol_4000 {
     public static int switch_1(int arg1) {
         int result;
         long  a1 = Integer.toUnsignedLong(arg1);
-        System.out.println((int)(a1 %99));
         switch ( (int)(a1 %99))
         {
             case 0:
