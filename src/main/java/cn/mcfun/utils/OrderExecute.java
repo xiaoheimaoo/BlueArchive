@@ -84,10 +84,8 @@ public class OrderExecute implements Runnable{
             }
         }
         UserCreate uc = new UserCreate();
-        if(userInfo.getAccessToken() == null){
-            uc.userCreate(userInfo);
-            uc.userLogin(userInfo);
-        }
+        uc.userCreate(userInfo);
+        uc.userLogin(userInfo);
         uc.getTicket(userInfo);
         uc.checkYostar(userInfo);
         uc.accountAuth(userInfo);
