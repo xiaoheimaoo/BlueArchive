@@ -132,6 +132,7 @@ public class Main{
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
+                userInfo.setAccessToken(rs.getString("accessToken"));
 
                 addToOrderQueue(userInfo);
             }
@@ -169,6 +170,7 @@ public class Main{
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
+                userInfo.setAccessToken(rs.getString("accessToken"));
 
                 addToOrderQueue(userInfo);
             }

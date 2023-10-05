@@ -43,7 +43,7 @@ public class HttpClientPool {
     static CloseableHttpClient httpClient = HttpClients.createDefault();
     public static String sendGet(UserInfo userInfo) {
         CloseableHttpResponse response = null;
-        HttpGet httpGet = new HttpGet("https://share.proxy.qg.net/get?key=GUERY13K&num=1&area=&isp=&format=txt&seq=%5Cr%5Cn&distinct=true&pool=1");
+        HttpGet httpGet = new HttpGet("https://share.proxy.qg.net/get?key=1J3GX0H8&num=1&area=&isp=&format=txt&seq=%5Cr%5Cn&distinct=true&pool=1");
         try {
             response = httpClient.execute(httpGet);
         } catch (IOException e) {
