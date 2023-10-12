@@ -6,6 +6,9 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserInfo {
     String ip;
     String order;
@@ -26,8 +29,8 @@ public class UserInfo {
     JSONObject EchelonDBs = new JSONObject();
     JSONArray CharacterDBs = new JSONArray();
     JSONArray svts = new JSONArray();
-    JSONArray AttendanceBookRewards = new JSONArray();
-    JSONArray AttendanceHistoryDBs = new JSONArray();
+    Map<Integer,String> AttendanceBookRewards = new HashMap<>();
+    Map<Integer,Integer> AttendanceHistoryDBs = new HashMap<>();
     JSONArray mail = new JSONArray();
     int StarNum = 0;
     int Gem = 0;
@@ -84,20 +87,20 @@ public class UserInfo {
         this.ip = ip;
     }
 
-    public JSONArray getAttendanceHistoryDBs() {
-        return AttendanceHistoryDBs;
-    }
-
-    public void setAttendanceHistoryDBs(JSONArray attendanceHistoryDBs) {
-        AttendanceHistoryDBs = attendanceHistoryDBs;
-    }
-
-    public JSONArray getAttendanceBookRewards() {
+    public Map<Integer, String> getAttendanceBookRewards() {
         return AttendanceBookRewards;
     }
 
-    public void setAttendanceBookRewards(JSONArray attendanceBookRewards) {
+    public void setAttendanceBookRewards(Map<Integer, String> attendanceBookRewards) {
         AttendanceBookRewards = attendanceBookRewards;
+    }
+
+    public Map<Integer, Integer> getAttendanceHistoryDBs() {
+        return AttendanceHistoryDBs;
+    }
+
+    public void setAttendanceHistoryDBs(Map<Integer, Integer> attendanceHistoryDBs) {
+        AttendanceHistoryDBs = attendanceHistoryDBs;
     }
 
     public JSONArray getMail() {

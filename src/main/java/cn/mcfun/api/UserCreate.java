@@ -53,7 +53,7 @@ public class UserCreate {
             }
             if (!js.getJSONArray("AttendanceBookRewards").isEmpty()) {
                 for (int i = 0; i < js.getJSONArray("AttendanceBookRewards").size(); i++) {
-                    userInfo.getAttendanceBookRewards().add(js.getJSONArray("AttendanceBookRewards").getJSONObject(i).getString("UniqueId"));
+                    userInfo.getAttendanceBookRewards().put(js.getJSONArray("AttendanceBookRewards").getJSONObject(i).getIntValue("UniqueId"),js.getJSONArray("AttendanceBookRewards").getJSONObject(i).getString("BookSize")+"-0");
                 }
             }
             if (js.containsKey("AttendanceHistoryDBs")) {
@@ -61,8 +61,11 @@ public class UserCreate {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = sdf.format(date);
                 for (int i = 0; i < js.getJSONArray("AttendanceHistoryDBs").size(); i++) {
-                    if (!js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendedDay").contains(formattedDate)) {
-                        userInfo.getAttendanceHistoryDBs().add(js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getString("AttendanceBookUniqueId") + "-" + js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i).getJSONObject("AttendedDay").size());
+                    JSONObject db = js.getJSONArray("AttendanceHistoryDBs").getJSONObject(i);
+                    if (!db.getString("AttendedDay").contains(formattedDate) && userInfo.getAttendanceBookRewards().containsKey(db.getIntValue("AttendanceBookUniqueId"))) {
+                        userInfo.getAttendanceBookRewards().put(db.getIntValue("AttendanceBookUniqueId"),userInfo.getAttendanceBookRewards().get(db.getIntValue("AttendanceBookUniqueId")).split("-")[0]+"-"+db.getJSONObject("AttendedDay").size());
+                    }else if(db.getString("AttendedDay").contains(formattedDate) && userInfo.getAttendanceBookRewards().containsKey(db.getIntValue("AttendanceBookUniqueId"))){
+                        userInfo.getAttendanceBookRewards().put(db.getIntValue("AttendanceBookUniqueId"),userInfo.getAttendanceBookRewards().get(db.getIntValue("AttendanceBookUniqueId")).split("-")[0]+"-"+userInfo.getAttendanceBookRewards().get(db.getIntValue("AttendanceBookUniqueId")).split("-")[0]);
                     }
                 }
             }
@@ -248,7 +251,7 @@ public class UserCreate {
 
     public void attendanceReward(int i, int id, int id2, UserInfo userInfo) {
         String result;
-        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\"" + id + "\":" + id2 + "},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":" + i + ",\"Resendable\":true,\"Hash\":38663" + id + "95598633,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":9002,\"DayByBookUniqueId\":{\""+id+"\":"+id2+"},\"AttendanceBookUniqueId\":0,\"Day\":0,\"ClientUpTime\":"+i+",\"Resendable\":true,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;

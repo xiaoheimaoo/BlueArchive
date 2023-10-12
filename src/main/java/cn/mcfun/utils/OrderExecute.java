@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
@@ -97,17 +98,18 @@ public class OrderExecute implements Runnable{
         uc.accountLoginsync(userInfo);
         uc.Item_List(userInfo, new Random().nextInt(10));
         //uc.networktimeSync(userInfo);
+        int f = 1;
         if(userInfo.getAttendanceBookRewards().size() >= 1){
-            for(int i=0;i<userInfo.getAttendanceBookRewards().size();i++){
-                uc.attendanceReward(i+10,Integer.parseInt((String) userInfo.getAttendanceBookRewards().get(i)),1,userInfo);
+            for (Map.Entry<Integer, String> entry : userInfo.getAttendanceBookRewards().entrySet()) {
+                int key = entry.getKey();
+                String value = entry.getValue();
+                if(!value.split("-")[0].equals(value.split("-")[1])){
+                    uc.attendanceReward(key,key,Integer.parseInt(value.split("-")[1])+1,userInfo);
+                    f = 0;
+                }
             }
         }
-        if(userInfo.getAttendanceHistoryDBs().size() >= 1){
-            for(int i=0;i<userInfo.getAttendanceHistoryDBs().size();i++){
-                uc.attendanceReward(i+10,Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[0]),Integer.parseInt(userInfo.getAttendanceHistoryDBs().get(i).toString().split("-")[1])+1,userInfo);
-            }
-        }
-        if(userInfo.getAttendanceBookRewards().size() >= 1 || userInfo.getAttendanceHistoryDBs().size() >= 1){
+        if(f == 0){
             uc.mailCheck1(userInfo);
             uc.mailCheck2(userInfo);
             uc.mailList(userInfo);
