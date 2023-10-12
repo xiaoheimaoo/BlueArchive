@@ -10,33 +10,59 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserInfo {
-    String ip;
-    String order;
-    BasicCookieStore cookie;
-    String deviceId;
-    String uid;
-    String token;
-    String accessToken;
-    String EnterTicket;
-    String MxToken;
-    Long AccountId;
-    String SessionKey;
-    String transcode;
-    Long ServerId1;
-    Long ServerId2;
-    Long ServerId3;
-    Long ServerId4;
-    JSONObject EchelonDBs = new JSONObject();
-    JSONArray CharacterDBs = new JSONArray();
-    JSONArray svts = new JSONArray();
-    Map<Integer,String> AttendanceBookRewards = new HashMap<>();
-    Map<Integer,Integer> AttendanceHistoryDBs = new HashMap<>();
-    JSONArray mail = new JSONArray();
-    int StarNum = 0;
-    int Gem = 0;
-    int Ticket = 0;
-    CloseableHttpClient httpClientBuilder = null;
+    private long Hint;
+    private String Question;
+    private long Answer;
+    private String ip;
+    private String order;
+    private BasicCookieStore cookie;
+    private String deviceId;
+    private String uid;
+    private String token;
+    private String accessToken;
+    private String EnterTicket;
+    private String MxToken;
+    private Long AccountId;
+    private String SessionKey;
+    private String transcode;
+    private Long ServerId1;
+    private Long ServerId2;
+    private Long ServerId3;
+    private Long ServerId4;
+    private JSONObject EchelonDBs = new JSONObject();
+    private JSONArray CharacterDBs = new JSONArray();
+    private JSONArray svts = new JSONArray();
+    private Map<Integer,String> AttendanceBookRewards = new HashMap<>();
+    private JSONArray mail = new JSONArray();
+    private int StarNum = 0;
+    private int Gem = 0;
+    private int Ticket = 0;
+    private CloseableHttpClient httpClientBuilder = null;
     public UserInfo() {
+    }
+
+    public long getHint() {
+        return Hint;
+    }
+
+    public void setHint(long hint) {
+        Hint = hint;
+    }
+
+    public String getQuestion() {
+        return Question;
+    }
+
+    public void setQuestion(String question) {
+        Question = question;
+    }
+
+    public long getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(long answer) {
+        Answer = answer;
     }
 
     public int getTicket() {
@@ -93,14 +119,6 @@ public class UserInfo {
 
     public void setAttendanceBookRewards(Map<Integer, String> attendanceBookRewards) {
         AttendanceBookRewards = attendanceBookRewards;
-    }
-
-    public Map<Integer, Integer> getAttendanceHistoryDBs() {
-        return AttendanceHistoryDBs;
-    }
-
-    public void setAttendanceHistoryDBs(Map<Integer, Integer> attendanceHistoryDBs) {
-        AttendanceHistoryDBs = attendanceHistoryDBs;
     }
 
     public JSONArray getMail() {

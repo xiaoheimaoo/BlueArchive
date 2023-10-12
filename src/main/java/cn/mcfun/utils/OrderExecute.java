@@ -93,10 +93,12 @@ public class OrderExecute implements Runnable{
         //登录
         //uc.getTicket(userInfo);
         uc.accountAuth(userInfo);
-        //uc.requestQuestion(userInfo);
+        uc.ProofToken_RequestQuestion(userInfo);
         //uc.academyGetinfo(userInfo);
         uc.accountLoginsync(userInfo);
         uc.Item_List(userInfo, new Random().nextInt(10));
+        uc.ProofToken_Submit(userInfo);
+        uc.mailCheck1(userInfo);
         //uc.networktimeSync(userInfo);
         int f = 1;
         if(userInfo.getAttendanceBookRewards().size() >= 1){
