@@ -133,6 +133,8 @@ public class Main{
                 userInfo.setSessionKey(rs.getString("SessionKey"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
                 userInfo.setAccessToken(rs.getString("accessToken"));
+                userInfo.setTranscode(rs.getString("transcode"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
 
                 addToOrderQueue(userInfo);
             }
@@ -171,6 +173,8 @@ public class Main{
                 userInfo.setSessionKey(rs.getString("SessionKey"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
                 userInfo.setAccessToken(rs.getString("accessToken"));
+                userInfo.setTranscode(rs.getString("transcode"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
 
                 addToOrderQueue(userInfo);
             }

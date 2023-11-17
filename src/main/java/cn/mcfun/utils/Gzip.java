@@ -40,7 +40,7 @@ public class Gzip {
     }
     public static byte[] enCrypt2(String str){
         int Protocol;
-        if(str.contains("{\"Protocol\":1000")){
+        if(str.contains("{\"Protocol\":1000,")){
             Protocol = 1000;
         }else if(str.contains("{\"Protocol\":1001,")){
             Protocol = 1001;

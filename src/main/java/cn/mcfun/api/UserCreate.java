@@ -27,6 +27,80 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class UserCreate {
     ContentType strContent = ContentType.APPLICATION_OCTET_STREAM;
 
+    public void transcode_verify(UserInfo userInfo) {
+        userInfo.setDeviceId(UUID.randomUUID().toString().toUpperCase());
+        String result;
+        List<BasicNameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("uid", userInfo.getUid()));
+        params.add(new BasicNameValuePair("transcode", userInfo.getTranscode()));
+        result = HttpClientPool.sendPost(userInfo, "https://ba-jp-sdk.bluearchive.jp/user/transcode_verify", params);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=?";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+        if (result.contains("\"result\":0")) {
+            userInfo.setToken(jsonObject.getString("token"));
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='生成新的token' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
+
     public void userCreate(UserInfo userInfo) {
         userInfo.setDeviceId(UUID.randomUUID().toString().toUpperCase());
         String result;
