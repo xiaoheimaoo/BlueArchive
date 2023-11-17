@@ -106,6 +106,10 @@ public class Gzip {
             Protocol = 29002;
         }else if(str.contains("{\"Protocol\":36001,")){
             Protocol = 36001;
+        }else if(str.contains("\"Protocol\":37000,")){
+            Protocol = 37000;
+        }else if(str.contains("\"Protocol\":37001,")){
+            Protocol = 37001;
         }else if(str.contains("{\"Protocol\":43010,")){
             Protocol = 43010;
         }else if(str.contains("{\"Protocol\":50000,")){

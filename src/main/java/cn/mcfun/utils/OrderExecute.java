@@ -89,11 +89,15 @@ public class OrderExecute implements Runnable{
         uc.getTicket(userInfo);
         uc.checkYostar(userInfo);
         uc.accountAuth(userInfo);
+        uc.ProofToken_RequestQuestion(userInfo);
+        uc.ProofToken_Submit(userInfo);
         uc.accountCreate(userInfo);
 /*        uc.nickname(userInfo);
         uc.callname(userInfo);*/
         uc.accountAuth2(userInfo);
+        uc.ProofToken_RequestQuestion2(userInfo);
         uc.accountLoginsync(userInfo);
+        uc.ProofToken_Submit2(userInfo);
         uc.Account_GetTutorial(userInfo);
         uc.Mission_List(userInfo);
         uc.Mission_List2(userInfo);

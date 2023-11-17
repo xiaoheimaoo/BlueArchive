@@ -8,6 +8,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 public class UserInfo {
     String ip;
     String order;
+    String Hint;
+    String Question;
+    String Answer;
     BasicCookieStore cookie;
     String deviceId;
     String uid;
@@ -40,6 +43,30 @@ public class UserInfo {
 
     public void setHttpClientBuilder(CloseableHttpClient httpClientBuilder) {
         this.httpClientBuilder = httpClientBuilder;
+    }
+
+    public String getHint() {
+        return Hint;
+    }
+
+    public void setHint(String hint) {
+        Hint = hint;
+    }
+
+    public String getQuestion() {
+        return Question;
+    }
+
+    public void setQuestion(String question) {
+        Question = question;
+    }
+
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
     }
 
     public JSONArray getSvts() {
