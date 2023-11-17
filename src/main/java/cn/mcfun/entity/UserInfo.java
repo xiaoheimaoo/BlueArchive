@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserInfo {
-    private long Hint;
+    private String Hint;
     private String Question;
-    private long Answer;
+    private String Answer;
     private String ip;
     private String order;
     private BasicCookieStore cookie;
@@ -41,12 +41,20 @@ public class UserInfo {
     public UserInfo() {
     }
 
-    public long getHint() {
+    public String getHint() {
         return Hint;
     }
 
-    public void setHint(long hint) {
+    public void setHint(String hint) {
         Hint = hint;
+    }
+
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
     }
 
     public String getQuestion() {
@@ -55,14 +63,6 @@ public class UserInfo {
 
     public void setQuestion(String question) {
         Question = question;
-    }
-
-    public long getAnswer() {
-        return Answer;
-    }
-
-    public void setAnswer(long answer) {
-        Answer = answer;
     }
 
     public int getTicket() {

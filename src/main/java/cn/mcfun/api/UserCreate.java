@@ -3,6 +3,7 @@ package cn.mcfun.api;
 import cn.mcfun.entity.StudentName;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
+import cn.mcfun.utils.HashMatching;
 import cn.mcfun.utils.HttpClientPool;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -144,7 +145,7 @@ public class UserCreate {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
             if (js.containsKey("SessionKey")) {
                 userInfo.setSessionKey(js.getString("SessionKey"));
-                userInfo.setHint(js.getLong("Hint"));
+                userInfo.setHint(js.getString("Hint"));
                 userInfo.setQuestion(js.getString("Question"));
             }
             Connection conn2 = getConnection();
@@ -327,8 +328,9 @@ public class UserCreate {
     }
 
     public void ProofToken_Submit(UserInfo userInfo) {
+        userInfo.setAnswer(HashMatching.solve(userInfo.getHint(),userInfo.getQuestion()));
         String result;
-        String packet = "{\"Answer\":0,\"Protocol\":37001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":158918084919306,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
+        String packet = "{\"Answer\":"+userInfo.getAnswer()+",\"Protocol\":37001,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":158918084919306,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
