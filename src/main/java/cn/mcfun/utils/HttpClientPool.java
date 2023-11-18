@@ -7,6 +7,7 @@ import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -25,19 +26,25 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    public static String sendGet(UserInfo userInfo) {
-        int timeout = 10000;
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+    public static String sendGet2(UserInfo userInfo) {
+        CloseableHttpClient httpClient = HttpClients.custom().build();
         CloseableHttpResponse response = null;
-        HttpPost httpPost = new HttpPost("https://217381jr68.goho.co/captcha4");
+        HttpGet httpGet = new HttpGet("http://httpapi.91vps.com/dynamic/getips?trade_no=2914736263539850&num=1&pt=1&result_type=text&split=3&sign=145bb17be32553083a96a822eaeec302");
+        String result = null;
+        try {
+            response = httpClient.execute(httpGet);
+            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+        } catch (IOException e) {
+        }
+        return result;
+    }
+    public static String sendGet(String proxy,UserInfo userInfo) {
+        CloseableHttpClient httpClient = HttpClients.custom().build();
+        CloseableHttpResponse response = null;
+        HttpPost httpPost = new HttpPost("http://192.168.1.9:8888/captcha4");
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
+        params.add(new BasicNameValuePair("proxy", proxy));
         String result = null;
         Connection conn2 = getConnection();
         String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
@@ -57,6 +64,7 @@ public class HttpClientPool {
                 httpPost.setEntity(new UrlEncodedFormEntity(params));
                 response = httpClient.execute(httpPost);
                 result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+                System.out.println(result);
                 num = 1;
             } catch (IOException e) {
                 num = 0;

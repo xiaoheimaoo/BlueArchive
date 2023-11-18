@@ -153,10 +153,12 @@ public class UserCreate {
     }
 
     public void userLogin(UserInfo userInfo) {
-        String geetest = HttpClientPool.sendGet(userInfo);
+        String proxy = HttpClientPool.sendGet2(userInfo);
+        String geetest = HttpClientPool.sendGet(proxy,userInfo);
         JSONObject js = JSONObject.parseObject(geetest);
         while(!js.getJSONObject("data").getJSONObject("code").getString("result").equals("success")){
-            geetest = HttpClientPool.sendGet(userInfo);
+            proxy = HttpClientPool.sendGet2(userInfo);
+            geetest = HttpClientPool.sendGet(proxy,userInfo);
             js = JSONObject.parseObject(geetest);
         }
         String result;
