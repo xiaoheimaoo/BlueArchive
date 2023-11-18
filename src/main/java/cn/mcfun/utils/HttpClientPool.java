@@ -25,8 +25,15 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    static CloseableHttpClient httpClient = HttpClients.createDefault();
     public static String sendGet(UserInfo userInfo) {
+        int timeout = 10000;
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(timeout)
+                .setSocketTimeout(timeout)
+                .build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
         CloseableHttpResponse response = null;
         HttpPost httpPost = new HttpPost("https://217381jr68.goho.co/captcha4");
         List<NameValuePair> params = new ArrayList<>();
