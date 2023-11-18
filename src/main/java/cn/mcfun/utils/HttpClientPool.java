@@ -32,6 +32,18 @@ public class HttpClientPool {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
         String result = null;
+        Connection conn2 = getConnection();
+        String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
+        PreparedStatement ps2 = null;
+        try {
+            ps2 = conn2.prepareStatement(sql2);
+            ps2.setString(1,userInfo.getOrder());
+            ps2.executeUpdate();
+            conn2.close();
+            ps2.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         int num = 0;
         while(num == 0){
             try {
