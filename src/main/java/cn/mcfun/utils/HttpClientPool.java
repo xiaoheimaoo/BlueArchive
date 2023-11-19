@@ -26,25 +26,13 @@ import java.util.List;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    public static String sendGet2(UserInfo userInfo) {
-        CloseableHttpClient httpClient = HttpClients.custom().build();
-        CloseableHttpResponse response = null;
-        HttpGet httpGet = new HttpGet("http://httpapi.91vps.com/dynamic/getips?trade_no=2914736263539850&num=1&pt=1&result_type=text&split=3&sign=145bb17be32553083a96a822eaeec302");
-        String result = null;
-        try {
-            response = httpClient.execute(httpGet);
-            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (IOException e) {
-        }
-        return result;
-    }
-    public static String sendGet(String proxy,UserInfo userInfo) {
+    public static String sendGet(UserInfo userInfo) {
         CloseableHttpClient httpClient = HttpClients.custom().build();
         CloseableHttpResponse response = null;
         HttpPost httpPost = new HttpPost("http://192.168.1.9:8888/captcha4");
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
-        params.add(new BasicNameValuePair("proxy", proxy));
+        //params.add(new BasicNameValuePair("proxy", proxy));
         String result = null;
         Connection conn2 = getConnection();
         String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
