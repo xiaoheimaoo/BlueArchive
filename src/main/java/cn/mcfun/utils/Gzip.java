@@ -2,6 +2,7 @@ package cn.mcfun.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
@@ -69,7 +70,7 @@ public class Gzip {
         }else {
             Protocol = 0;
         }
-        byte[] raw2 = str.getBytes();
+        byte[] raw2 = str.getBytes(StandardCharsets.UTF_8);
         byte[] raw3 = GZip(raw2);
         String raw4 = Tools.BytePrintAsString(raw3);
         raw4 = raw4.substring(raw4.length()-8)+raw4;

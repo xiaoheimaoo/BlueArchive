@@ -934,7 +934,7 @@ public class UserCreate {
             }
             Thread.currentThread().stop();
         }
-        if (result.contains("packet")) {
+        if (result.contains(":1001,") || (result.contains("ErrorCode") && result.contains("1006"))) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称1' where `order`=? and status=1";
             PreparedStatement ps2 = null;
@@ -1004,7 +1004,7 @@ public class UserCreate {
             }
             Thread.currentThread().stop();
         }
-        if (result.contains("packet")) {
+        if (result.contains(":1010,") || (result.contains("ErrorCode") && result.contains("34000"))) {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set message='设置昵称2' where `order`=? and status=1";
             PreparedStatement ps2 = null;
