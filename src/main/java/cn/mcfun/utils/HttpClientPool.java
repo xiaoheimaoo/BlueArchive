@@ -29,7 +29,7 @@ public class HttpClientPool {
     public static String sendGet(UserInfo userInfo) {
         CloseableHttpClient httpClient = HttpClients.custom().build();
         CloseableHttpResponse response = null;
-        HttpPost httpPost = new HttpPost("http://192.168.1.9:8888/captcha4");
+        HttpPost httpPost = new HttpPost("http://124.221.75.221:81/captcha4");
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
         //params.add(new BasicNameValuePair("proxy", proxy));
