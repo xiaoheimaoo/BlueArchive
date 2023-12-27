@@ -9,10 +9,6 @@ import cn.mcfun.utils.HttpClientPool;
 import cn.mcfun.utils.Md5;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -27,7 +23,7 @@ public class UserCreate {
         String result;
         String packet = "{\"Protocol\":50000,\"YostarUID\":" + userInfo.getUid() + ",\"YostarToken\":\"" + userInfo.getAccessToken() + "\",\"WaitingTicket\":\"\",\"ClientVersion\":\"" + Main.ClientVersion + "\",\"Resendable\":true}";
         byte[] builder = Gzip.enCrypt2(packet);
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-gateway.bluearchiveyostar.com:5100/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
         if (result.contains("EnterTicket")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));

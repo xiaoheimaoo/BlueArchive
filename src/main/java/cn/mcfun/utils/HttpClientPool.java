@@ -87,6 +87,11 @@ public class HttpClientPool {
         String boundary = Gzip.genRandomNum();
         if(url.equals("https://prod-game.bluearchiveyostar.com:5000/api/gateway")){
             httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
+        }
+        if(url.equals("https://prod-gateway.bluearchiveyostar.com:5100/api/gateway")){
+            httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-gateway.bluearchiveyostar.com:5100");
         }
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
@@ -94,7 +99,6 @@ public class HttpClientPool {
         httpPost.addHeader("Connection", "Keep-Alive, TE");
         httpPost.addHeader("Keep-Alive", "timeout=21");
         httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         httpPost.addHeader("Content-Type", "multipart/form-data; boundary=BestHTTP_HTTPMultiPartForm_"+boundary);
         // 拼接请求体
         StringBuilder requestBody1 = new StringBuilder();
