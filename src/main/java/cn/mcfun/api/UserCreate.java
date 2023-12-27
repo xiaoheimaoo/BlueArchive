@@ -1,12 +1,18 @@
 package cn.mcfun.api;
 
+import cn.mcfun.Main;
 import cn.mcfun.entity.StudentName;
 import cn.mcfun.entity.UserInfo;
 import cn.mcfun.utils.Gzip;
 import cn.mcfun.utils.HashMatching;
 import cn.mcfun.utils.HttpClientPool;
+import cn.mcfun.utils.Md5;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,7 +23,104 @@ import java.util.Random;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
+    public void getTicket(UserInfo userInfo) {
+        String result;
+        String packet = "{\"Protocol\":50000,\"YostarUID\":" + userInfo.getUid() + ",\"YostarToken\":\"" + userInfo.getAccessToken() + "\",\"WaitingTicket\":\"\",\"ClientVersion\":\"" + Main.ClientVersion + "\",\"Resendable\":true}";
+        byte[] builder = Gzip.enCrypt2(packet);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (result.contains("EnterTicket")) {
+            JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
+            userInfo.setEnterTicket(js.getString("EnterTicket"));
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='生成EnterTicket' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
 
+    public void checkYostar(UserInfo userInfo) {
+        String result;
+        String packet = "{\"Protocol\":1009,\"EnterTicket\":\"" + userInfo.getEnterTicket() + "\",\"Cookie\":\"3065181BCC_" + Md5.getMd5(userInfo.getUid()) + "_" + Md5.getMd5(userInfo.getEnterTicket()) + "\",\"Hash\":4333622001665}";
+        byte[] builder = Gzip.enCrypt2(packet);
+        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (result.contains("SessionKey")) {
+            JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
+            userInfo.setSessionKey(js.getString("SessionKey"));
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set message='生成SessionKey' where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+
+        } else {
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, result);
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
+        }
+    }
     public void accountAuth(UserInfo userInfo) {
         String result;
         String packet = "{\"Protocol\":1002,\"Version\":0,\"DevId\":null,\"IMEI\":0,\"AccessIP\":\"127.0.0.1\",\"MarketId\":\"aas\",\"UserType\":null,\"AdvertisementId\":null,\"OSType\":\"I\",\"OSVersion\":\"iPadOS 16.2\",\"DeviceUniqueId\":\"" + userInfo.getDeviceId() + "\",\"DeviceModel\":\"iPad11,1\",\"DeviceSystemMemorySize\":2923,\"ClientUpTime\":0,\"Resendable\":true,\"Hash\":4303557230598,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
