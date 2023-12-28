@@ -61,11 +61,12 @@ public class UserCreate {
         if (result.contains("\"result\":0")) {
             userInfo.setToken(jsonObject.getString("token"));
             Connection conn2 = getConnection();
-            String sql2 = "update `order` set message='生成新的token' where `order`=? and status=1";
+            String sql2 = "update `order` set `token`=?,`message`='生成新的token' where `order`=? and status=1";
             PreparedStatement ps2 = null;
             try {
                 ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1, userInfo.getOrder());
+                ps2.setString(1, userInfo.getToken());
+                ps2.setString(2, userInfo.getOrder());
                 ps2.executeUpdate();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();

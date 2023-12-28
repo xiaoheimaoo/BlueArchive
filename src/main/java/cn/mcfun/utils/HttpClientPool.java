@@ -15,24 +15,34 @@ import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
     public static String sendGet(UserInfo userInfo) {
+        String randomLine = null;
+        if (!Main.lines.isEmpty()) {
+            Random random = new Random();
+            randomLine = Main.lines.get(random.nextInt(Main.lines.size()));
+        }
         CloseableHttpClient httpClient = HttpClients.custom().build();
         CloseableHttpResponse response = null;
         HttpPost httpPost = new HttpPost("http://124.221.75.221:81/captcha4");
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
-        //params.add(new BasicNameValuePair("proxy", proxy));
+        params.add(new BasicNameValuePair("proxy", randomLine));
+        System.out.println(params);
         String result = null;
         Connection conn2 = getConnection();
         String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
@@ -57,6 +67,18 @@ public class HttpClientPool {
             } catch (IOException e) {
                 num = 0;
             }
+        }
+        return result;
+    }
+    public static String sendGet2() {
+        CloseableHttpClient httpClient = HttpClients.custom().build();
+        CloseableHttpResponse response = null;
+        HttpGet httpGet = new HttpGet("https://share.proxy.qg.net/get?key=CW3IAB1D&num=200&area=&isp=&format=txt&seq=%5Cr%5Cn&distinct=true&pool=1");
+        String result = null;
+        try {
+            response = httpClient.execute(httpGet);
+            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
+        } catch (IOException e) {
         }
         return result;
     }

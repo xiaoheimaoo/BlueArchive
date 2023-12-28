@@ -1,12 +1,10 @@
 package cn.mcfun;
 
 import cn.mcfun.entity.UserInfo;
+import cn.mcfun.utils.HttpClientPool;
 import cn.mcfun.utils.OrderExecute;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +18,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 
 
 public class Main{
+    public static List<String> lines = new ArrayList<>();
     public static String ClientVersion = "1.28.196922";
     public static String BundleVersion = "8qOm7FS6jd";
     private static Main main;
@@ -72,6 +71,7 @@ public class Main{
             }
         }
         timer();
+        timer3();
         while (main.isRunning()){
 
             try {
@@ -106,7 +106,25 @@ public class Main{
 
         }, 1000 * 60 * 10,1000 * 60 * 10);
     }
+    public static void timer3() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                String result = HttpClientPool.sendGet2();
+                try {
+                    BufferedReader reader = new BufferedReader(new StringReader(result));
+                    String line;
+                    lines.clear();
+                    while ((line = reader.readLine()) != null) {
+                        lines.add(line);
+                    }
+                }catch (IOException e){
 
+                }
+            }
+
+        }, 0,1000 * 60);
+    }
     public boolean isRunning(){
         return this.running;
     }
@@ -135,6 +153,7 @@ public class Main{
                 userInfo.setAccessToken(rs.getString("accessToken"));
                 userInfo.setTranscode(rs.getString("transcode"));
                 userInfo.setAccountId(rs.getLong("AccountId"));
+                userInfo.setToken(rs.getString("token"));
 
                 addToOrderQueue(userInfo);
             }
@@ -160,7 +179,7 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "update `order` set status=-1 where status=0 or status=1";
+            String sql = "update `order` set status=-1 where status=0 or status=1 or status=3";
             ps = conn.prepareStatement(sql);
             ps.executeUpdate();
             sql = "select * from `order` where status=-1";
@@ -175,6 +194,7 @@ public class Main{
                 userInfo.setAccessToken(rs.getString("accessToken"));
                 userInfo.setTranscode(rs.getString("transcode"));
                 userInfo.setAccountId(rs.getLong("AccountId"));
+                userInfo.setToken(rs.getString("token"));
 
                 addToOrderQueue(userInfo);
             }

@@ -84,19 +84,21 @@ public class OrderExecute implements Runnable{
             }
         }
         UserCreate uc = new UserCreate();
-        uc.userCreate(userInfo);
+        if(userInfo.getToken() == null){
+            uc.transcode_verify(userInfo);
+        }
         uc.userLogin(userInfo);
         uc.getTicket(userInfo);
         uc.checkYostar(userInfo);
-        uc.accountAuth(userInfo);
+/*        uc.accountAuth(userInfo);
         uc.accountCreate(userInfo);
-/*        uc.nickname(userInfo);
+        uc.nickname(userInfo);
         uc.callname(userInfo);*/
         uc.accountAuth2(userInfo);
         uc.ProofToken_RequestQuestion2(userInfo);
         uc.accountLoginsync(userInfo);
         uc.ProofToken_Submit2(userInfo);
-        uc.Account_GetTutorial(userInfo);
+/*        uc.Account_GetTutorial(userInfo);
         uc.Mission_List(userInfo);
         uc.Mission_List2(userInfo);
         uc.Scenario_Skip(userInfo);
@@ -136,14 +138,14 @@ public class OrderExecute implements Runnable{
         uc.Campaign_TacticResult2(userInfo);
         uc.Account_SetTutorial4(userInfo);
         uc.Account_SetTutorial5(userInfo);
-        uc.Account_SetTutorial6(userInfo);
+        uc.Account_SetTutorial6(userInfo);*/
         uc.transcode_request(userInfo);
-        uc.Scenario_Skip9(userInfo);
+/*        uc.Scenario_Skip9(userInfo);
         uc.missionMultiplereward(userInfo);
         uc.mailList(userInfo);
         if(!userInfo.getMail().toJSONString().equals("[]")){
             uc.mailReceive(userInfo);
-        }
+        }*/
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
