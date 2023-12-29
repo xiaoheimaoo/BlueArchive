@@ -45,6 +45,26 @@ public class UserCreate {
                     throwables.printStackTrace();
                 }
             }
+        } else if (result.contains("Error") && result.contains("State:99")){
+            Connection conn2 = getConnection();
+            String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";
+            PreparedStatement ps2 = null;
+            try {
+                ps2 = conn2.prepareStatement(sql2);
+                ps2.setString(1, "accessToken过期账号");
+                ps2.setString(2, userInfo.getOrder());
+                ps2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                try {
+                    conn2.close();
+                    ps2.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            Thread.currentThread().stop();
         } else {
             Connection conn2 = getConnection();
             String sql2 = "update `order` set status=3,message=? where `order`=? and status=1";

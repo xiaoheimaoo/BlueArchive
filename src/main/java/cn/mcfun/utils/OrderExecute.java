@@ -112,7 +112,7 @@ public class OrderExecute implements Runnable{
                 }
             }
         }
-        if(f == 0){
+        //if(f == 0){
             uc.mailCheck1(userInfo);
             uc.mailCheck2(userInfo);
             uc.mailList(userInfo);
@@ -120,7 +120,7 @@ public class OrderExecute implements Runnable{
                 uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
                 uc.mailList2(userInfo);
             }
-        }
+        //}
 /*        uc.buyGacha3(10,userInfo);
         uc.buyGacha3(20,userInfo);
         uc.buyGacha3(30,userInfo);

@@ -135,7 +135,7 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "select * from `order` where `status` = 3 or `status` = 0";
+            String sql = "select * from `order` where (`status` = 3 and `message` not like '%accessToken过期账号%') or `status` = 0";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
@@ -177,7 +177,7 @@ public class Main{
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set `status`= -1 where `complete` < ? or `status`!= 2";
+            String sql = "update `order` set `status`= -1 where `complete` < ? and `message` not like '%accessToken过期账号%'";
             ps = conn.prepareStatement(sql);
             ps.setString(1,time);
             ps.executeUpdate();
