@@ -42,7 +42,6 @@ public class HttpClientPool {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
         params.add(new BasicNameValuePair("proxy", randomLine));
-        System.out.println(params);
         String result = null;
         Connection conn2 = getConnection();
         String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
@@ -62,7 +61,6 @@ public class HttpClientPool {
                 httpPost.setEntity(new UrlEncodedFormEntity(params));
                 response = httpClient.execute(httpPost);
                 result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-                System.out.println(result);
                 num = 1;
             } catch (IOException e) {
                 num = 0;
