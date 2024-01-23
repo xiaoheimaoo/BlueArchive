@@ -763,13 +763,18 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
-            if (js.containsKey("MailDBs") && js.getJSONArray("MailDBs").size() > 0) {
-                for (int i = 0; i < js.getJSONArray("MailDBs").size(); i++) {
-                    for (int j = 0; j < js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").size(); j++) {
-                        if ((js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(j).getJSONObject("Key").getString("Id").equals("3") ||
-                                js.getJSONArray("MailDBs").getJSONObject(i).getJSONArray("ParcelInfos").getJSONObject(j).getJSONObject("Key").getString("Id").equals("6999"))) {
-                            userInfo.getMail().add(js.getJSONArray("MailDBs").getJSONObject(i).getLong("ServerId"));
-                            break;
+            if (js.containsKey("MailDBs")) {
+                JSONArray mailDBs = js.getJSONArray("MailDBs");
+                if (mailDBs.size() > 0) {
+                    for (int i = 0; i < mailDBs.size(); i++) {
+                        JSONArray parcelInfos = mailDBs.getJSONObject(i).getJSONArray("ParcelInfos");
+                        for (int j = 0; j < parcelInfos.size(); j++) {
+                            JSONObject key = parcelInfos.getJSONObject(j).getJSONObject("Key");
+                            String id = key.getString("Id");
+                            if (id.equals("3") || id.equals("6999")) {
+                                userInfo.getMail().add(mailDBs.getJSONObject(i).getLong("ServerId"));
+                                break;
+                            }
                         }
                     }
                 }
