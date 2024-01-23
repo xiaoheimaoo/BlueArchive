@@ -339,12 +339,30 @@ public class UserCreate {
         }
         if (result.contains("packet")) {
             JSONObject js = JSONObject.parseObject(jsonObject.getString("packet"));
-            userInfo.setEchelonDBs(js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0));
-            userInfo.setCharacterDBs(js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs"));
-            for (int i = 0; i < userInfo.getCharacterDBs().size(); i++) {
-                if (userInfo.getCharacterDBs().getJSONObject(i).getString("StarGrade").equals("3")) {
+
+// 直接提取所需的JSON对象和数组
+            JSONObject echelonDBs = js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0);
+            JSONArray characterDBs = js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs");
+
+            userInfo.setEchelonDBs(echelonDBs);
+            userInfo.setCharacterDBs(characterDBs);
+
+// 避免在循环中多次调用 getJSONObject
+            for (int i = 0; i < characterDBs.size(); i++) {
+                JSONObject characterDB = characterDBs.getJSONObject(i);
+
+                // 提前获取需要的值
+                String starGrade = characterDB.getString("StarGrade");
+                Integer uniqueId = characterDB.getInteger("UniqueId");
+
+                // 检查 starGrade 是否为 "3"
+                if ("3".equals(starGrade)) {
                     userInfo.setStarNum(userInfo.getStarNum() + 1);
-                    userInfo.getSvts().add(StudentName.getStudentName(userInfo.getCharacterDBs().getJSONObject(i).getInteger("UniqueId")));
+
+                    // 仅当需要时才调用 StudentName.getStudentName()
+                    if (uniqueId != null) {
+                        userInfo.getSvts().add(StudentName.getStudentName(uniqueId));
+                    }
                 }
             }
             userInfo.setGem(js.getJSONObject("AccountCurrencySyncResponse").getJSONObject("AccountCurrencyDB").getJSONObject("CurrencyDict").getInteger("Gem"));
