@@ -156,7 +156,7 @@ public class HttpClientPool {
     }
     public static String postFileMultiPart2(UserInfo userInfo, String url, byte[] builder) {
         HttpHost proxy;
-        proxy = new HttpHost("overseas.tunnel.qg.net",14057);
+        proxy = new HttpHost("overseas.tunnel.qg.net",12198);
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         if(userInfo.getHttpClientBuilder2() == null){
             userInfo.setHttpClientBuilder2(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
