@@ -118,15 +118,13 @@ public class OrderExecute implements Runnable{
             uc.mailList(userInfo);
             for(int i=0;i<userInfo.getMail().size();i++){
                 uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
-                uc.mailList2(userInfo);
+                //uc.mailList2(userInfo);
             }
         //}
-/*        uc.buyGacha3(10,userInfo);
-        uc.buyGacha3(20,userInfo);
-        uc.buyGacha3(30,userInfo);
-        uc.buyGacha3(40,userInfo);
-        uc.buyGacha3(50,userInfo);
-        uc.buyGacha3(60,userInfo);*/
+        while(userInfo.getRecruitCount() < 60){
+            uc.buyGacha3(userInfo.getRecruitCount()+5,userInfo);
+            userInfo.setRecruitCount(userInfo.getRecruitCount()+10);
+        }
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);

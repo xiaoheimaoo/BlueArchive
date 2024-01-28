@@ -37,6 +37,7 @@ public class UserInfo {
     private int StarNum = 0;
     private int Gem = 0;
     private int Ticket = 0;
+    private int RecruitCount = 0;
     private CloseableHttpClient httpClientBuilder = null;
     private CloseableHttpClient httpClientBuilder2 = null;
     public UserInfo() {
@@ -48,6 +49,14 @@ public class UserInfo {
 
     public void setHttpClientBuilder2(CloseableHttpClient httpClientBuilder2) {
         this.httpClientBuilder2 = httpClientBuilder2;
+    }
+
+    public int getRecruitCount() {
+        return RecruitCount;
+    }
+
+    public void setRecruitCount(int recruitCount) {
+        RecruitCount = recruitCount;
     }
 
     public String getHint() {

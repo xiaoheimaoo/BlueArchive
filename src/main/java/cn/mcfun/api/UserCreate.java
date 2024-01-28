@@ -343,7 +343,15 @@ public class UserCreate {
 // 直接提取所需的JSON对象和数组
             JSONObject echelonDBs = js.getJSONObject("EchelonListResponse").getJSONArray("EchelonDBs").getJSONObject(0);
             JSONArray characterDBs = js.getJSONObject("CharacterListResponse").getJSONArray("CharacterDBs");
-
+            JSONArray ShopFreeRecruitHistoryDBs = null;
+            if(js.getJSONObject("ShopGachaRecruitListResponse").containsKey("ShopFreeRecruitHistoryDBs")){
+                ShopFreeRecruitHistoryDBs = js.getJSONObject("ShopGachaRecruitListResponse").getJSONArray("ShopFreeRecruitHistoryDBs");
+                for(int i=0;i<ShopFreeRecruitHistoryDBs.size();i++){
+                    if(ShopFreeRecruitHistoryDBs.getJSONObject(i).getIntValue("UniqueId") == 5){
+                        userInfo.setRecruitCount(ShopFreeRecruitHistoryDBs.getJSONObject(i).getIntValue("RecruitCount"));
+                    }
+                }
+            }
             userInfo.setEchelonDBs(echelonDBs);
             userInfo.setCharacterDBs(characterDBs);
 
