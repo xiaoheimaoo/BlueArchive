@@ -38,7 +38,16 @@ public class UserInfo {
     private int Gem = 0;
     private int Ticket = 0;
     private CloseableHttpClient httpClientBuilder = null;
+    private CloseableHttpClient httpClientBuilder2 = null;
     public UserInfo() {
+    }
+
+    public CloseableHttpClient getHttpClientBuilder2() {
+        return httpClientBuilder2;
+    }
+
+    public void setHttpClientBuilder2(CloseableHttpClient httpClientBuilder2) {
+        this.httpClientBuilder2 = httpClientBuilder2;
     }
 
     public String getHint() {

@@ -235,7 +235,7 @@ public class UserCreate {
         String result;
         String packet = "{\"Protocol\":37000,\"ClientUpTime\":27,\"Resendable\":true,\"Hash\":158913789952007,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         byte[] builder = Gzip.enCrypt2(packet);
-        result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        result = HttpClientPool.postFileMultiPart2(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);
