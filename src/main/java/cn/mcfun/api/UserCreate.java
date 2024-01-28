@@ -979,7 +979,7 @@ public class UserCreate {
 
     public void buyGacha3(int id, UserInfo userInfo) {
         String result;
-        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":4,\"Cost\":null,\"GoodsId\":35525,\"ShopUniqueId\":50384,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":5,\"Cost\":null,\"GoodsId\":35633,\"ShopUniqueId\":50492,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"IsTest\": false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
