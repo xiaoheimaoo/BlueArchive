@@ -121,7 +121,7 @@ public class OrderExecute implements Runnable{
                 //uc.mailList2(userInfo);
             }
         //}
-        while(userInfo.getRecruitCount() < 60){
+        while(userInfo.getRecruitCount() < 100){
             uc.buyGacha3(userInfo.getRecruitCount()+5,userInfo);
             userInfo.setRecruitCount(userInfo.getRecruitCount()+10);
         }
