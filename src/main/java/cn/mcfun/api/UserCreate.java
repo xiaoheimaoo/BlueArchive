@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import static cn.mcfun.Main.Cookie;
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class UserCreate {
@@ -90,7 +91,7 @@ public class UserCreate {
 
     public void checkYostar(UserInfo userInfo) {
         String result;
-        String packet = "{\"Protocol\":1009,\"EnterTicket\":\"" + userInfo.getEnterTicket() + "\",\"Cookie\":\"3065181BCC_" + Md5.getMd5(userInfo.getUid()) + "_" + Md5.getMd5(userInfo.getEnterTicket()) + "\",\"Hash\":4333622001665}";
+        String packet = "{\"Protocol\":1009,\"UID\":0,\"YostarToken\":null,\"EnterTicket\":\""+userInfo.getEnterTicket()+"\",\"PassCookieResult\":true,\"Cookie\":\""+Cookie+"\",\"ClientUpTime\":0,\"Resendable\":false,\"Hash\":4333622001683,\"IsTest\":false,\"SessionKey\":null,\"AccountId\":0}";
         byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = JSONObject.parseObject(result);
@@ -235,7 +236,9 @@ public class UserCreate {
         String result;
         String packet = "{\"Protocol\":37000,\"ClientUpTime\":27,\"Resendable\":true,\"Hash\":158913789952007,\"IsTest\":false,\"SessionKey\":"+userInfo.getSessionKey()+",\"AccountId\":"+userInfo.getAccountId()+"}";
         byte[] builder = Gzip.enCrypt2(packet);
-        result = HttpClientPool.postFileMultiPart2(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        do{
+            result = HttpClientPool.postFileMultiPart2(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
+        }while(result.contains("request exceed"));
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONObject.parseObject(result);

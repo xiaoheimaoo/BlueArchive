@@ -23,6 +23,7 @@ import static cn.mcfun.utils.Hikari.getConnection;
 public class Main{
     public static String ClientVersion = "1.28.196922";
     public static String BundleVersion = "8qOm7FS6jd";
+    public static String Cookie = "";
     private static Main main;
     private boolean running;
     private final ThreadPoolExecutor executor;
@@ -65,6 +66,7 @@ public class Main{
         CORE_POOL_SIZE = Integer.parseInt(props.getProperty("threads"));
         ClientVersion = props.getProperty("ClientVersion");
         BundleVersion = props.getProperty("BundleVersion");
+        Cookie = props.getProperty("Cookie");
         main = new Main();
         //查询并缓存需要执行的订单
         main.loadOrders();
@@ -177,9 +179,8 @@ public class Main{
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set `status`= -1 where `complete` < ? and `message` not like '%accessToken过期账号%'";
+            String sql = "update `order` set `status`= -1 where `status` != 2 and `message` not like '%accessToken过期账号%'";
             ps = conn.prepareStatement(sql);
-            ps.setString(1,time);
             ps.executeUpdate();
             sql = "select * from `order` where status= -1";
             ps = conn.prepareStatement(sql);

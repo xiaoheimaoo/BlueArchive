@@ -76,6 +76,7 @@ public class Gzip {
         byte[] raw3 = GZip(raw2);
         String raw4 = Tools.BytePrintAsString(raw3);
         raw4 = raw4.substring(raw4.length()-8)+raw4;
+        //raw4 = "bb0000001f8b0800a579116600ff0dcc4b6ec2301000d0bb78cd623cb6c7712416a52a2d1252406929aca2b163930f6014a26eaadebd1ce0bd5fb19bf29c43be885202b88578bbcd71faecc31867518ac1dc3aeae9fd5ac1714a3fdf2737ac98ebaf6e7fcff9ccdaafb787aeae5e36435e8a8578cd79ece3d34947242538c40688a3230385241792f796b85546270b8ac82a6c0c326288be953169a6c25b13900ba7a54bb64df6f97ef0a313a5564a11228024327fffe314ab39bb000000";
         String hex2 = Tools.BytePrintAsString(getXor(Tools.hexToByteArray(raw4)));
         String hex4 = Crc32.getCrc32(Protocol,hex2) + hex2;
         return Tools.hexToByteArray(hex4);

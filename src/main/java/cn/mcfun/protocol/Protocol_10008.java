@@ -8,301 +8,301 @@ public class Protocol_10008 {
         long a1 = Integer.toUnsignedLong(arg1);
         switch ((int) (a1 % 99)) {
             case 0:
-                result = 2121337747;
+                result = 505026914;
                 break;
             case 1:
-                result = 1069703453;
+                result = 586888954;
                 break;
             case 2:
-                result = 1637411139;
+                result = 728850233;
                 break;
             case 3:
-                result = 335378384;
+                result = 1942496809;
                 break;
             case 4:
-                result = 1605254228;
+                result = 378139095;
                 break;
             case 5:
-                result = 220854313;
+                result = 3545936;
                 break;
             case 6:
-                result = 265645521;
+                result = 1559536297;
                 break;
             case 7:
-                result = 1342916783;
+                result = 86342099;
                 break;
             case 8:
-                result = 484756265;
+                result = 303368552;
                 break;
             case 9:
-                result = 315726622;
+                result = 551198736;
                 break;
             case 10:
-                result = 915934940;
+                result = 815262997;
                 break;
             case 11:
-                result = 1920511412;
+                result = 1927024537;
                 break;
             case 12:
-                result = 2083184933;
+                result = 128987671;
                 break;
             case 13:
-                result = 1742958578;
+                result = 1357370399;
                 break;
             case 14:
-                result = 1932300864;
+                result = 733124739;
                 break;
             case 15:
-                result = 477668956;
+                result = 1246004370;
                 break;
             case 16:
-                result = 890002822;
+                result = 876978810;
                 break;
             case 17:
-                result = 487532753;
+                result = 718616279;
                 break;
             case 18:
-                result = 1199068876;
+                result = 783091295;
                 break;
             case 19:
-                result = 1554602282;
+                result = 1159775175;
                 break;
             case 20:
-                result = 264407506;
+                result = 1780349234;
                 break;
             case 21:
-                result = 1401311579;
+                result = 749925249;
                 break;
             case 22:
-                result = 1219464508;
+                result = 1875740481;
                 break;
             case 23:
-                result = 1057899549;
+                result = 812516459;
                 break;
             case 24:
-                result = 666380458;
+                result = 1688389874;
                 break;
             case 25:
-                result = 995541282;
+                result = 1556332846;
                 break;
             case 26:
-                result = 945111215;
+                result = 2105637828;
                 break;
             case 27:
-                result = 1481112733;
+                result = 104804878;
                 break;
             case 28:
-                result = 467111576;
+                result = 130162048;
                 break;
             case 29:
-                result = 1844826340;
+                result = 958134994;
                 break;
             case 30:
-                result = 1459742975;
+                result = 329897759;
                 break;
             case 31:
-                result = 1596815499;
+                result = 1785280196;
                 break;
             case 32:
-                result = 140805899;
+                result = 721435292;
                 break;
             case 33:
-                result = 1041838836;
+                result = 1829431758;
                 break;
             case 34:
-                result = 49258052;
+                result = 1060002505;
                 break;
             case 35:
-                result = 1639533348;
+                result = 956762991;
                 break;
             case 36:
-                result = 1066506112;
+                result = 377204355;
                 break;
             case 37:
-                result = 1195531682;
+                result = 539596143;
                 break;
             case 38:
-                result = 1763011566;
+                result = 1804858123;
                 break;
             case 39:
-                result = 1574675196;
+                result = 1700280403;
                 break;
             case 40:
-                result = 1944124429;
+                result = 1232990716;
                 break;
             case 41:
-                result = 421445816;
+                result = 423658904;
                 break;
             case 42:
-                result = 1592744285;
+                result = 90125507;
                 break;
             case 43:
-                result = 2043564741;
+                result = 441205885;
                 break;
             case 44:
-                result = 1631305316;
+                result = 234950066;
                 break;
             case 45:
-                result = 1732462055;
+                result = 187089738;
                 break;
             case 46:
-                result = 1426378509;
+                result = 1559732409;
                 break;
             case 47:
-                result = 6377806;
+                result = 1560671209;
                 break;
             case 48:
-                result = 456848863;
+                result = 1019799045;
                 break;
             case 49:
-                result = 1406605887;
+                result = 1249268985;
                 break;
             case 50:
-                result = 1355561825;
+                result = 1810038928;
                 break;
             case 51:
-                result = 248018856;
+                result = 1483393230;
                 break;
             case 52:
-                result = 1982262799;
+                result = 1621513260;
                 break;
             case 53:
-                result = 1999021088;
+                result = 1033644765;
                 break;
             case 54:
-                result = 388709964;
+                result = 2038954810;
                 break;
             case 55:
-                result = 1963671232;
+                result = 42788987;
                 break;
             case 56:
-                result = 321325093;
+                result = 899593810;
                 break;
             case 57:
-                result = 1592941759;
+                result = 1939936645;
                 break;
             case 58:
-                result = 573986328;
+                result = 1612325397;
                 break;
             case 59:
-                result = 487629817;
+                result = 1539569520;
                 break;
             case 60:
-                result = 1952812839;
+                result = 1624241273;
                 break;
             case 61:
-                result = 65636562;
+                result = 1676090587;
                 break;
             case 62:
-                result = 1236768080;
+                result = 455219868;
                 break;
             case 63:
-                result = 863785958;
+                result = 1563611052;
                 break;
             case 64:
-                result = 2016272860;
+                result = 1054646387;
                 break;
             case 65:
-                result = 332504341;
+                result = 86129139;
                 break;
             case 66:
-                result = 266168362;
+                result = 635611444;
                 break;
             case 67:
-                result = 725807900;
+                result = 1788846976;
                 break;
             case 68:
-                result = 1153620905;
+                result = 1473831773;
                 break;
             case 69:
-                result = 442543138;
+                result = 1515102489;
                 break;
             case 70:
-                result = 920754830;
+                result = 1704788075;
                 break;
             case 71:
-                result = 346913896;
+                result = 736981921;
                 break;
             case 72:
-                result = 1200732011;
+                result = 571531459;
                 break;
             case 73:
-                result = 1175507397;
+                result = 2053249625;
                 break;
             case 74:
-                result = 729234133;
+                result = 523190866;
                 break;
             case 75:
-                result = 329128041;
+                result = 1503885740;
                 break;
             case 76:
-                result = 1624760685;
+                result = 1438343146;
                 break;
             case 77:
-                result = 96767691;
+                result = 1093228474;
                 break;
             case 78:
-                result = 653304950;
+                result = 1643156830;
                 break;
             case 79:
-                result = 777667566;
+                result = 189568934;
                 break;
             case 80:
-                result = 126455043;
+                result = 2009636359;
                 break;
             case 81:
-                result = 1093854572;
+                result = 321990641;
                 break;
             case 82:
-                result = 1745056450;
+                result = 700539195;
                 break;
             case 83:
-                result = 1374405778;
+                result = 2102885228;
                 break;
             case 84:
-                result = 2115061159;
+                result = 501267863;
                 break;
             case 85:
-                result = 1057441096;
+                result = 1042293498;
                 break;
             case 86:
-                result = 34243016;
+                result = 469199950;
                 break;
             case 87:
-                result = 2118871831;
+                result = 1975741607;
                 break;
             case 88:
-                result = 166254642;
+                result = 1243109676;
                 break;
             case 89:
-                result = 567088993;
+                result = 1063249797;
                 break;
             case 90:
-                result = 116384664;
+                result = 742949148;
                 break;
             case 91:
-                result = 1774811058;
+                result = 1855347701;
                 break;
             case 92:
-                result = 939058903;
+                result = 1706466126;
                 break;
             case 93:
-                result = 1915911083;
+                result = 1768482317;
                 break;
             case 94:
-                result = 1358451721;
+                result = 2031027587;
                 break;
             case 95:
-                result = 1290895755;
+                result = 2018606656;
                 break;
             case 96:
-                result = 1658094088;
+                result = 1387805837;
                 break;
             case 97:
-                result = 866595050;
+                result = 971845595;
                 break;
             case 98:
-                result = 512190262;
+                result = 1051125220;
                 break;
             default:
                 result = 0;

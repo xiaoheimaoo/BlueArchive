@@ -61,6 +61,10 @@ public class Crc32 {
 			p = 0;
 		}
 		String head2 = Tools.BytePrintAsString(Tools.intToByteArray(p));
+/*		System.out.println(Tools.BytePrintAsString(getXor(Tools.hexToByteArray("430407f7"))));
+		System.out.println(head2);
+		System.out.println(Tools.byteArrayToInt(Tools.hexToByteArray("9ADDDE2E")));
+		System.out.println(Tools.BytePrintAsString(getXor(Tools.hexToByteArray(head2))));*/
 		return  head+head2;
 	}
 }
