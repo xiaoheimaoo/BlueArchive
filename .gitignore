@@ -2,5 +2,6 @@
 /out/
 /src/test/
 /target/
+/.idea
 !/BlueArchive.iml
 config.properties
