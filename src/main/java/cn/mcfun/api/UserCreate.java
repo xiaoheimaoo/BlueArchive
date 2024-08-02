@@ -350,7 +350,7 @@ public class UserCreate {
             if(js.getJSONObject("ShopGachaRecruitListResponse").containsKey("ShopFreeRecruitHistoryDBs")){
                 ShopFreeRecruitHistoryDBs = js.getJSONObject("ShopGachaRecruitListResponse").getJSONArray("ShopFreeRecruitHistoryDBs");
                 for(int i=0;i<ShopFreeRecruitHistoryDBs.size();i++){
-                    if(ShopFreeRecruitHistoryDBs.getJSONObject(i).getIntValue("UniqueId") == 5){
+                    if(ShopFreeRecruitHistoryDBs.getJSONObject(i).getIntValue("UniqueId") == 6){
                         userInfo.setRecruitCount(ShopFreeRecruitHistoryDBs.getJSONObject(i).getIntValue("RecruitCount"));
                     }
                 }
@@ -990,7 +990,7 @@ public class UserCreate {
 
     public void buyGacha3(int id, UserInfo userInfo) {
         String result;
-        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":0,\"Cost\":{\"ParcelInfos\":[{\"Key\":{\"Type\":4,\"Id\":6999},\"Amount\":1,\"Multiplier\":{\"rawValue\":10000},\"Probability\":{\"rawValue\":10000}}],\"Currency\":{\"currencyValue\":{\"Values\":{},\"Tickets\":{},\"Property\":{},\"Gold\":0,\"Gem\":0,\"GemBonus\":0,\"GemPaid\":0,\"ActionPoint\":0,\"ArenaTicket\":0,\"RaidTicket\":0,\"WeekDungeonChaserATicket\":0,\"WeekDungeonChaserBTicket\":0,\"WeekDungeonChaserCTicket\":0,\"WeekDungeonFindGiftTicket\":0,\"WeekDungeonBloodTicket\":0,\"AcademyTicket\":0,\"SchoolDungeonATicket\":0,\"SchoolDungeonBTicket\":0,\"SchoolDungeonCTicket\":0,\"TimeAttackDungeonTicket\":0,\"MasterCoin\":0,\"WorldRaidTicketA\":0,\"WorldRaidTicketB\":0,\"WorldRaidTicketC\":0,\"ChaserTotalTicket\":0,\"SchoolDungeonTotalTicket\":0,\"EliminateTicketA\":0,\"EliminateTicketB\":0,\"EliminateTicketC\":0,\"IsEmpty\":true},\"Gold\":0,\"Gem\":0,\"GemBonus\":0,\"GemPaid\":0,\"ActionPoint\":0,\"ArenaTicket\":0,\"RaidTicket\":0,\"WeekDungeonChaserATicket\":0,\"WeekDungeonChaserBTicket\":0,\"WeekDungeonChaserCTicket\":0,\"WeekDungeonFindGiftTicket\":0,\"WeekDungeonBloodTicket\":0,\"AcademyTicket\":0,\"SchoolDungeonATicket\":0,\"SchoolDungeonBTicket\":0,\"SchoolDungeonCTicket\":0,\"TimeAttackDungeonTicket\":0,\"MasterCoin\":0,\"WorldRaidTicketA\":0,\"WorldRaidTicketB\":0,\"WorldRaidTicketC\":0,\"ChaserTotalTicket\":0,\"SchoolDungeonTotalTicket\":0,\"EliminateTicketA\":0,\"EliminateTicketB\":0,\"EliminateTicketC\":0},\"EquipmentDBs\":[],\"ItemDBs\":[{\"Type\":4,\"IsNew\":false,\"IsLocked\":false,\"ServerId\":0,\"UniqueId\":6999,\"StackCount\":1}],\"FurnitureDBs\":[],\"ConsumeCondition\":0},\"GoodsId\":35637,\"ShopUniqueId\":50495,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"IsTest\": false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
+        String packet = "{\"Protocol\":10008,\"FreeRecruitId\":6,\"Cost\":null,\"GoodsId\":35779,\"ShopUniqueId\":50606,\"ClientUpTime\":" + id + ",\"Resendable\":true,\"Hash\":429840326984" + id + ",\"IsTest\": false,\"SessionKey\":" + userInfo.getSessionKey() + ",\"AccountId\":" + userInfo.getAccountId() + "}";
         byte[] builder = Gzip.enCrypt2(packet);
         result = HttpClientPool.postFileMultiPart(userInfo, "https://prod-game.bluearchiveyostar.com:5000/api/gateway", builder);
         JSONObject jsonObject = null;
