@@ -3,7 +3,7 @@ package cn.mcfun.utils;
 public class Tools {
     /**
      * hex字符串转byte数组
-     *
+     * 
      * @param inHex 待转换的Hex字符串
      * @return 转换后的byte数组结果
      */
@@ -29,7 +29,7 @@ public class Tools {
 
     /**
      * Hex字符串转byte
-     *
+     * 
      * @param inHex 待转换的Hex字符串
      * @return 转换后的byte
      */
@@ -50,7 +50,7 @@ public class Tools {
         return str;
     }
 
-    /**
+      /**
      * int到byte[] 由高位到低位
      * @param i 需要转换为byte数组的整行值。
      * @return byte数组
@@ -63,18 +63,20 @@ public class Tools {
         result[0] = (byte)(i & 0xFF);
         return result;
     }
-
+ 
     /**
      * byte[]转int
      * @param bytes 需要转换成int的数组
      * @return int值
      */
     public static int byteArrayToInt(byte[] bytes) {
-        int value=0;
-        for(int i = 0; i < 4; i++) {
-            int shift= (3-i) * 8;
-            value +=(bytes[i] & 0xFF) << shift;
+        if (bytes == null || bytes.length != 4) {
+            throw new IllegalArgumentException("Invalid byte array");
         }
-        return value;
+
+        return ((bytes[3] & 0xFF) << 24) |
+                ((bytes[2] & 0xFF) << 16) |
+                ((bytes[1] & 0xFF) << 8)  |
+                (bytes[0] & 0xFF);
     }
 }

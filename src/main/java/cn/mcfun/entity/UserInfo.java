@@ -4,45 +4,59 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserInfo {
-    String ip;
-    String order;
-    String Hint;
-    String Question;
-    String Answer;
-    BasicCookieStore cookie;
-    String deviceId;
-    String uid;
-    String token;
-    String accessToken;
-    String EnterTicket;
-    String MxToken;
-    Long AccountId;
-    String SessionKey;
-    String transcode;
-    Long ServerId1;
-    Long ServerId2;
-    Long ServerId3;
-    Long ServerId4;
-    JSONObject EchelonDBs = new JSONObject();
-    JSONArray CharacterDBs = new JSONArray();
-    JSONArray svts = new JSONArray();
-    JSONArray AttendanceBookRewards = new JSONArray();
-    JSONArray AttendanceHistoryDBs = new JSONArray();
-    JSONArray mail = new JSONArray();
-    int StarNum = 0;
-    int Gem = 0;
-    CloseableHttpClient httpClientBuilder = null;
+    private String Hint;
+    private String Question;
+    private String Answer;
+    private String ip;
+    private String order;
+    private BasicCookieStore cookie;
+    private String deviceId;
+    private String uid;
+    private String token;
+    private String accessToken;
+    private String EnterTicket;
+    private String MxToken;
+    private Long AccountId;
+    private String SessionKey;
+    private String transcode;
+    private Long ServerId1;
+    private Long ServerId2;
+    private Long ServerId3;
+    private Long ServerId4;
+    private JSONObject EchelonDBs = new JSONObject();
+    private JSONArray CharacterDBs = new JSONArray();
+    private JSONArray svts = new JSONArray();
+    private Map<Integer,String> AttendanceBookRewards = new HashMap<>();
+    private JSONArray mail = new JSONArray();
+    private int StarNum = 0;
+    private int Gem = 0;
+    private int Ticket = 0;
+    private int RecruitCount = 0;
+    private CloseableHttpClient httpClientBuilder = null;
+    private CloseableHttpClient httpClientBuilder2 = null;
     public UserInfo() {
     }
 
-    public CloseableHttpClient getHttpClientBuilder() {
-        return httpClientBuilder;
+    public CloseableHttpClient getHttpClientBuilder2() {
+        return httpClientBuilder2;
     }
 
-    public void setHttpClientBuilder(CloseableHttpClient httpClientBuilder) {
-        this.httpClientBuilder = httpClientBuilder;
+    public void setHttpClientBuilder2(CloseableHttpClient httpClientBuilder2) {
+        this.httpClientBuilder2 = httpClientBuilder2;
+    }
+
+    public int getRecruitCount() {
+        return RecruitCount;
+    }
+
+    public void setRecruitCount(int recruitCount) {
+        RecruitCount = recruitCount;
     }
 
     public String getHint() {
@@ -53,6 +67,14 @@ public class UserInfo {
         Hint = hint;
     }
 
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
+    }
+
     public String getQuestion() {
         return Question;
     }
@@ -61,12 +83,20 @@ public class UserInfo {
         Question = question;
     }
 
-    public String getAnswer() {
-        return Answer;
+    public int getTicket() {
+        return Ticket;
     }
 
-    public void setAnswer(String answer) {
-        Answer = answer;
+    public void setTicket(int ticket) {
+        Ticket = ticket;
+    }
+
+    public CloseableHttpClient getHttpClientBuilder() {
+        return httpClientBuilder;
+    }
+
+    public void setHttpClientBuilder(CloseableHttpClient httpClientBuilder) {
+        this.httpClientBuilder = httpClientBuilder;
     }
 
     public JSONArray getSvts() {
@@ -101,19 +131,11 @@ public class UserInfo {
         this.ip = ip;
     }
 
-    public JSONArray getAttendanceHistoryDBs() {
-        return AttendanceHistoryDBs;
-    }
-
-    public void setAttendanceHistoryDBs(JSONArray attendanceHistoryDBs) {
-        AttendanceHistoryDBs = attendanceHistoryDBs;
-    }
-
-    public JSONArray getAttendanceBookRewards() {
+    public Map<Integer, String> getAttendanceBookRewards() {
         return AttendanceBookRewards;
     }
 
-    public void setAttendanceBookRewards(JSONArray attendanceBookRewards) {
+    public void setAttendanceBookRewards(Map<Integer, String> attendanceBookRewards) {
         AttendanceBookRewards = attendanceBookRewards;
     }
 

@@ -1,14 +1,17 @@
 package cn.mcfun;
 
 import cn.mcfun.entity.UserInfo;
-import cn.mcfun.utils.HttpClientPool;
 import cn.mcfun.utils.OrderExecute;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -18,9 +21,9 @@ import static cn.mcfun.utils.Hikari.getConnection;
 
 
 public class Main{
-    public static List<String> lines = new ArrayList<>();
     public static String ClientVersion = "1.28.196922";
     public static String BundleVersion = "8qOm7FS6jd";
+    public static String Cookie = "";
     private static Main main;
     private boolean running;
     private final ThreadPoolExecutor executor;
@@ -39,6 +42,7 @@ public class Main{
     }
 
     public static void main(String[] args) {
+        timer();
         File file = new File("config.properties");
         FileWriter writer;
         if (!file.exists()) {
@@ -62,16 +66,20 @@ public class Main{
         CORE_POOL_SIZE = Integer.parseInt(props.getProperty("threads"));
         ClientVersion = props.getProperty("ClientVersion");
         BundleVersion = props.getProperty("BundleVersion");
+        Cookie = props.getProperty("Cookie");
         main = new Main();
         //查询并缓存需要执行的订单
         main.loadOrders();
+        if(orders.isEmpty()){
+            System.out.println("签到已完成！");
+            System.exit(0);
+        }
         while (!orders.isEmpty()){
             synchronized (orders) {
                 main.executor.execute(new OrderExecute(orders.poll()));
             }
         }
-        timer();
-        timer3();
+        timer2();
         while (main.isRunning()){
 
             try {
@@ -96,35 +104,27 @@ public class Main{
 
         }
     }
-    //订单检查
+    //定时关闭
     public static void timer() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                System.exit(0);
+            }
+
+        }, 1000 * 60 * 60);
+    }
+    //订单检查
+    public static void timer2() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 loadOrdersRecover();
             }
 
-        }, 1000 * 60 * 10,1000 * 60 * 10);
+        }, 1000 * 60,1000 * 60);
     }
-    public static void timer3() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                String result = HttpClientPool.sendGet2();
-                try {
-                    BufferedReader reader = new BufferedReader(new StringReader(result));
-                    String line;
-                    lines.clear();
-                    while ((line = reader.readLine()) != null) {
-                        lines.add(line);
-                    }
-                }catch (IOException e){
 
-                }
-            }
-
-        }, 0,1000 * 60);
-    }
     public boolean isRunning(){
         return this.running;
     }
@@ -137,11 +137,11 @@ public class Main{
 
         try {
             conn = getConnection();
-            String sql = "select * from `order` where status=3";
+            String sql = "select * from `order` where (`status` = 3 and `message` not like '%accessToken过期账号%') or `status` = 0";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
-                sql = "update `order` set status=-1 where `order`="+rs.getString("order");
+                sql = "update `order` set `status`=-1 where `order`="+rs.getString("order");
                 ps = conn.prepareStatement(sql);
                 ps.executeUpdate();
 
@@ -149,11 +149,9 @@ public class Main{
                 userInfo.setOrder(rs.getString("order"));
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
                 userInfo.setAccessToken(rs.getString("accessToken"));
-                userInfo.setTranscode(rs.getString("transcode"));
-                userInfo.setAccountId(rs.getLong("AccountId"));
-                userInfo.setToken(rs.getString("token"));
 
                 addToOrderQueue(userInfo);
             }
@@ -178,11 +176,13 @@ public class Main{
         ResultSet rs = null;
 
         try {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            String time = sf.format(System.currentTimeMillis())+" 03:00:00";
             conn = getConnection();
-            String sql = "update `order` set status=-1 where status=0 or status=1 or status=3";
+            String sql = "update `order` set `status`= -1 where `status` != 2 and `message` not like '%accessToken过期账号%'";
             ps = conn.prepareStatement(sql);
             ps.executeUpdate();
-            sql = "select * from `order` where status=-1";
+            sql = "select * from `order` where status= -1";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) {
@@ -190,11 +190,9 @@ public class Main{
                 userInfo.setOrder(rs.getString("order"));
                 userInfo.setUid(rs.getString("uid"));
                 userInfo.setSessionKey(rs.getString("SessionKey"));
+                userInfo.setAccountId(rs.getLong("AccountId"));
                 userInfo.setDeviceId(rs.getString("deviceId"));
                 userInfo.setAccessToken(rs.getString("accessToken"));
-                userInfo.setTranscode(rs.getString("transcode"));
-                userInfo.setAccountId(rs.getLong("AccountId"));
-                userInfo.setToken(rs.getString("token"));
 
                 addToOrderQueue(userInfo);
             }

@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
@@ -66,12 +68,15 @@ public class OrderExecute implements Runnable{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        userInfo.setIp(ip);
+        if(ip != null && !ip.equals("127.0.0.1")){
+            userInfo.setIp(ip);
+        }
         Connection conn2 = getConnection();
-        String sql2 = "update `order` set status=1 where `order`="+userInfo.getOrder()+" and status!=1";
+        String sql2 = "update `order` set `status`=1 where `order`=?";
         PreparedStatement ps2 = null;
         try {
             ps2 = conn2.prepareStatement(sql2);
+            ps2.setString(1, userInfo.getOrder());
             ps2.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -84,83 +89,55 @@ public class OrderExecute implements Runnable{
             }
         }
         UserCreate uc = new UserCreate();
-        if(userInfo.getToken() == null){
-            uc.transcode_verify(userInfo);
-        }
-        uc.userLogin(userInfo);
+        //登录
         uc.getTicket(userInfo);
         uc.checkYostar(userInfo);
-/*        uc.accountAuth(userInfo);
-        uc.accountCreate(userInfo);
-        uc.nickname(userInfo);
-        uc.callname(userInfo);*/
-        uc.accountAuth2(userInfo);
-        uc.ProofToken_RequestQuestion2(userInfo);
+        uc.accountAuth(userInfo);
+        uc.ProofToken_RequestQuestion(userInfo);
+        //uc.academyGetinfo(userInfo);
         uc.accountLoginsync(userInfo);
-        uc.ProofToken_Submit2(userInfo);
-/*        uc.Account_GetTutorial(userInfo);
-        uc.Mission_List(userInfo);
-        uc.Mission_List2(userInfo);
-        uc.Scenario_Skip(userInfo);
-        uc.Account_SetTutorial2(userInfo);
-        uc.Scenario_Skip2(userInfo);
-        uc.Scenario_Skip3(userInfo);
-        uc.Scenario_Skip4(userInfo);
-        uc.Scenario_Skip5(userInfo);
-        uc.Scenario_Skip6(userInfo);
-        uc.Account_SetTutorial3(userInfo);
-        uc.Scenario_Skip7(userInfo);
-        uc.Scenario_Skip8(userInfo);
-        uc.OpenCondition_EventList(userInfo);
-        uc.Notification_EventContentReddotCheck(userInfo);
-        uc.Mail_Check(userInfo);
-        uc.Event_RewardIncrease(userInfo);
-        uc.Clan_Check(userInfo);
-        uc.Billing_PurchaseListByYostar(userInfo);
-        uc.Shop_BeforehandGachaRun(userInfo);
-        uc.Shop_BeforehandGachaPick(userInfo);
-        uc.Account_SetTutorial(userInfo);
-        uc.Campaign_List(userInfo);
-        uc.Event_RewardIncrease2(userInfo);
-        uc.Mail_Check2(userInfo);
-        uc.Campaign_EnterMainStage(userInfo);
-        uc.Echelon_List(userInfo);
-        uc.Echelon_PresetList(userInfo);
-        uc.Campaign_DeployEchelon(userInfo);
-        uc.Campaign_ConfirmTutorialStage(userInfo);
-        uc.Campaign_MapMove(userInfo);
-        uc.Campaign_EnterTactic(userInfo);
-        uc.Campaign_TacticResult(userInfo);
-        uc.Campaign_EndTurn(userInfo);
-        uc.Campaign_EndTurn2(userInfo);
-        uc.Campaign_MapMove2(userInfo);
-        uc.Campaign_EnterTactic2(userInfo);
-        uc.Campaign_TacticResult2(userInfo);
-        uc.Account_SetTutorial4(userInfo);
-        uc.Account_SetTutorial5(userInfo);
-        uc.Account_SetTutorial6(userInfo);*/
-        uc.transcode_request(userInfo);
-/*        uc.Scenario_Skip9(userInfo);
-        uc.missionMultiplereward(userInfo);
-        uc.mailList(userInfo);
-        if(!userInfo.getMail().toJSONString().equals("[]")){
-            uc.mailReceive(userInfo);
+        //uc.Item_List(userInfo, new Random().nextInt(10));
+        uc.ProofToken_Submit(userInfo);
+        uc.mailCheck1(userInfo);
+        //uc.networktimeSync(userInfo);
+        int f = 1;
+        if(userInfo.getAttendanceBookRewards().size() >= 1){
+            for (Map.Entry<Integer, String> entry : userInfo.getAttendanceBookRewards().entrySet()) {
+                int key = entry.getKey();
+                String value = entry.getValue();
+                if(!value.split("-")[0].equals(value.split("-")[1])){
+                    uc.attendanceReward(key,key,Integer.parseInt(value.split("-")[1])+1,userInfo);
+                    f = 0;
+                }
+            }
+        }
+        //if(f == 0){
+            uc.mailCheck1(userInfo);
+            uc.mailCheck2(userInfo);
+            uc.mailList(userInfo);
+            for(int i=0;i<userInfo.getMail().size();i++){
+                uc.mailReceive(userInfo.getMail().getInteger(i),userInfo);
+                //uc.mailList2(userInfo);
+            }
+        //}
+        /*while(userInfo.getRecruitCount() < 100){
+            uc.buyGacha3(userInfo.getRecruitCount()+5,userInfo);
+            userInfo.setRecruitCount(userInfo.getRecruitCount()+10);
         }*/
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         Connection conn3 = getConnection();
-        String sql3 = "update `order` set `uid`=?,`complete`=?,`transcode`=?,`AccountId`=?,`status`=2,`message`=?,`StarNum`=? where `order`=? and status=1";
+        String sql3 = "update `order` set `status`=2,`message`=?,`StarNum`=?,`Gem`=?,`svts`=?,`complete`=? where `order`=?";
         PreparedStatement ps3 = null;
         try {
             ps3 = conn3.prepareStatement(sql3);
-            ps3.setString(1, userInfo.getUid());
-            ps3.setString(2, dateStr);
-            ps3.setString(3, userInfo.getTranscode());
-            ps3.setString(4, userInfo.getAccountId().toString());
-            ps3.setString(5, "订单已完成");
-            ps3.setInt(6, userInfo.getStarNum());
-            ps3.setString(7, userInfo.getOrder());
+            ps3.setString(1, "订单已完成");
+            ps3.setInt(2, userInfo.getStarNum());
+            ps3.setInt(3, userInfo.getGem());
+            ps3.setString(4, userInfo.getSvts().toJSONString());
+            ps3.setString(5, dateStr);
+            ps3.setString(6, userInfo.getOrder());
             ps3.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -7,146 +7,42 @@ import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static cn.mcfun.utils.Hikari.getConnection;
 
 public class HttpClientPool {
-    public static String sendGet(UserInfo userInfo) {
-        String randomLine = null;
-        if (!Main.lines.isEmpty()) {
-            Random random = new Random();
-            randomLine = Main.lines.get(random.nextInt(Main.lines.size()));
-        }
-        CloseableHttpClient httpClient = HttpClients.custom().build();
-        CloseableHttpResponse response = null;
-        HttpPost httpPost = new HttpPost("http://124.221.75.221:81/captcha4");
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("captcha_id", "00b06e0a4ed58bd1c2ad59f1b054ade0"));
-        params.add(new BasicNameValuePair("proxy", randomLine));
-        String result = null;
-        Connection conn2 = getConnection();
-        String sql2 = "update `order` set `message`='正在获取验证码!' where `order`=?";
-        PreparedStatement ps2 = null;
-        try {
-            ps2 = conn2.prepareStatement(sql2);
-            ps2.setString(1,userInfo.getOrder());
-            ps2.executeUpdate();
-            conn2.close();
-            ps2.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        int num = 0;
-        while(num == 0){
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
-                response = httpClient.execute(httpPost);
-                result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-                num = 1;
-            } catch (IOException e) {
-                num = 0;
-            }
-        }
-        return result;
-    }
-    public static String sendGet2() {
-        CloseableHttpClient httpClient = HttpClients.custom().build();
-        CloseableHttpResponse response = null;
-        HttpGet httpGet = new HttpGet("https://share.proxy.qg.net/get?key=Z68Q3BNI&num=20&area=&isp=&format=txt&seq=%5Cr%5Cn&distinct=true&pool=1");
-        String result = null;
-        try {
-            response = httpClient.execute(httpGet);
-            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (IOException e) {
-        }
-        return result;
-    }
-    public static String sendPost0(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        if(userInfo.getIp() != null){
-            HttpHost proxy;
-            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setRoutePlanner(routePlanner)
-                        .build());
-            }
-        }else{
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .build());
-            }
-        }
-        RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setConfig(defaultConfig);
-        httpPost.setHeader("Bundle-Version", Main.BundleVersion);
-        httpPost.addHeader("Connection", "keep-alive");
-        CloseableHttpResponse response = null;
-        String result = null;
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
-            response = userInfo.getHttpClientBuilder().execute(httpPost);
-            result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
-        } catch (Exception e) {
-            try {
-                Connection conn2 = getConnection();
-                String sql2 = "update `order` set `message`='网络异常，正在重试!',`status`=0 where `order`=?";
-                PreparedStatement ps2 = conn2.prepareStatement(sql2);
-                ps2.setString(1,userInfo.getOrder());
-                ps2.executeUpdate();
-                conn2.close();
-                ps2.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            Thread.currentThread().stop();
-        }
-        return result;
-    }
 
     public static String sendPost(UserInfo userInfo, String url, List<BasicNameValuePair> params) {
-        if(userInfo.getIp() != null){
-            HttpHost proxy;
-            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setRoutePlanner(routePlanner)
-                        .build());
-            }
-        }else{
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .build());
-            }
+        HttpHost proxy;
+        proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        if(userInfo.getHttpClientBuilder() == null){
+            userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                    .setRoutePlanner(routePlanner)
+                    .build());
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
+        httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
-        httpPost.addHeader("User-Agent", "BlueArchive/1.36.236685 CFNetwork/1410.0.3 Darwin/22.6.0");
-        httpPost.addHeader("Connection", "Keep-Alive");
-        httpPost.addHeader("Host", "ba-jp-sdk.bluearchive.jp");
+        httpPost.addHeader("User-Agent", "BestHTTP/2 v2.4.0");
+        httpPost.addHeader("Connection", "Keep-Alive, TE");
+        httpPost.addHeader("Keep-Alive", "timeout=21");
+        httpPost.addHeader("TE", "identity");
+        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
         CloseableHttpResponse response = null;
         String result = null;
         try {
@@ -169,8 +65,8 @@ public class HttpClientPool {
         }
         return result;
     }
-    public static String postFileMultiPart0(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        if(userInfo.getIp() != null){
+    public static String postFileMultiPart(UserInfo userInfo, String url, byte[] builder) {
+        if(userInfo.getIp() != null && !userInfo.getIp().equals("")){
             HttpHost proxy;
             proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
@@ -179,7 +75,7 @@ public class HttpClientPool {
                         .setRoutePlanner(routePlanner)
                         .build());
             }
-        }else{
+        }else {
             if(userInfo.getHttpClientBuilder() == null){
                 userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
                         .build());
@@ -188,8 +84,14 @@ public class HttpClientPool {
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
+        String boundary = Gzip.genRandomNum();
+        if(url.equals("https://prod-game.bluearchiveyostar.com:5000/api/gateway")){
+            httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
+        }
         if(url.equals("https://prod-gateway.bluearchiveyostar.com:5100/api/gateway")){
             httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-gateway.bluearchiveyostar.com:5100");
         }
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
@@ -197,12 +99,43 @@ public class HttpClientPool {
         httpPost.addHeader("Connection", "Keep-Alive, TE");
         httpPost.addHeader("Keep-Alive", "timeout=21");
         httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-gateway.bluearchiveyostar.com:5100");
+        httpPost.addHeader("Content-Type", "multipart/form-data; boundary=BestHTTP_HTTPMultiPartForm_"+boundary);
+        // 拼接请求体
+        StringBuilder requestBody1 = new StringBuilder();
+        requestBody1.append("--BestHTTP_HTTPMultiPartForm_").append(boundary).append("\r\n");
+        requestBody1.append("Content-Disposition: form-data; name=\"mx\"; filename=\"mx.dat\"").append("\r\n");
+        requestBody1.append("Content-Type: application/octet-stream\r\n");
+        requestBody1.append("Content-Length: ").append(builder.length).append("\r\n\r\n");
+        // 转换为字节数组
+        byte[] requestBodyBytes = new byte[0];
+        try {
+            requestBodyBytes = requestBody1.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        StringBuilder requestBody2 = new StringBuilder();
+        requestBody2.append("\r\n--BestHTTP_HTTPMultiPartForm_").append(boundary).append("--");
+        // 转换为字节数组
+        byte[] requestBodyBytes2 = new byte[0];
+        try {
+            requestBodyBytes2 = requestBody2.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            outputStream.write(requestBodyBytes);
+            outputStream.write(builder);
+            outputStream.write(requestBodyBytes2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 设置请求体
+        ByteArrayEntity byteArrayEntity = new ByteArrayEntity(outputStream.toByteArray());
+        httpPost.setEntity(byteArrayEntity);
         CloseableHttpResponse response = null;
         String result = null;
-        HttpEntity multipart = builder.build();
         try {
-            httpPost.setEntity(multipart);
             response = userInfo.getHttpClientBuilder().execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
         } catch (Exception e) {
@@ -221,27 +154,26 @@ public class HttpClientPool {
         }
         return result;
     }
-    public static String postFileMultiPart(UserInfo userInfo, String url, MultipartEntityBuilder builder) {
-        if(userInfo.getIp() != null){
-            HttpHost proxy;
-            proxy = new HttpHost(userInfo.getIp().split(":")[0], Integer.parseInt(userInfo.getIp().split(":")[1]));
-            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .setRoutePlanner(routePlanner)
-                        .build());
-            }
-        }else{
-            if(userInfo.getHttpClientBuilder() == null){
-                userInfo.setHttpClientBuilder(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
-                        .build());
-            }
+    public static String postFileMultiPart2(UserInfo userInfo, String url, byte[] builder) {
+        HttpHost proxy;
+        proxy = new HttpHost("tunnels.qg.net",10470);
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        if(userInfo.getHttpClientBuilder2() == null){
+            userInfo.setHttpClientBuilder2(HttpClientBuilder.create().setDefaultCookieStore(new BasicCookieStore())
+                    .setRoutePlanner(routePlanner)
+                    .build());
         }
         RequestConfig defaultConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setConfig(defaultConfig);
+        String boundary = Gzip.genRandomNum();
         if(url.equals("https://prod-game.bluearchiveyostar.com:5000/api/gateway")){
             httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
+        }
+        if(url.equals("https://prod-gateway.bluearchiveyostar.com:5100/api/gateway")){
+            httpPost.setHeader("mx","1");
+            httpPost.addHeader("Host", "prod-gateway.bluearchiveyostar.com:5100");
         }
         httpPost.setHeader("Bundle-Version",Main.BundleVersion);
         httpPost.addHeader("Accept-Encoding", "gzip");
@@ -249,14 +181,44 @@ public class HttpClientPool {
         httpPost.addHeader("Connection", "Keep-Alive, TE");
         httpPost.addHeader("Keep-Alive", "timeout=21");
         httpPost.addHeader("TE", "identity");
-        httpPost.addHeader("Host", "prod-game.bluearchiveyostar.com:5000");
+        httpPost.addHeader("Content-Type", "multipart/form-data; boundary=BestHTTP_HTTPMultiPartForm_"+boundary);
+        // 拼接请求体
+        StringBuilder requestBody1 = new StringBuilder();
+        requestBody1.append("--BestHTTP_HTTPMultiPartForm_").append(boundary).append("\r\n");
+        requestBody1.append("Content-Disposition: form-data; name=\"mx\"; filename=\"mx.dat\"").append("\r\n");
+        requestBody1.append("Content-Type: application/octet-stream\r\n");
+        requestBody1.append("Content-Length: ").append(builder.length).append("\r\n\r\n");
+        // 转换为字节数组
+        byte[] requestBodyBytes = new byte[0];
+        try {
+            requestBodyBytes = requestBody1.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        StringBuilder requestBody2 = new StringBuilder();
+        requestBody2.append("\r\n--BestHTTP_HTTPMultiPartForm_").append(boundary).append("--");
+        // 转换为字节数组
+        byte[] requestBodyBytes2 = new byte[0];
+        try {
+            requestBodyBytes2 = requestBody2.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            outputStream.write(requestBodyBytes);
+            outputStream.write(builder);
+            outputStream.write(requestBodyBytes2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 设置请求体
+        ByteArrayEntity byteArrayEntity = new ByteArrayEntity(outputStream.toByteArray());
+        httpPost.setEntity(byteArrayEntity);
         CloseableHttpResponse response = null;
         String result = null;
-        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        HttpEntity multipart = builder.build();
         try {
-            httpPost.setEntity(multipart);
-            response = userInfo.getHttpClientBuilder().execute(httpPost);
+            response = userInfo.getHttpClientBuilder2().execute(httpPost);
             result = EntityUtils.toString(response.getEntity(), Charset.forName("utf-8"));
         } catch (Exception e) {
             try {
